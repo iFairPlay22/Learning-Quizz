@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">K2hoot</string>
+
+    <string name="MainActivity_GreetingTextView_FirstPart">Welcome back</string>
+    <string name="MainActivity_GreetingTextView_MiddlePart">Your last score was</string>
+    <string name="MainActivity_GreetingTextView_LastPart">will you do better this time?</string>
+    <string name="MainActivity_MainButtonPlay_Text">Let\'s play</string>
+    <string name="MainActivity_MainEditTextName_Hint">Please type your name</string>
+
+    <string-array name="GameActivity_Questions">
+        <item>Who is the creator of Android?</item>
+        <item>Andy Rubin</item>
+        <item>Steve Wozniak</item>
+        <item>Jake Wharton</item>
+        <item>Paul Smith</item>
+
+        <item>When did the first man land on the moon?</item>
+        <item>1958</item>
+        <item>1962</item>
+        <item>1967</item>
+        <item>1969</item>
+
+        <item>What is the house number of The Simpsons?</item>
+        <item>42</item>
+        <item>101</item>
+        <item>666</item>
+        <item>742</item>
+    </string-array>
+
+</resources>

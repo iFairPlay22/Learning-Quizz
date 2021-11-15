@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".controller.MainActivity"
+    android:orientation="vertical"
+    android:layout_marginHorizontal="16dp">
+
+    <TextView
+        android:id="@+id/main_text_view_greeting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingVertical="8dp"
+        android:text="Hello World!"
+        />
+
+    <EditText
+        android:id="@+id/main_edit_text_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/MainActivity_MainEditTextName_Hint"
+        />
+
+    <Button
+        android:id="@+id/main_button_play"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="16dp"
+        android:text="@string/MainActivity_MainButtonPlay_Text" />
+
+</LinearLayout>
