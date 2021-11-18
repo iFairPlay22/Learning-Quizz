@@ -31,4 +31,28 @@
         android:layout_margin="16dp"
         android:text="@string/MainActivity_MainButtonPlay_Text" />
 
+    <Button
+        android:id="@+id/main_button_create"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="16dp"
+        android:text="@string/MainActivity_ButtonCreate_Text" />
+
+    <Button
+        android:id="@+id/main_button_create_binding"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="16dp"
+        android:text="Create binding" />
+
+    <Button
+        android:id="@+id/main_button_create_gap_sentence"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="16dp"
+        android:text="Create gap sentence" />
+
 </LinearLayout>

@@ -6,6 +6,7 @@
     <string name="MainActivity_GreetingTextView_LastPart">feras tu mieux ?</string>
     <string name="MainActivity_MainButtonPlay_Text">Jouons</string>
     <string name="MainActivity_MainEditTextName_Hint">Entrez votre nom</string>
+    <string name="MainActivity_ButtonCreate_Text">Créer</string>
 
     <string-array name="GameActivity_Questions">
         <item>Qui est le créateur d\'android?</item>

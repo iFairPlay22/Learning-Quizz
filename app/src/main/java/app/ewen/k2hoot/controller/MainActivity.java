@@ -28,6 +28,9 @@ public class MainActivity extends AppCompatActivity {
     private TextView mGreetingTextView;
     private EditText mNameEditText;
     private Button mPlayButton;
+    private Button mCreateButton;
+    private Button mCreateBindingButton;
+    private Button mCreateGapSentenceButton;
 
     private User mUser;
 
@@ -46,6 +49,9 @@ public class MainActivity extends AppCompatActivity {
         mGreetingTextView = findViewById(R.id.main_text_view_greeting);
         mNameEditText = findViewById(R.id.main_edit_text_name);
         mPlayButton = findViewById(R.id.main_button_play);
+        mCreateButton = findViewById(R.id.main_button_create);
+        mCreateBindingButton = findViewById(R.id.main_button_create_binding);
+        mCreateGapSentenceButton = findViewById(R.id.main_button_create_gap_sentence);
 
         // Activation / Désactivation du bouton
         mPlayButton.setEnabled(false);
@@ -72,6 +78,35 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(gameActivityIntent, GAME_ACTIVITY_REQUEST_CODE);
             }
         });
+        mCreateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mUser.setFirstName(mNameEditText.getText().toString());
+
+                Intent gameActivityIntent = new Intent(MainActivity.this, CreateQuestionActivity.class);
+                startActivityForResult(gameActivityIntent, GAME_ACTIVITY_REQUEST_CODE);
+            }
+        });
+
+        mCreateBindingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mUser.setFirstName(mNameEditText.getText().toString());
+
+                Intent gameActivityIntent = new Intent(MainActivity.this, CreateBindingActivity.class);
+                startActivityForResult(gameActivityIntent, GAME_ACTIVITY_REQUEST_CODE);
+            }
+        });
+        mCreateGapSentenceButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mUser.setFirstName(mNameEditText.getText().toString());
+
+                Intent gameActivityIntent = new Intent(MainActivity.this, CreateGapSentenceActivity.class);
+                startActivityForResult(gameActivityIntent, GAME_ACTIVITY_REQUEST_CODE);
+            }
+        });
+
 
         // Modification des textes
         updateLabels();
