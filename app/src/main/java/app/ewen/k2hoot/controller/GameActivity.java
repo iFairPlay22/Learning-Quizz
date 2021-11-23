@@ -14,13 +14,16 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import app.ewen.k2hoot.R;
-import app.ewen.k2hoot.model.Question;
+import app.ewen.k2hoot.model.step.question.QuestionData;
+import app.ewen.k2hoot.model.step.question.QuestionInput;
+import app.ewen.k2hoot.model.step.question.QuestionStep;
 import app.ewen.k2hoot.model.QuestionBank;
 
 public class GameActivity extends AppCompatActivity implements View.OnClickListener {
@@ -73,7 +76,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
     private QuestionBank generateQuestionBank() {
 
-        ArrayList<Question> questions = new ArrayList<>();
+        ArrayList<QuestionStep> questions = new ArrayList<>();
 
         String[] strQuestions = getResources().getStringArray(R.array.GameActivity_Questions);
         int[] goodAnswers = { 0, 3, 3 };
@@ -81,7 +84,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         int j = 0;
         for (int i = 0; i < strQuestions.length; i += 5) {
             questions.add(
-                new Question(strQuestions[i], Arrays.asList(strQuestions[i+1], strQuestions[i+2], strQuestions[i+3], strQuestions[i+4]), goodAnswers[j++])
+                new QuestionStep(strQuestions[i], Arrays.asList(strQuestions[i+1], strQuestions[i+2], strQuestions[i+3], strQuestions[i+4]), goodAnswers[j++])
             );
         }
 
@@ -91,11 +94,12 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
 
-        Question currentQuestion = mQuestionBank.getCurrentQuestion();
+        QuestionStep currentQuestion = mQuestionBank.getCurrentQuestion();
 
         for (int i = 0; i < mButtons.size(); i++) {
             if (mButtons.get(i) == v) {
-                if (currentQuestion.isGoodAnswer(i)) {
+                QuestionInput userInput = new QuestionInput(i);
+                if (currentQuestion.isGoodAnswer(userInput)) {
                     mScore++;
                     Toast.makeText(this, "Correct!", Toast.LENGTH_SHORT).show();
                 } else {
@@ -130,13 +134,15 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void displayCurrentQuestion() {
-        Question currentQuestion = mQuestionBank.getCurrentQuestion();
+        QuestionStep currentQuestion = mQuestionBank.getCurrentQuestion();
         if (currentQuestion == null) return ;
 
-        mQuestionTextView.setText(currentQuestion.getQuestion());
-        List<String> choiceList = currentQuestion.getChoiceList();
-        for (int i = 0; i < mButtons.size(); i++)
-            mButtons.get(i).setText(choiceList.get(i));
+        QuestionData data = currentQuestion.getData();
+
+        mQuestionTextView.setText(data.getQuestion());
+        List<String> propositions = data.getPropositions();
+        for (int i = 0; i < propositions.size(); i++)
+            mButtons.get(i).setText(propositions.get(i));
     }
 
     private void displayCurrentScore() {

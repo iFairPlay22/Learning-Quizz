@@ -7,23 +7,25 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import app.ewen.k2hoot.model.step.question.QuestionStep;
+
 public class QuestionBank implements Parcelable {
 
-    private List<Question> mQuestionList;
+    private List<QuestionStep> mQuestionList;
     private int mCurrentIndex;
 
-    public QuestionBank(List<Question> questionList) {
+    public QuestionBank(List<QuestionStep> questionList) {
         this.mCurrentIndex = 0;
         this.mQuestionList = new ArrayList<>(questionList);
         Collections.shuffle(this.mQuestionList);
     }
 
-    public Question nextQuestion() {
+    public QuestionStep nextQuestion() {
         this.mCurrentIndex++;;
         return getCurrentQuestion();
     }
 
-    public Question getCurrentQuestion() {
+    public QuestionStep getCurrentQuestion() {
         if (mCurrentIndex < mQuestionList.size())
             return mQuestionList.get(mCurrentIndex);
 
@@ -31,7 +33,7 @@ public class QuestionBank implements Parcelable {
     }
 
     protected QuestionBank(Parcel in) {
-        mQuestionList = in.createTypedArrayList(Question.CREATOR);
+        mQuestionList = in.createTypedArrayList(QuestionStep.CREATOR);
         mCurrentIndex = in.readInt();
     }
 
