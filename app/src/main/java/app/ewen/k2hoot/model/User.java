@@ -5,7 +5,7 @@ import android.os.Parcelable;
 
 public class User implements Parcelable {
     private String mFirstName;
-
+    private int mScore = 0;
     public User() {
         this("");
     }
@@ -14,6 +14,13 @@ public class User implements Parcelable {
         this.mFirstName = mFirstName;
     }
 
+    public int getScore(){
+        return mScore;
+    }
+
+    public void setScore(int score){
+        mScore = score;
+    }
     public String getFirstName() {
         return mFirstName;
     }
