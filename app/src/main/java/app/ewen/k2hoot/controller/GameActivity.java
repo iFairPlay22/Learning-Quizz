@@ -16,22 +16,22 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import app.ewen.k2hoot.R;
+import app.ewen.k2hoot.model.step.IStepData;
+import app.ewen.k2hoot.model.step.Step;
 import app.ewen.k2hoot.model.step.question.QuestionData;
 import app.ewen.k2hoot.model.step.question.QuestionInput;
 import app.ewen.k2hoot.model.step.question.QuestionStep;
-import app.ewen.k2hoot.model.QuestionBank;
+import app.ewen.k2hoot.model.StepContainer;
 
 public class GameActivity extends AppCompatActivity implements View.OnClickListener {
 
     private TextView mQuestionTextView;
     private List<Button> mButtons;
 
-    private QuestionBank mQuestionBank;
+    private StepContainer mStepContainer;
     private int mScore;
     public static final String BUNDLE_EXTRA_SCORE = "BUNDLE_EXTRA_SCORE";
     public static final String BUNDLE_STATE_SCORE = "BUNDLE_STATE_SCORE";
@@ -56,11 +56,11 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             mButtons.get(i).setOnClickListener(this);
 
         if (savedInstanceState == null) {
-            mQuestionBank = generateQuestionBank();
+            mStepContainer = generateQuestionBank();
             mScore = 0;
         } else {
             mScore = savedInstanceState.getInt(BUNDLE_STATE_SCORE);
-            mQuestionBank = savedInstanceState.getParcelable(BUNDLE_STATE_QUESTION_BANK);
+            mStepContainer = savedInstanceState.getParcelable(BUNDLE_STATE_QUESTION_BANK);
         }
 
         displayCurrentQuestion();
@@ -71,12 +71,12 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         super.onSaveInstanceState(outState);
 
         outState.putInt(BUNDLE_STATE_SCORE, mScore);
-        outState.putParcelable(BUNDLE_STATE_QUESTION_BANK, mQuestionBank);
+        outState.putParcelable(BUNDLE_STATE_QUESTION_BANK, mStepContainer);
     }
 
-    private QuestionBank generateQuestionBank() {
+    private StepContainer generateQuestionBank() {
 
-        ArrayList<QuestionStep> questions = new ArrayList<>();
+        ArrayList<Step> questions = new ArrayList<>();
 
         String[] strQuestions = getResources().getStringArray(R.array.GameActivity_Questions);
         int[] goodAnswers = { 0, 3, 3 };
@@ -88,13 +88,13 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             );
         }
 
-        return new QuestionBank(questions);
+        return new StepContainer(questions);
     }
 
     @Override
     public void onClick(View v) {
 
-        QuestionStep currentQuestion = mQuestionBank.getCurrentQuestion();
+        Step currentQuestion = mStepContainer.currentStep();
 
         for (int i = 0; i < mButtons.size(); i++) {
             if (mButtons.get(i) == v) {
@@ -120,9 +120,9 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
     private void nextQuestion() {
 
-        mQuestionBank.nextQuestion();
+        mStepContainer.nextStep();
 
-        if (mQuestionBank.getCurrentQuestion() == null) {
+        if (mStepContainer.currentStep() == null) {
             displayCurrentScore();
         } else {
             displayCurrentQuestion();
@@ -134,7 +134,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void displayCurrentQuestion() {
-        QuestionStep currentQuestion = mQuestionBank.getCurrentQuestion();
+        QuestionStep currentQuestion = (QuestionStep) mStepContainer.currentStep();
         if (currentQuestion == null) return ;
 
         QuestionData data = currentQuestion.getData();

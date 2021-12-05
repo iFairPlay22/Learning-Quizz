@@ -3,12 +3,11 @@ package app.ewen.k2hoot.model.step.binding;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.util.HashMap;
-import java.util.Map;
+import androidx.annotation.NonNull;
 
-import app.ewen.k2hoot.model.step.AbstractStep;
+import app.ewen.k2hoot.model.step.Step;
 
-public final class BindingStep extends AbstractStep<BindingData, BindingInput> {
+public final class BindingStep extends Step<BindingData, BindingInput> {
 
     // GAME MANAGEMENT
     @Override
@@ -28,23 +27,18 @@ public final class BindingStep extends AbstractStep<BindingData, BindingInput> {
 
     // PARCELABLE
     protected BindingStep(Parcel in) {
+        super(in);
         // ... = dest.writeString(...);
     }
-
-    public static final Parcelable.Creator<BindingStep> CREATOR = new Parcelable.Creator<BindingStep>() {
-        @Override
-        public BindingStep createFromParcel(Parcel in) {
-            return new BindingStep(in);
-        }
-
-        @Override
-        public BindingStep[] newArray(int size) {
-            return new BindingStep[size];
-        }
-    };
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         // dest.writeString(...);
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return "BindingStep";
     }
 }

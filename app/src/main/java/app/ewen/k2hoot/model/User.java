@@ -22,6 +22,7 @@ public class User implements Parcelable {
         this.mFirstName = mFirstName;
     }
 
+    // Parcelable
     protected User(Parcel in) {
         mFirstName = in.readString();
     }

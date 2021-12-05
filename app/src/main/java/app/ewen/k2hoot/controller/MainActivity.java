@@ -8,15 +8,16 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.io.IOException;
+
 import app.ewen.k2hoot.R;
 import app.ewen.k2hoot.model.User;
-import app.ewen.k2hoot.model.json.IJson;
+import app.ewen.k2hoot.model.http.IHttpManager;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -42,7 +43,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        IJson.testJson();
+        // IJson.testJson();
+        IHttpManager.testFileUpload(this);
 
         if (savedInstanceState == null) {
             mUser = new User();

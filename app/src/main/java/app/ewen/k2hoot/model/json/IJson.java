@@ -5,6 +5,7 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.io.Writer;
 import java.util.Arrays;
 
 import app.ewen.k2hoot.model.step.question.QuestionStep;
@@ -19,6 +20,10 @@ public abstract class IJson {
 
     public String toJson() {
         return sGson.toJson(this);
+    }
+
+    public void toJson(Writer writer) {
+        sGson.toJson(this, writer);
     }
 
     protected static <T extends IJson> T fromJson(String jsonString, Class<T> objectClass) {
