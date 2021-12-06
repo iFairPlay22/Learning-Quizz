@@ -22,10 +22,14 @@ import app.ewen.k2hoot.model.step.Step;
 
 public class StepContainer extends IJson implements Parcelable {
 
+    private static int sOccurences = 0;
+
+    private int mId;
     private List<Step> mStepList;
     private int mCurrentIndex;
 
     public StepContainer(List<Step> stepList) {
+        this.mId = sOccurences++;
         this.mCurrentIndex = 0;
         this.mStepList = new ArrayList<>(stepList);
         // Collections.shuffle(this.mStepList);
@@ -40,6 +44,10 @@ public class StepContainer extends IJson implements Parcelable {
             return mStepList.get(mCurrentIndex);
 
         return null;
+    }
+
+    public int getId() {
+        return mId;
     }
 
     // HTTP
@@ -68,7 +76,10 @@ public class StepContainer extends IJson implements Parcelable {
 
     public static StepContainer loadFromServer(String token) {
         String jsonTxt = HttpManager.INSTANCE.loadFile(token);
+        return loadFromJson(jsonTxt);
+    }
 
+    public static StepContainer loadFromJson(String jsonTxt) {
         try {
             Type stepListType = new TypeToken<ArrayList<Step>>() {}.getType();
             List<Step> l = sGson.fromJson(jsonTxt, stepListType);
@@ -86,6 +97,7 @@ public class StepContainer extends IJson implements Parcelable {
 
     // Parcelable
     protected StepContainer(Parcel in) {
+        mId = in.readInt();
         mStepList = in.readArrayList(Step.class.getClassLoader());
         mCurrentIndex = in.readInt();
     }
@@ -109,6 +121,7 @@ public class StepContainer extends IJson implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(mId);
         dest.writeTypedList(mStepList);
         dest.writeInt(mCurrentIndex);
     }
