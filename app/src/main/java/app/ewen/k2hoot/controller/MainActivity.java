@@ -8,14 +8,19 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.util.Arrays;
+
 import app.ewen.k2hoot.R;
+import app.ewen.k2hoot.model.StepContainer;
 import app.ewen.k2hoot.model.User;
 import app.ewen.k2hoot.model.http.HttpManager;
+import app.ewen.k2hoot.model.step.question.QuestionStep;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -23,6 +28,8 @@ public class MainActivity extends AppCompatActivity {
     private static final String SHARED_PREF_USER_INFO = "SHARED_PREF_USER_INFO";
     private static final String SHARED_PREF_USER_FIRST_NAME = "SHARED_PREF_USER_FIRST_NAME";
     private static final String SHARED_PREF_USER_LAST_SCORE = "SHARED_PREF_USER_LAST_SCORE";
+    private static final String SHARED_PREF_GAME = "SHARED_PREF_GAME_";
+    private static final String SHARED_PREF_GAME_NB = "SHARED_PREF_GAME_NB";
 
     public static final String BUNDLE_STATE_USER = "BUNDLE_STATE_USER";
 
@@ -156,6 +163,33 @@ public class MainActivity extends AppCompatActivity {
             mNameEditText.setText(lastFirstName);
             mNameEditText.setSelection(lastFirstName.length());
             mPlayButton.setEnabled(true);
+        }
+    }
+
+    private void shareGame() {
+        QuestionStep q1 = new QuestionStep("Question 1?", Arrays.asList("Answer 1.1", "Answer 1.2", "Answer 1.3", "Answer 1.4"), 0);
+        QuestionStep q2 = new QuestionStep("Question 2?", Arrays.asList("Answer 2.1", "Answer 2.2", "Answer 2.3", "Answer 2.4"), 1);
+        StepContainer sc = new StepContainer(Arrays.asList(q1, q2));
+
+        int nSteps = 1;
+
+        // Shared Preferences
+        SharedPreferences sp = getSharedPreferences(SHARED_PREF_USER_INFO + "_" + sc.getId(), MODE_PRIVATE);
+
+        // Write
+        sp
+            .edit()
+            .putInt(SHARED_PREF_GAME_NB, nSteps)
+            .putString(SHARED_PREF_GAME, sc.toJson())
+            .apply();
+
+        // Read
+        int gameNb = sp.getInt(SHARED_PREF_GAME_NB, 0);
+
+        for (int i = 0; i < gameNb; i++) {
+            String jsonTxt = sp.getString(SHARED_PREF_GAME + "_" + i, "");
+            StepContainer sc2 = StepContainer.loadFromJson(jsonTxt);
+            if (sc2 != null) Log.i("file_debug", sc2.toString());
         }
     }
 }
