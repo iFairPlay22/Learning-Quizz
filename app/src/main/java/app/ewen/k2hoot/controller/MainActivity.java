@@ -13,14 +13,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-
 import java.util.Arrays;
-
+import java.util.HashMap;
 import app.ewen.k2hoot.R;
 import app.ewen.k2hoot.model.StepContainer;
 import app.ewen.k2hoot.model.User;
 import app.ewen.k2hoot.model.http.HttpManager;
 import app.ewen.k2hoot.model.step.question.QuestionStep;
+import app.ewen.k2hoot.model.step.binding.BindingStep;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     private Button mPlayButton;
     private Button mCreateButton;
     private Button mCreateBindingButton;
+    private Button mPlayBindingButton;
     private Button mCreateGapSentenceButton;
 
     private User mUser;
@@ -62,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
         mPlayButton = findViewById(R.id.main_button_play);
         mCreateButton = findViewById(R.id.main_button_create);
         mCreateBindingButton = findViewById(R.id.main_button_create_binding);
+        mPlayBindingButton = findViewById(R.id.main_button_play_binding);
         mCreateGapSentenceButton = findViewById(R.id.main_button_create_gap_sentence);
 
         // Activation / Désactivation du bouton
@@ -98,7 +100,21 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(gameActivityIntent, GAME_ACTIVITY_REQUEST_CODE);
             }
         });
-
+        mPlayBindingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mUser.setFirstName(mNameEditText.getText().toString());
+                HashMap<String,String> s = new HashMap<>();
+                s.put("B", "Voitrue");
+                s.put("C", "Bateau");
+                s.put("A2", "Moto");
+                s.put("D", "Camion");
+                BindingStep st = new BindingStep("permis",s );
+                Intent gameActivityIntent = new Intent(MainActivity.this, GameBindingActivity.class);
+                gameActivityIntent.putExtra(GameBindingActivity.INTENT_INPUT_BINDING_STEP, st);
+                startActivityForResult(gameActivityIntent, GAME_ACTIVITY_REQUEST_CODE);
+            }
+        });
         mCreateBindingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

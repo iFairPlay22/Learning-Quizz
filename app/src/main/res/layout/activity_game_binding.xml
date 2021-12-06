@@ -8,8 +8,8 @@
     android:orientation="vertical"
     android:padding="8dp">
 
-    <EditText
-        android:id="@+id/edit_text_subject"
+    <TextView
+        android:id="@+id/text_view_dubject"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
@@ -18,9 +18,7 @@
         android:gravity="center"
         android:textColor="@color/white"
         android:textSize="18sp"
-        android:textStyle="bold"
-
-        android:hint="Sujet de la question" />
+        android:textStyle="bold" />
 
 
 
@@ -55,11 +53,6 @@
 
             </ListView >
         </RelativeLayout>
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Créer"
-        android:id="@+id/create_binding_activity_button_create"/>
 
 </LinearLayout>
 

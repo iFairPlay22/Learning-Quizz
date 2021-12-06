@@ -8,16 +8,18 @@ import app.ewen.k2hoot.model.step.IStepData;
 
 public class BindingData implements IStepData {
 
-    private Map<String,String> bindingMap;
+    private final String subject;
+    private final Map<String,String> bindingMap;
 
-    public BindingData(Map<String,String> bind){
+    public BindingData(Map<String,String> bind,String sub){
         bindingMap = bind;
+        subject = sub;
     }
     public Map<String, String> getBindingMap() {
         return bindingMap;
     }
 
-    public void setBindingMap(Map<String, String> bindingMap) {
-        this.bindingMap = bindingMap;
+    public String getSubject() {
+        return subject;
     }
 }

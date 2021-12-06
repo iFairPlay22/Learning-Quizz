@@ -33,21 +33,14 @@ public class Step<Data extends IStepData, Input extends IStepInput> extends IJso
     }
 
     // PARCELABLE
-    protected Step(Parcel in) {}
-    public static final Creator<Step> CREATOR = new Creator<Step>() {
-        @Override
-        public Step createFromParcel(Parcel in) {
-            return new Step(in);
-        }
-
-        @Override
-        public Step[] newArray(int size) {
-            return new Step[size];
-        }
-    };
+    protected Step(Parcel in) {
+        mTypeName = in.readString();
+    }
 
     @Override
-    public void writeToParcel(Parcel dest, int flags) {}
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(mTypeName);
+    }
 
     @Override
     public int describeContents() {

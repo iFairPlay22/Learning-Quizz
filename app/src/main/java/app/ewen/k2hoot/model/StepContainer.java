@@ -98,7 +98,7 @@ public class StepContainer extends IJson implements Parcelable {
     // Parcelable
     protected StepContainer(Parcel in) {
         mId = in.readInt();
-        mStepList = in.createTypedArrayList(Step.CREATOR);
+        mStepList = in.readArrayList(Step.class.getClassLoader());
         mCurrentIndex = in.readInt();
     }
 
