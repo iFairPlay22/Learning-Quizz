@@ -3,6 +3,7 @@ package app.ewen.k2hoot.controller;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -53,10 +54,13 @@ public class GameBindingActivity extends AppCompatActivity  {
 
         }
 
+        Log.i("Binding3", "k");
         bindingStep = (BindingStep)intent.getParcelableExtra(INTENT_INPUT_BINDING_STEP);
         setListViewAdapter();
         lastLeft=lastRight=-1;
         setListener();
+        Log.i("Binding3", bindingStep.getBindingMap().toString());
+        Log.i("Binding3", "c");
 
 
 

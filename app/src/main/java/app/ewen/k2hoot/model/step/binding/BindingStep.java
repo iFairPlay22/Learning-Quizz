@@ -4,6 +4,8 @@ import android.os.Parcel;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+
+import java.util.HashMap;
 import java.util.Map;
 import app.ewen.k2hoot.model.step.Step;
 
@@ -36,8 +38,6 @@ public final class BindingStep extends Step<BindingData, BindingInput> {
     public static final Creator<BindingStep> CREATOR = new Creator<BindingStep>() {
         @Override
         public BindingStep createFromParcel(Parcel in) {
-
-            Log.i("Binding2", "Test In");
             return new BindingStep(in);
         }
 
@@ -52,10 +52,19 @@ public final class BindingStep extends Step<BindingData, BindingInput> {
     protected BindingStep(Parcel in) {
 
         super(in);
-        Log.i("Binding2", "jehjehjehejk");
-        bindingMap = in.readHashMap(String.class.getClassLoader());
-        Log.i("Binding2", (bindingMap == null) + "");
+        Log.i("Binding2", "Read");
+        bindingMap = new HashMap<String, String>();
+        int size = in.readInt();
+        for(int i = 0; i < size; i++){
+
+            String key = in.readString();
+            String value = in.readString();
+            Log.i("Binding2", "Entry " +key + "  " + value);
+            bindingMap.put(key,value);
+        }
+        Log.i("Binding2", bindingMap.toString());
         subject = in.readString();
+        Log.i("Binding2", subject);
     }
 
     public Map<String, String> getBindingMap() {
@@ -64,7 +73,14 @@ public final class BindingStep extends Step<BindingData, BindingInput> {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeMap(getData().getBindingMap());
+        super.writeToParcel(dest, flags);
+        dest.writeInt(bindingMap.size());
+        for(Map.Entry<String,String> entry : bindingMap.entrySet()){
+            Log.i("Binding2", "Entry " + entry.getKey() + "  " + entry.getValue());
+            dest.writeString(entry.getKey());
+            dest.writeString(entry.getValue());
+        }
+        Log.i("Binding2", "Write " + bindingMap.toString());
         dest.writeString(getData().getSubject());
     }
 
