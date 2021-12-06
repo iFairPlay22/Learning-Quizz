@@ -44,4 +44,12 @@
         android:text=""
         />
 
+    <Button
+        android:id="@+id/gap_sentence_ok_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="16dp"
+        android:text="OK" />
+
 </LinearLayout>

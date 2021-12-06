@@ -28,6 +28,7 @@ public class CreateGapSentenceActivity extends AppCompatActivity  {
     private EditText mEditText;
     private LinearLayout mLinearLayout;
     private TextView mPreview;
+    private Button mOkButton;
 
     //Phrase sous forme de liste de mots
     private String[] mots;
@@ -42,6 +43,9 @@ public class CreateGapSentenceActivity extends AppCompatActivity  {
         mEditText = findViewById(R.id.gap_sentence_edit_text);
         mLinearLayout = findViewById(R.id.gap_sentence_linear_layout_buttons);
         mPreview = findViewById(R.id.gap_sentence_preview);
+        mOkButton = findViewById(R.id.gap_sentence_ok_button);
+
+        mOkButton.setEnabled(false);
 
         mEditText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -103,6 +107,12 @@ public class CreateGapSentenceActivity extends AppCompatActivity  {
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void updatePreview(){
         if(mots==null)return;
+        if(gapIndexes.size()!=0){
+            mOkButton.setEnabled(true);
+        }
+        else{
+            mOkButton.setEnabled(false);
+        }
         String[] motsPreview = mots.clone();
         for (Integer i:gapIndexes) {
             motsPreview[i] = "...";

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginHorizontal="16dp"
+    android:orientation="vertical"
+    tools:context=".controller.QuizzListActivity">
+
+    <TextView
+        android:id="@+id/quizz_list_activity_main_textview"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_margin="8dp"
+        android:gravity="bottom|center"
+        android:textColor="@color/black"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        tools:text="Mes Quizzz" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="68dp"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/gap_sentence_edit_text"
+            android:layout_width="228dp"
+            android:layout_height="match_parent"
+            android:hint="Code de partage" />
+
+        <ImageButton
+            android:id="@+id/importQuizz"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:contentDescription="Importer un quizz"
+            android:scaleType="fitXY"
+            app:srcCompat="@android:drawable/ic_menu_set_as" />
+
+        <ImageButton
+            android:id="@+id/createQuizz"
+            style="@style/Widget.AppCompat.ImageButton"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:contentDescription="Créer un quizz"
+            android:scaleType="fitXY"
+            app:srcCompat="@android:drawable/ic_menu_add" />
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="8dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/button"
+                android:layout_width="match_parent"
+                android:layout_height="69dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
+                android:text="Nom du Quiz" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>
