@@ -37,11 +37,6 @@ public final class QuestionStep extends Step<QuestionData, QuestionInput> {
         return mAnswerIndex == userInput.getAnswerIndex();
     }
 
-    // JSON
-    public static QuestionStep fromJson(String jsonString) {
-        return fromJson(jsonString, QuestionStep.class);
-    }
-
     // PARCELABLE
     protected QuestionStep(Parcel in) {
         super(in);

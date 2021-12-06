@@ -20,11 +20,6 @@ public final class BlankTextStep extends Step<BlankTextData, BlankTextInput> {
         return false;
     }
 
-    // JSON
-    public static BlankTextStep fromJson(String jsonString) {
-        return fromJson(jsonString, BlankTextStep.class);
-    }
-
     // PARCELABLE
     protected BlankTextStep(Parcel in) {
         super(in);

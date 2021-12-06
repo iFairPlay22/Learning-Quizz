@@ -20,11 +20,6 @@ public final class BindingStep extends Step<BindingData, BindingInput> {
         return false;
     }
 
-    // JSON
-    public static BindingStep fromJson(String jsonString) {
-        return fromJson(jsonString, BindingStep.class);
-    }
-
     // PARCELABLE
     protected BindingStep(Parcel in) {
         super(in);

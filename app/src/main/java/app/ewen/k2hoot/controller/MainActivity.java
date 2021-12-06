@@ -13,11 +13,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import java.io.IOException;
-
 import app.ewen.k2hoot.R;
 import app.ewen.k2hoot.model.User;
-import app.ewen.k2hoot.model.http.IHttpManager;
+import app.ewen.k2hoot.model.http.HttpManager;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -43,8 +41,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // IJson.testJson();
-        IHttpManager.testFileUpload(this);
+        HttpManager.testFileUpload(this);
 
         if (savedInstanceState == null) {
             mUser = new User();

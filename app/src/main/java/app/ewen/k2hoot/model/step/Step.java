@@ -5,6 +5,8 @@ import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
+import com.google.gson.annotations.SerializedName;
+
 import app.ewen.k2hoot.model.StepContainer;
 import app.ewen.k2hoot.model.json.IJson;
 import app.ewen.k2hoot.model.step.question.QuestionStep;
@@ -20,6 +22,14 @@ public class Step<Data extends IStepData, Input extends IStepInput> extends IJso
 
     public boolean isGoodAnswer(Input userInput) {
         return true;
+    }
+
+    // JSON
+    @SerializedName("type")
+    private String mTypeName = getClass().getName();
+
+    public static Step fromJson(String jsonString) {
+        return fromJson(jsonString, Step.class);
     }
 
     // PARCELABLE
