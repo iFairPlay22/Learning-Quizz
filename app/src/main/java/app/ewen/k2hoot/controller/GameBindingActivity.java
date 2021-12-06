@@ -1,5 +1,6 @@
 package app.ewen.k2hoot.controller;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -17,6 +18,7 @@ import java.util.Map;
 import java.util.Random;
 
 import app.ewen.k2hoot.R;
+import app.ewen.k2hoot.model.step.binding.BindingStep;
 
 public class GameBindingActivity extends AppCompatActivity  {
 
@@ -31,6 +33,10 @@ public class GameBindingActivity extends AppCompatActivity  {
     private HashMap<Integer,Integer> bindingMap;
     private GameBindingListViewAdapter adpterLeft;
     private GameBindingListViewAdapter adapterRight;
+
+    private BindingStep bindingStep;
+
+    public static String INTENT_INPUT_BINDING_STEP = "INTENT_INPUT_BINDING_STEP";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,9 +46,18 @@ public class GameBindingActivity extends AppCompatActivity  {
         mSubjectTextView = findViewById(R.id.text_view_dubject);
         mLeftListView =findViewById(R.id.linearLayout_horizontal_left);
         mRightListView =findViewById(R.id.linearLayout_horizontal_right);
+
+
+        Intent intent = getIntent();
+        if(savedInstanceState == null){
+
+        }
+
+        bindingStep = (BindingStep)intent.getParcelableExtra(INTENT_INPUT_BINDING_STEP);
         setListViewAdapter();
         lastLeft=lastRight=-1;
         setListener();
+
 
 
     }
@@ -52,19 +67,13 @@ public class GameBindingActivity extends AppCompatActivity  {
         return Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
     }
 
-    public void addElementList(){
+    public void addElementList(String left, String Right){
 
-        listLeft.add("");
-        listRight.add("");
+        listLeft.add(left);
+        listRight.add(Right);
         listColor.add(getRandomColor());
     }
 
-
-    public void removeElementList(int i){
-        listLeft.remove(i);
-        listRight.remove(i);
-        listColor.remove(i);
-    }
     private void setListViewAdapter(){
 
 
@@ -72,8 +81,8 @@ public class GameBindingActivity extends AppCompatActivity  {
         listRight = new ArrayList<String>();
         listColor = new ArrayList<Integer>();
 
-        for (int i = 0; i < 4; i++) {
-            addElementList();
+        for (Map.Entry<String, String> entry : bindingStep.getBindingMap().entrySet()) {
+            addElementList(entry.getKey(),entry.getValue());
         }
 
         adapterRight=new GameBindingListViewAdapter(this,listRight);

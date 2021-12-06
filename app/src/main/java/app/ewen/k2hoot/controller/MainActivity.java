@@ -13,9 +13,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.util.HashMap;
+
 import app.ewen.k2hoot.R;
 import app.ewen.k2hoot.model.User;
 import app.ewen.k2hoot.model.http.HttpManager;
+import app.ewen.k2hoot.model.step.binding.BindingStep;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -97,8 +100,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 mUser.setFirstName(mNameEditText.getText().toString());
-
+                HashMap<String,String> s = new HashMap<>();
+                s.put("B", "Voitrue");
+                s.put("C", "Bateau");
+                s.put("A2", "Moto");
+                s.put("D", "Camion");
+                BindingStep st = new BindingStep("permis",s );
                 Intent gameActivityIntent = new Intent(MainActivity.this, GameBindingActivity.class);
+                gameActivityIntent.putExtra(GameBindingActivity.INTENT_INPUT_BINDING_STEP, st);
                 startActivityForResult(gameActivityIntent, GAME_ACTIVITY_REQUEST_CODE);
             }
         });

@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.NumberPicker;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
@@ -32,8 +33,8 @@ public class CreateBindingActivity extends AppCompatActivity  {
     private ListView mRightListView;
     private HashMap<Integer, Integer> hash;
     int lastRight, lastLeft;
-    private List listLeft;
-    private List listRight;
+    private List<String> listLeft;
+    private List<String> listRight;
     private List listColor;
     private HashMap<Integer,Integer> bindingMap;
     private CreateBindingListViewAdapter adpterLeft;
@@ -58,10 +59,12 @@ public class CreateBindingActivity extends AppCompatActivity  {
         createButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                HashMap<String, String> hash = new HashMap<>();
-                //hash
+                HashMap<String, String> hash2 = new HashMap<>();
+                for (Map.Entry<Integer, Integer> entry : hash.entrySet()) {
+                    hash2.put(listLeft.get(entry.getKey()), listRight.get(entry.getValue()));
+                }
                 Intent intent = new Intent();
-                //intent.putExtra(BUNDLE_BINDING_DATA, new BindingStep(, mSubjectEditText.getText()));
+                intent.putExtra(BUNDLE_BINDING_DATA, new BindingStep(mSubjectEditText.getText().toString(), hash2));
                 setResult(RESULT_OK, intent);
                 finish();
             }
@@ -109,6 +112,7 @@ public class CreateBindingActivity extends AppCompatActivity  {
         mRightListView.setItemsCanFocus(true);
         mRightListView.setAdapter(adapterRight);
     }
+
 
     private void updateColors(){
         for (Map.Entry<Integer, Integer> entry : hash.entrySet()) {
