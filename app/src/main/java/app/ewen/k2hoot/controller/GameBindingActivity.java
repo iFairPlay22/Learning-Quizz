@@ -1,18 +1,12 @@
 package app.ewen.k2hoot.controller;
 
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Debug;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.NumberPicker;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -23,11 +17,10 @@ import java.util.Map;
 import java.util.Random;
 
 import app.ewen.k2hoot.R;
-import app.ewen.k2hoot.model.step.binding.BindingStep;
 
-public class CreateBindingActivity extends AppCompatActivity  {
+public class GameBindingActivity extends AppCompatActivity  {
 
-    private EditText mSubjectEditText;
+    private TextView mSubjectTextView;
     private ListView mLeftListView;
     private ListView mRightListView;
     private HashMap<Integer, Integer> hash;
@@ -36,37 +29,20 @@ public class CreateBindingActivity extends AppCompatActivity  {
     private List listRight;
     private List listColor;
     private HashMap<Integer,Integer> bindingMap;
-    private CreateBindingListViewAdapter adpterLeft;
-    private CreateBindingListViewAdapter adapterRight;
-
-    private static String BUNDLE_BINDING_DATA = "BUNDLE_BINDING_DATA";
-
-    private Button createButton;
+    private GameBindingListViewAdapter adpterLeft;
+    private GameBindingListViewAdapter adapterRight;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_binding);
-        createButton = findViewById(R.id.create_binding_activity_button_create);
+        setContentView(R.layout.activity_game_binding);
+
         hash = new HashMap<Integer,Integer>();
-        mSubjectEditText = findViewById(R.id.edit_text_subject);
+        mSubjectTextView = findViewById(R.id.text_view_dubject);
         mLeftListView =findViewById(R.id.linearLayout_horizontal_left);
         mRightListView =findViewById(R.id.linearLayout_horizontal_right);
         setListViewAdapter();
         lastLeft=lastRight=-1;
         setListener();
-
-        createButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                HashMap<String, String> hash = new HashMap<>();
-                //hash
-                Intent intent = new Intent();
-                //intent.putExtra(BUNDLE_BINDING_DATA, new BindingStep(, mSubjectEditText.getText()));
-                setResult(RESULT_OK, intent);
-                finish();
-            }
-
-        });
 
 
     }
@@ -100,8 +76,8 @@ public class CreateBindingActivity extends AppCompatActivity  {
             addElementList();
         }
 
-        adapterRight=new CreateBindingListViewAdapter(this,listRight);
-        adpterLeft=new CreateBindingListViewAdapter(this,listLeft);
+        adapterRight=new GameBindingListViewAdapter(this,listRight);
+        adpterLeft=new GameBindingListViewAdapter(this,listLeft);
 
         mLeftListView.setItemsCanFocus(true);
         mLeftListView.setAdapter(adpterLeft);

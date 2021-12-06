@@ -48,6 +48,14 @@
         android:text="Create binding" />
 
     <Button
+        android:id="@+id/main_button_play_binding"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="16dp"
+        android:text="Play binding" />
+
+    <Button
         android:id="@+id/main_button_create_gap_sentence"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

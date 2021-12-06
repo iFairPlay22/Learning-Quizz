@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     private Button mPlayButton;
     private Button mCreateButton;
     private Button mCreateBindingButton;
+    private Button mPlayBindingButton;
     private Button mCreateGapSentenceButton;
 
     private User mUser;
@@ -55,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
         mPlayButton = findViewById(R.id.main_button_play);
         mCreateButton = findViewById(R.id.main_button_create);
         mCreateBindingButton = findViewById(R.id.main_button_create_binding);
+        mPlayBindingButton = findViewById(R.id.main_button_play_binding);
         mCreateGapSentenceButton = findViewById(R.id.main_button_create_gap_sentence);
 
         // Activation / Désactivation du bouton
@@ -91,7 +93,15 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(gameActivityIntent, GAME_ACTIVITY_REQUEST_CODE);
             }
         });
+        mPlayBindingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mUser.setFirstName(mNameEditText.getText().toString());
 
+                Intent gameActivityIntent = new Intent(MainActivity.this, GameBindingActivity.class);
+                startActivityForResult(gameActivityIntent, GAME_ACTIVITY_REQUEST_CODE);
+            }
+        });
         mCreateBindingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
