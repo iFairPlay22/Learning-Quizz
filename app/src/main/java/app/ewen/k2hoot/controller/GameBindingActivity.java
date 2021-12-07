@@ -88,7 +88,8 @@ public class GameBindingActivity extends AppCompatActivity  {
         for (Map.Entry<String, String> entry : bindingStep.getBindingMap().entrySet()) {
             addElementList(entry.getKey(),entry.getValue());
         }
-
+        Log.i("Binding2",listRight.toString());
+        Log.i("Binding2",listLeft.toString());
         adapterRight=new GameBindingListViewAdapter(this,listRight);
         adpterLeft=new GameBindingListViewAdapter(this,listLeft);
 

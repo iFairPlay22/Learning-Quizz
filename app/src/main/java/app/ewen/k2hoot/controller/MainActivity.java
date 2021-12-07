@@ -25,6 +25,8 @@ import app.ewen.k2hoot.model.step.binding.BindingStep;
 public class MainActivity extends AppCompatActivity {
 
     private static final int GAME_ACTIVITY_REQUEST_CODE = 2;
+    private static final int GAME_QUESTION_ACTIVITY_REQUEST_CODE = 3;
+    private static final int CREATE_QUESTION_ACTIVITY_REQUEST_CODE = 13;
     private static final String SHARED_PREF_USER_INFO = "SHARED_PREF_USER_INFO";
     private static final String SHARED_PREF_USER_FIRST_NAME = "SHARED_PREF_USER_FIRST_NAME";
     private static final String SHARED_PREF_USER_LAST_SCORE = "SHARED_PREF_USER_LAST_SCORE";
@@ -42,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
     private Button mCreateGapSentenceButton;
 
     private User mUser;
-
+    private QuestionStep mQuestionStep;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -87,8 +89,9 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 mUser.setFirstName(mNameEditText.getText().toString());
 
-                Intent gameActivityIntent = new Intent(MainActivity.this, GameActivity.class);
-                startActivityForResult(gameActivityIntent, GAME_ACTIVITY_REQUEST_CODE);
+                Intent gameActivityIntent = new Intent(MainActivity.this, GameQuestionActivity.class);
+                gameActivityIntent.putExtra(GameQuestionActivity.INTENT_QUESTION_STEP, mQuestionStep);
+                startActivityForResult(gameActivityIntent, GAME_QUESTION_ACTIVITY_REQUEST_CODE);
             }
         });
         mCreateButton.setOnClickListener(new View.OnClickListener() {
@@ -97,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
                 mUser.setFirstName(mNameEditText.getText().toString());
 
                 Intent gameActivityIntent = new Intent(MainActivity.this, CreateQuestionActivity.class);
-                startActivityForResult(gameActivityIntent, GAME_ACTIVITY_REQUEST_CODE);
+                startActivityForResult(gameActivityIntent, CREATE_QUESTION_ACTIVITY_REQUEST_CODE);
             }
         });
         mPlayBindingButton.setOnClickListener(new View.OnClickListener() {
@@ -159,6 +162,14 @@ public class MainActivity extends AppCompatActivity {
                 .apply();
 
             updateLabels();
+        }else if(CREATE_QUESTION_ACTIVITY_REQUEST_CODE == requestCode && RESULT_OK == resultCode){
+            QuestionStep qs = (QuestionStep)data.getParcelableExtra(CreateQuestionActivity.INTENT_CREATE_QUESTION_STEP);
+            Log.i("QS", qs.toString());
+            mQuestionStep=qs;
+        }else if(GAME_QUESTION_ACTIVITY_REQUEST_CODE == requestCode && RESULT_OK == resultCode){
+            boolean increase = data.getBooleanExtra(GameQuestionActivity.BUNDLE_EXTRA_VALIDATE, false);
+            Log.i("QS","Increse "+increase);
+
         }
 
         super.onActivityResult(requestCode, resultCode, data);
