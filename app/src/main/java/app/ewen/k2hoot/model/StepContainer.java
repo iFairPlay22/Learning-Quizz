@@ -25,13 +25,15 @@ public class StepContainer extends IJson implements Parcelable {
     private static int sOccurences = 0;
 
     private int mId;
+    private String mName;
     private List<Step> mStepList;
     private int mCurrentIndex;
 
-    public StepContainer(List<Step> stepList) {
+    public StepContainer(List<Step> stepList,String name) {
         this.mId = sOccurences++;
         this.mCurrentIndex = 0;
         this.mStepList = new ArrayList<>(stepList);
+        this.mName=name;
         // Collections.shuffle(this.mStepList);
     }
 
@@ -83,7 +85,7 @@ public class StepContainer extends IJson implements Parcelable {
         try {
             Type stepListType = new TypeToken<ArrayList<Step>>() {}.getType();
             List<Step> l = sGson.fromJson(jsonTxt, stepListType);
-            return new StepContainer(l);
+            return new StepContainer(l,"");
         } catch (Exception e) {
             Log.e("file_debug", "Impossible to parse JSON!");
             return null;
@@ -133,5 +135,9 @@ public class StepContainer extends IJson implements Parcelable {
             res += step.toString() + "\n";
         res += "]";
         return res;
+    }
+
+    public String getName() {
+        return mName;
     }
 }

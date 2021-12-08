@@ -88,7 +88,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             );
         }
 
-        return new StepContainer(questions);
+        return new StepContainer(questions,"");
     }
 
     @Override
