@@ -25,7 +25,7 @@
         android:orientation="horizontal">
 
         <EditText
-            android:id="@+id/gap_sentence_edit_text"
+            android:id="@+id/quizz_list_share_code_edit_text"
             android:layout_width="228dp"
             android:layout_height="match_parent"
             android:hint="Code de partage" />
@@ -56,12 +56,12 @@
         android:layout_marginTop="8dp">
 
         <LinearLayout
+            android:id="@+id/quizz_list_linear_layout_buttons"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
             <Button
-                android:id="@+id/button"
                 android:layout_width="match_parent"
                 android:layout_height="69dp"
                 android:layout_gravity="center_horizontal"

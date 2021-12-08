@@ -196,7 +196,7 @@ public class MainActivity extends AppCompatActivity {
     private void shareGame() {
         QuestionStep q1 = new QuestionStep("Question 1?", Arrays.asList("Answer 1.1", "Answer 1.2", "Answer 1.3", "Answer 1.4"), 0);
         QuestionStep q2 = new QuestionStep("Question 2?", Arrays.asList("Answer 2.1", "Answer 2.2", "Answer 2.3", "Answer 2.4"), 1);
-        StepContainer sc = new StepContainer(Arrays.asList(q1, q2));
+        StepContainer sc = new StepContainer(Arrays.asList(q1, q2),"");
 
         int nSteps = 1;
 

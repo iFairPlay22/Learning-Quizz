@@ -86,6 +86,7 @@ public class GameActivity extends AppCompatActivity {
         });
 
 
+        return new StepContainer(questions,"");
     }
 
     public AppCompatActivity getActivity() {
