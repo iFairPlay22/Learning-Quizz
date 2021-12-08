@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     private Button mCreateBindingButton;
     private Button mPlayBindingButton;
     private Button mCreateGapSentenceButton;
+    private Button mQuizzListButton;
 
     private User mUser;
     private QuestionStep mQuestionStep;
@@ -67,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
         mCreateBindingButton = findViewById(R.id.main_button_create_binding);
         mPlayBindingButton = findViewById(R.id.main_button_play_binding);
         mCreateGapSentenceButton = findViewById(R.id.main_button_create_gap_sentence);
+        mQuizzListButton = findViewById(R.id.main_button_quizz_list);
 
         // Activation / Désactivation du bouton
         mPlayButton.setEnabled(false);
@@ -137,6 +139,16 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        mQuizzListButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mUser.setFirstName(mNameEditText.getText().toString());
+
+                Intent quizzListIntent = new Intent(MainActivity.this, QuizzListActivity.class);
+                startActivity(quizzListIntent);
+            }
+        });
+
 
         // Modification des textes
         updateLabels();
@@ -154,7 +166,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (GAME_ACTIVITY_REQUEST_CODE == requestCode && RESULT_OK == resultCode) {
             String firstName = mUser.getFirstName();
-            int score = data.getIntExtra(GameActivity.BUNDLE_EXTRA_SCORE, 0);
+            int score = data.getIntExtra(GameActivity.BUNDLE_EXTRA_USER, 0);
             getSharedPreferences(SHARED_PREF_USER_INFO, MODE_PRIVATE)
                 .edit()
                 .putString(SHARED_PREF_USER_FIRST_NAME, firstName)

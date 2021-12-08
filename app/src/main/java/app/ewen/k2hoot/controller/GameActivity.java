@@ -64,19 +64,16 @@ public class GameActivity extends AppCompatActivity {
         mPlayButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent sendIntent = new Intent();
-                sendIntent.setAction(Intent.ACTION_SEND);
-                sendIntent.putExtra(Intent.EXTRA_TEXT, "This is my text to send.");
-                sendIntent.setType("text/plain");
+                //Intent sendIntent = new Intent();
+                //sendIntent.setAction(Intent.ACTION_SEND);
+                //sendIntent.putExtra(Intent.EXTRA_TEXT, "This is my text to send.");
+                //sendIntent.setType("text/plain");
 
-                Intent shareIntent = Intent.createChooser(sendIntent, null);
-                startActivity(shareIntent);
-                //displayCurrentQuestion();
+                //Intent shareIntent = Intent.createChooser(sendIntent, null);
+                //startActivity(shareIntent);
+                displayCurrentQuestion();
             }
         });
-
-
-        return new StepContainer(questions,"");
     }
 
     @Override

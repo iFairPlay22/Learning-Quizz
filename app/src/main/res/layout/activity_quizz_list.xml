@@ -14,7 +14,7 @@
         android:layout_height="100dp"
         android:layout_margin="8dp"
         android:gravity="bottom|center"
-        android:textColor="@color/black"
+        android:textColor="@color/teal_700"
         android:textSize="32sp"
         android:textStyle="bold"
         tools:text="Mes Quizzz" />
@@ -59,16 +59,7 @@
             android:id="@+id/quizz_list_linear_layout_buttons"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="69dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_weight="1"
-                android:text="Nom du Quiz" />
-
-        </LinearLayout>
+            android:orientation="vertical"/>
 
     </ScrollView>
 

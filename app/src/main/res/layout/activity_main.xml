@@ -63,4 +63,12 @@
         android:layout_margin="16dp"
         android:text="Create gap sentence" />
 
+    <Button
+        android:id="@+id/main_button_quizz_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="16dp"
+        android:text="Get quizz list" />
+
 </LinearLayout>
