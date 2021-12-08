@@ -4,43 +4,32 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import app.ewen.k2hoot.R;
 import app.ewen.k2hoot.model.User;
-import app.ewen.k2hoot.model.http.response.HttpFile;
-import app.ewen.k2hoot.model.step.IStepData;
 import app.ewen.k2hoot.model.step.Step;
-import app.ewen.k2hoot.model.step.question.QuestionData;
-import app.ewen.k2hoot.model.step.question.QuestionInput;
 import app.ewen.k2hoot.model.step.question.QuestionStep;
 import app.ewen.k2hoot.model.StepContainer;
 
 public class GameActivity extends AppCompatActivity {
 
-    private User mUser;
+    private int mScore;
     private StepContainer mStepContainer;
-    public static final String BUNDLE_EXTRA_USER = "BUNDLE_EXTRA_USER";
-    public static final String BUNDLE_EXTRA_STEP_CONTAINER = "BUNDLE_EXTRA_STEP_CONTAINER";
+    public static final String BUNDLE_EXTRA_SCORE = "BUNDLE_EXTRA_SCORE";
+    public static final String INTENT_EXTRA_STEP_CONTAINER = "INTENT_EXTRA_STEP_CONTAINER";
     private static final int GAME_QUESTION_ACTIVITY_REQUEST_CODE = 3;
 
 
     private TextView mWelcomeTextView;
+    private TextView mScoreTextView;
     private Button mPlayButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,40 +39,37 @@ public class GameActivity extends AppCompatActivity {
         mWelcomeTextView = findViewById(R.id.game_activity_textview_welcome);
 
         mPlayButton  = findViewById(R.id.game_activity_button_play);
-
+        mScoreTextView = findViewById(R.id.game_activity_textview_score);
 
         Uri data = this.getIntent().getData();
         if (data != null && data.isHierarchical()) {
+
             String uri = this.getIntent().getDataString();
             mStepContainer = StepContainer.loadFromServer(data.getQueryParameter("key"));
+
         }else{
 
             if (savedInstanceState == null) {
                 Intent intent = getIntent();
-                mStepContainer = (StepContainer) intent.getParcelableExtra(BUNDLE_EXTRA_STEP_CONTAINER);
-                mUser = (User)intent.getParcelableExtra(BUNDLE_EXTRA_USER);
+                mStepContainer = (StepContainer) intent.getParcelableExtra(INTENT_EXTRA_STEP_CONTAINER);
+                mScore = intent.getIntExtra(BUNDLE_EXTRA_SCORE,0);
             } else {
-                mUser = (User)savedInstanceState.getParcelable(BUNDLE_EXTRA_USER);
-                mStepContainer = savedInstanceState.getParcelable(BUNDLE_EXTRA_STEP_CONTAINER);
+                mScore = savedInstanceState.getInt(BUNDLE_EXTRA_SCORE);
+                mStepContainer = savedInstanceState.getParcelable(INTENT_EXTRA_STEP_CONTAINER);
             }
 
         }
-        mWelcomeTextView.setText("Welcome user : ");
-
+        String score = mStepContainer.getBestScore() > 0 ? "Meilleur score : "+mStepContainer.getBestScore() : "Vous n'avez encore jamais fait ce quiz.";
+        mWelcomeTextView.setText("Welcome to the quizz :\n \n" + mStepContainer.getName());
+        mScoreTextView.setText(score);
         mPlayButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*Intent sendIntent = new Intent();
-                sendIntent.setAction(Intent.ACTION_SEND);
-                HttpFile h = mStepContainer.storeInServer(getActivity());
-                sendIntent.putExtra(Intent.EXTRA_TEXT,"http://www.k2hoot.com/load?key="+h.getKey());
-                sendIntent.setType("text/plain");
 
-                Intent shareIntent = Intent.createChooser(sendIntent, null);
-                startActivity(shareIntent);*/
                 displayCurrentQuestion();
             }
         });
+
     }
 
     public AppCompatActivity getActivity() {
@@ -94,8 +80,8 @@ public class GameActivity extends AppCompatActivity {
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        outState.putParcelable(BUNDLE_EXTRA_USER, mUser);
-        outState.putParcelable(BUNDLE_EXTRA_STEP_CONTAINER, mStepContainer);
+        outState.putInt(BUNDLE_EXTRA_SCORE, mScore);
+        outState.putParcelable(INTENT_EXTRA_STEP_CONTAINER, mStepContainer);
     }
 
     private void nextQuestion() {
@@ -131,7 +117,7 @@ public class GameActivity extends AppCompatActivity {
             boolean increase = data.getBooleanExtra(GameQuestionActivity.BUNDLE_EXTRA_VALIDATE, false);
             Log.i("QS","Increse "+increase);
             if(increase){
-                mUser.incrementScore();
+                mScore++;
             }
             nextQuestion();
         }
@@ -141,16 +127,23 @@ public class GameActivity extends AppCompatActivity {
 
 
     private void displayCurrentScore() {
+
+        boolean newBest =mScore > mStepContainer.getBestScore();
+        if(newBest){
+            mStepContainer.setBestScore(mScore);
+        }
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         builder
                 .setTitle("Well done!")
-                .setMessage("Your score is " + mUser.getScore() + " / " + mStepContainer.size())
+                .setMessage("Your score is " + mScore + " / " + mStepContainer.size())
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Intent intent = new Intent();
-                        intent.putExtra(BUNDLE_EXTRA_USER, mUser);
+                        if(newBest){
+                            intent.putExtra(INTENT_EXTRA_STEP_CONTAINER, mStepContainer);
+                        }
                         setResult(RESULT_OK, intent);
                         finish();
                     }

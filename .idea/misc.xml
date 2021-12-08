@@ -9,7 +9,6 @@
         <entry key="..\:/GitHub/LearningQuizz/app/src/main/res/layout/activity_game.xml" value="0.21875" />
         <entry key="..\:/GitHub/LearningQuizz/app/src/main/res/layout/activity_game_gapsentence.xml" value="0.2694746376811594" />
         <entry key="..\:/GitHub/LearningQuizz/app/src/main/res/layout/activity_main.xml" value="0.21875" />
-        <entry key="..\:/GitHub/LearningQuizz/app/src/main/res/layout/activity_quizz_list.xml" value="0.21145833333333333" />
         <entry key="..\:/School/ESIEE/Github/LearningQuizz/app/src/main/res/layout/activity_create_binding .xml" value="0.334375" />
         <entry key="..\:/School/ESIEE/Github/LearningQuizz/app/src/main/res/layout/activity_create_binding.xml" value="0.334375" />
         <entry key="..\:/School/ESIEE/Github/LearningQuizz/app/src/main/res/layout/activity_create_gap_sentence.xml" value="0.334375" />
@@ -17,6 +16,7 @@
         <entry key="..\:/School/ESIEE/Github/LearningQuizz/app/src/main/res/layout/activity_game.xml" value="0.334375" />
         <entry key="..\:/School/ESIEE/Github/LearningQuizz/app/src/main/res/layout/activity_main.xml" value="0.559375" />
         <entry key="..\:/School/ESIEE/Github/LearningQuizz/app/src/main/res/layout/activity_question_game.xml" value="0.3333333333333333" />
+        <entry key="..\:/School/ESIEE/Github/LearningQuizz/app/src/main/res/layout/activity_quizz_list.xml" value="0.559375" />
       </map>
     </option>
   </component>
