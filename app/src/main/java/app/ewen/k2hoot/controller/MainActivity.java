@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -13,12 +14,17 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
+
 import app.ewen.k2hoot.R;
 import app.ewen.k2hoot.model.StepContainer;
 import app.ewen.k2hoot.model.User;
 import app.ewen.k2hoot.model.http.HttpManager;
+import app.ewen.k2hoot.model.step.Step;
 import app.ewen.k2hoot.model.step.question.QuestionStep;
 import app.ewen.k2hoot.model.step.binding.BindingStep;
 
@@ -43,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
     private Button mPlayBindingButton;
     private Button mCreateGapSentenceButton;
     private Button mQuizzListButton;
-
+    private StepContainer sc1;
     private User mUser;
     private QuestionStep mQuestionStep;
     @Override
@@ -59,7 +65,12 @@ public class MainActivity extends AppCompatActivity {
         } else {
             mUser = savedInstanceState.getParcelable(BUNDLE_STATE_USER);
         }
+        Uri data = this.getIntent().getData();
+        if (data != null && data.isHierarchical()) {
+            String uri = this.getIntent().getDataString();
 
+            Log.i("MyApp", "Deep 2 link clicked " + data.getQueryParameter("token"));
+        }
         // Initialisation
         mGreetingTextView = findViewById(R.id.main_text_view_greeting);
         mNameEditText = findViewById(R.id.main_edit_text_name);
@@ -69,7 +80,28 @@ public class MainActivity extends AppCompatActivity {
         mPlayBindingButton = findViewById(R.id.main_button_play_binding);
         mCreateGapSentenceButton = findViewById(R.id.main_button_create_gap_sentence);
         mQuizzListButton = findViewById(R.id.main_button_quizz_list);
+        List<Step> steps = new ArrayList<>();
+        String question = "Question 1 : Comment ça va ?";
+        ArrayList<String> answers = new ArrayList<>();
+        answers.add("bien");
+        answers.add("mal");
+        answers.add("moyen");
+        answers.add("TG");
+        QuestionStep qs = new QuestionStep(question,answers,1);
+        steps.add(qs);
+        question = "Question 2 : Qui prefère tu ?";
+        answers = new ArrayList<>();
+        answers.add("Ewen");
+        answers.add("Lucas");
+        answers.add("Loic");
+        answers.add("Fabien");
+        qs = new QuestionStep(question,answers,2);
+        steps.add(qs);
 
+        sc1 = new StepContainer(steps,"Zizi");
+
+        Log.i("TestJson", sc1.toJson());
+        Log.i("TestJson", StepContainer.fromJson(sc1.toJson()).toString());
         // Activation / Désactivation du bouton
         mPlayButton.setEnabled(false);
         mNameEditText.addTextChangedListener(new TextWatcher() {
@@ -89,11 +121,11 @@ public class MainActivity extends AppCompatActivity {
         mPlayButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mUser.setFirstName(mNameEditText.getText().toString());
+                Intent gameActivityIntent = new Intent(MainActivity.this, GameActivity.class);
+                gameActivityIntent.putExtra(GameActivity.INTENT_EXTRA_STEP_CONTAINER, sc1);
+                startActivityForResult(gameActivityIntent, GAME_ACTIVITY_REQUEST_CODE);
 
-                Intent gameActivityIntent = new Intent(MainActivity.this, GameQuestionActivity.class);
-                gameActivityIntent.putExtra(GameQuestionActivity.INTENT_QUESTION_STEP, mQuestionStep);
-                startActivityForResult(gameActivityIntent, GAME_QUESTION_ACTIVITY_REQUEST_CODE);
+
             }
         });
         mCreateButton.setOnClickListener(new View.OnClickListener() {
@@ -167,11 +199,18 @@ public class MainActivity extends AppCompatActivity {
         if (GAME_ACTIVITY_REQUEST_CODE == requestCode && RESULT_OK == resultCode) {
             String firstName = mUser.getFirstName();
             int score = data.getIntExtra(GameActivity.BUNDLE_EXTRA_USER, 0);
+
+            StepContainer sc = (StepContainer)data.getParcelableExtra(GameActivity.INTENT_EXTRA_STEP_CONTAINER);
+            if(sc != null){
+                sc1 = sc;
+            }
+            /*User us = (User)data.getParcelableExtra(GameActivity.BUNDLE_EXTRA_USER);
+
             getSharedPreferences(SHARED_PREF_USER_INFO, MODE_PRIVATE)
                 .edit()
-                .putString(SHARED_PREF_USER_FIRST_NAME, firstName)
-                .putInt(SHARED_PREF_USER_LAST_SCORE, score)
-                .apply();
+                .putString(SHARED_PREF_USER_FIRST_NAME, us.getFirstName())
+                .putInt(SHARED_PREF_USER_LAST_SCORE, us.getScore())
+                .apply();*/
 
             updateLabels();
         }else if(CREATE_QUESTION_ACTIVITY_REQUEST_CODE == requestCode && RESULT_OK == resultCode){

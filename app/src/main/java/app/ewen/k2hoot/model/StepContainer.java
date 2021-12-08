@@ -31,6 +31,7 @@ public class StepContainer extends IJson implements Parcelable {
     private String mName;
     private List<Step> mStepList;
     private int mCurrentIndex;
+    private int mBestScore = 0;
 
     public StepContainer(List<Step> stepList,String name) {
         this.mId = sOccurences++;
@@ -40,6 +41,13 @@ public class StepContainer extends IJson implements Parcelable {
         // Collections.shuffle(this.mStepList);
     }
 
+    public int getBestScore(){
+        return mBestScore;
+    }
+
+    public void setBestScore(int score){
+        mBestScore = score;
+    }
     public void nextStep() {
         this.mCurrentIndex++;
     }
@@ -109,6 +117,8 @@ public class StepContainer extends IJson implements Parcelable {
         this.mStepList = new ArrayList<>();
         in.readParcelableList(this.mStepList, Step.class.getClassLoader());
         mCurrentIndex = in.readInt();
+        mName = in.readString();
+        mBestScore = in.readInt();
     }
 
     public static final Creator<StepContainer> CREATOR = new Creator<StepContainer>() {
@@ -135,6 +145,8 @@ public class StepContainer extends IJson implements Parcelable {
         dest.writeInt(mId);
         dest.writeParcelableList(mStepList, flags);
         dest.writeInt(mCurrentIndex);
+        dest.writeString(mName);
+        dest.writeInt(mBestScore);
     }
 
     @Override
