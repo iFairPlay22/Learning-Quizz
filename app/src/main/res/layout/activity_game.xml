@@ -8,7 +8,7 @@
     android:padding="8dp">
 
     <TextView
-        android:id="@+id/game_activity_textview_question"
+        android:id="@+id/game_activity_textview_welcome"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_margin="8dp"
@@ -18,10 +18,10 @@
         android:textColor="@color/white"
         android:textSize="18sp"
         android:textStyle="bold"
-        tools:text="Question?" />
+        tools:text="C'est parti ?" />
 
     <Button
-        android:id="@+id/game_activity_button_1"
+        android:id="@+id/game_activity_button_play"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_gravity="center_horizontal"
@@ -29,38 +29,5 @@
         android:layout_weight="1"
         android:padding="16dp"
         android:textSize="20sp"
-        tools:text="Answer1" />
-
-    <Button
-        android:id="@+id/game_activity_button_2"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_margin="8dp"
-        android:layout_weight="1"
-        android:padding="16dp"
-        android:textSize="20sp"
-        tools:text="Answer2" />
-
-    <Button
-        android:id="@+id/game_activity_button_3"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_margin="8dp"
-        android:layout_weight="1"
-        android:padding="16dp"
-        android:textSize="20sp"
-        tools:text="Answer3" />
-
-    <Button
-        android:id="@+id/game_activity_button_4"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_margin="8dp"
-        android:layout_weight="1"
-        android:padding="16dp"
-        android:textSize="20sp"
-        tools:text="Answer4" />
+        tools:text="Let's go" />
 </LinearLayout>

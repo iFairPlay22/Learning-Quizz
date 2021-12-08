@@ -21,6 +21,10 @@ public class User implements Parcelable {
     public void setScore(int score){
         mScore = score;
     }
+
+    public void incrementScore(){
+        mScore++;
+    }
     public String getFirstName() {
         return mFirstName;
     }
@@ -32,6 +36,7 @@ public class User implements Parcelable {
     // Parcelable
     protected User(Parcel in) {
         mFirstName = in.readString();
+        mScore = in.readInt();
     }
 
     public static final Creator<User> CREATOR = new Creator<User>() {
@@ -54,5 +59,6 @@ public class User implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(mFirstName);
+        dest.writeInt(mScore);
     }
 }

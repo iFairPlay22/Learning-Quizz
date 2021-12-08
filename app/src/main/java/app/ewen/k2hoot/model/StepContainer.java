@@ -1,9 +1,12 @@
 package app.ewen.k2hoot.model;
 
 import android.content.Context;
+import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
+
+import androidx.annotation.RequiresApi;
 
 import com.google.gson.reflect.TypeToken;
 
@@ -45,7 +48,9 @@ public class StepContainer extends IJson implements Parcelable {
 
         return null;
     }
-
+    public int size(){
+        return mStepList.size();
+    }
     public int getId() {
         return mId;
     }
@@ -96,13 +101,16 @@ public class StepContainer extends IJson implements Parcelable {
     }
 
     // Parcelable
+    @RequiresApi(api = Build.VERSION_CODES.Q)
     protected StepContainer(Parcel in) {
         mId = in.readInt();
-        mStepList = in.readArrayList(Step.class.getClassLoader());
+        this.mStepList = new ArrayList<>();
+        in.readParcelableList(this.mStepList, Step.class.getClassLoader());
         mCurrentIndex = in.readInt();
     }
 
     public static final Creator<StepContainer> CREATOR = new Creator<StepContainer>() {
+        @RequiresApi(api = Build.VERSION_CODES.Q)
         @Override
         public StepContainer createFromParcel(Parcel in) {
             return new StepContainer(in);
@@ -119,10 +127,11 @@ public class StepContainer extends IJson implements Parcelable {
         return this.hashCode();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(mId);
-        dest.writeTypedList(mStepList);
+        dest.writeParcelableList(mStepList, flags);
         dest.writeInt(mCurrentIndex);
     }
 
