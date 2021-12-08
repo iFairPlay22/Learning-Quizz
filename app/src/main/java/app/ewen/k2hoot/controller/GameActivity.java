@@ -4,8 +4,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -21,6 +23,7 @@ import java.util.List;
 
 import app.ewen.k2hoot.R;
 import app.ewen.k2hoot.model.User;
+import app.ewen.k2hoot.model.http.response.HttpFile;
 import app.ewen.k2hoot.model.step.IStepData;
 import app.ewen.k2hoot.model.step.Step;
 import app.ewen.k2hoot.model.step.question.QuestionData;
@@ -49,33 +52,44 @@ public class GameActivity extends AppCompatActivity {
         mPlayButton  = findViewById(R.id.game_activity_button_play);
 
 
+        Uri data = this.getIntent().getData();
+        if (data != null && data.isHierarchical()) {
+            String uri = this.getIntent().getDataString();
+            mStepContainer = StepContainer.loadFromServer(data.getQueryParameter("key"));
+        }else{
 
-        if (savedInstanceState == null) {
-            Intent intent = getIntent();
-            mStepContainer = (StepContainer) intent.getParcelableExtra(BUNDLE_EXTRA_STEP_CONTAINER);
-            mUser = (User)intent.getParcelableExtra(BUNDLE_EXTRA_USER);
-        } else {
-            mUser = (User)savedInstanceState.getParcelable(BUNDLE_EXTRA_USER);
-            mStepContainer = savedInstanceState.getParcelable(BUNDLE_EXTRA_STEP_CONTAINER);
+            if (savedInstanceState == null) {
+                Intent intent = getIntent();
+                mStepContainer = (StepContainer) intent.getParcelableExtra(BUNDLE_EXTRA_STEP_CONTAINER);
+                mUser = (User)intent.getParcelableExtra(BUNDLE_EXTRA_USER);
+            } else {
+                mUser = (User)savedInstanceState.getParcelable(BUNDLE_EXTRA_USER);
+                mStepContainer = savedInstanceState.getParcelable(BUNDLE_EXTRA_STEP_CONTAINER);
+            }
+
         }
-
-        mWelcomeTextView.setText("Welcome user : "+ mUser.getFirstName());
+        mWelcomeTextView.setText("Welcome user : ");
 
         mPlayButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent sendIntent = new Intent();
+                /*Intent sendIntent = new Intent();
                 sendIntent.setAction(Intent.ACTION_SEND);
-                sendIntent.putExtra(Intent.EXTRA_TEXT, "This is my text to send.");
+                HttpFile h = mStepContainer.storeInServer(getActivity());
+                sendIntent.putExtra(Intent.EXTRA_TEXT,"http://www.k2hoot.com/load?key="+h.getKey());
                 sendIntent.setType("text/plain");
 
                 Intent shareIntent = Intent.createChooser(sendIntent, null);
-                startActivity(shareIntent);
-                //displayCurrentQuestion();
+                startActivity(shareIntent);*/
+                displayCurrentQuestion();
             }
         });
 
 
+    }
+
+    public AppCompatActivity getActivity() {
+        return this;
     }
 
     @Override
