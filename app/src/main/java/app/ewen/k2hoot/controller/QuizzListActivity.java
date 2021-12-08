@@ -10,7 +10,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
 import java.util.ArrayList;
@@ -20,12 +22,13 @@ import java.util.List;
 import app.ewen.k2hoot.R;
 import app.ewen.k2hoot.model.StepContainer;
 import app.ewen.k2hoot.model.User;
+import app.ewen.k2hoot.model.http.response.HttpFile;
 import app.ewen.k2hoot.model.step.Step;
 import app.ewen.k2hoot.model.step.question.QuestionStep;
 
 public class QuizzListActivity extends AppCompatActivity {
-    List<StepContainer> mQuizzList;
-    LinearLayout mLinearLayout;
+    private List<StepContainer> mQuizzList;
+    private LinearLayout mLinearLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,21 +80,33 @@ public class QuizzListActivity extends AppCompatActivity {
         mQuizzList.add(sc2);
 
         //Ajout des boutons
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+
+        LinearLayout.LayoutParams quizzBtnLp = new LinearLayout.LayoutParams(0 * (int)getResources().getDisplayMetrics().density, LinearLayout.LayoutParams.MATCH_PARENT,5);
+        //quizzBtnLp.rightMargin = 128 * (int)getResources().getDisplayMetrics().density;
+        LinearLayout.LayoutParams shareBtnLp = new LinearLayout.LayoutParams(0 * (int)getResources().getDisplayMetrics().density, LinearLayout.LayoutParams.MATCH_PARENT,1);
         for (int i = 0; i < mQuizzList.size(); i++) {
             StepContainer sc = mQuizzList.get(i);
 
-            Button btn = new Button(getApplicationContext());
-            mLinearLayout.addView(btn,lp);
-            btn.setText(sc.getName());
-            btn.setTag(sc);
+            LinearLayout ll = new LinearLayout(getApplicationContext());
+            ll.setOrientation(LinearLayout.HORIZONTAL);
+            mLinearLayout.addView(ll);
+
+            Button quizzBtn = new Button(getApplicationContext());
+            quizzBtn.setText(sc.getName());
+            ll.addView(quizzBtn,quizzBtnLp);
+            quizzBtn.setTag(sc);
+
+            ImageButton shareBtn = new ImageButton(getApplicationContext());
+            shareBtn.setImageResource(android.R.drawable.ic_menu_set_as);
+            ll.addView(shareBtn,shareBtnLp);
+            shareBtn.setTag(sc);
 
             // Click sur le bouton
-            btn.setOnClickListener(new View.OnClickListener() {
+            quizzBtn.setOnClickListener(new View.OnClickListener() {
                 @RequiresApi(api = Build.VERSION_CODES.O)
                 @Override
                 public void onClick(View v) {
-                    StepContainer sc = (StepContainer) btn.getTag();
+                    StepContainer sc = (StepContainer) quizzBtn.getTag();
                     Log.d("sc",sc.toString());
 
                     Intent gameActivityIntent = new Intent(QuizzListActivity.this, GameActivity.class);
@@ -100,6 +115,24 @@ public class QuizzListActivity extends AppCompatActivity {
                     startActivity(gameActivityIntent);
                 }
             });
+
+            shareBtn.setOnClickListener(new View.OnClickListener() {
+                @RequiresApi(api = Build.VERSION_CODES.O)
+                @Override
+                public void onClick(View v) {
+                    Intent sendIntent = new Intent();
+                    sendIntent.setAction(Intent.ACTION_SEND);
+                    HttpFile h = sc.storeInServer(getActivity());
+                    sendIntent.putExtra(Intent.EXTRA_TEXT,"http://www.k2hoot.com/load?key="+h.getKey());
+                    sendIntent.setType("text/plain");
+                    Intent shareIntent = Intent.createChooser(sendIntent, null);
+                    startActivity(shareIntent);
+                }
+            });
         }
+    }
+
+    public AppCompatActivity getActivity() {
+        return this;
     }
 }
