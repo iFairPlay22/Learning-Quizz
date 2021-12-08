@@ -14,7 +14,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.K2hoot">
-        <activity android:name=".controller.GameActivity"></activity>
+        <activity android:name=".controller.GameActivity">
+            <intent-filter android:label="test">
+            <action android:name="android.intent.action.VIEW" />
+            <category android:name="android.intent.category.DEFAULT" />
+            <category android:name="android.intent.category.BROWSABLE" />
+            <!-- Accepts URIs that begin with "http://www.k2hoot.com/gizmos” -->
+            <data android:scheme="http"
+                android:host="www.k2hoot.com"
+                android:pathPrefix="/load" />
+            <!-- note that the leading "/" is required for pathPrefix-->
+        </intent-filter>
+        </activity>
+
         <activity android:name=".controller.CreateQuestionActivity"></activity>
         <activity android:name=".controller.CreateBindingActivity"></activity>
         <activity android:name=".controller.CreateGapSentenceActivity"></activity>
