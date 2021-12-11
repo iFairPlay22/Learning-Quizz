@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -30,6 +31,7 @@ public class QuizzListActivity extends AppCompatActivity {
     private List<StepContainer> mQuizzList;
     private LinearLayout mLinearLayout;
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,12 +93,15 @@ public class QuizzListActivity extends AppCompatActivity {
             ll.setOrientation(LinearLayout.HORIZONTAL);
             mLinearLayout.addView(ll);
 
-            Button quizzBtn = new Button(getApplicationContext());
+            Button quizzBtn = new Button(new ContextThemeWrapper(getBaseContext(),R.style.Theme_K2hoot));
+            quizzBtn.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.teal_700)));
+            quizzBtn.setTextColor(getResources().getColor(R.color.white));
             quizzBtn.setText(sc.getName());
             ll.addView(quizzBtn,quizzBtnLp);
             quizzBtn.setTag(sc);
 
             ImageButton shareBtn = new ImageButton(getApplicationContext());
+            shareBtn.setImageTintList(ColorStateList.valueOf(getResources().getColor(R.color.black)));
             shareBtn.setImageResource(android.R.drawable.ic_menu_set_as);
             ll.addView(shareBtn,shareBtnLp);
             shareBtn.setTag(sc);
