@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int GAME_ACTIVITY_REQUEST_CODE = 2;
     private static final int GAME_QUESTION_ACTIVITY_REQUEST_CODE = 3;
     private static final int CREATE_QUESTION_ACTIVITY_REQUEST_CODE = 13;
+    private static final int CREATE_QUIZZ_ACTIVITY_REQUEST_CODE = 14;
     private static final String SHARED_PREF_USER_INFO = "SHARED_PREF_USER_INFO";
     private static final String SHARED_PREF_USER_FIRST_NAME = "SHARED_PREF_USER_FIRST_NAME";
     private static final String SHARED_PREF_USER_LAST_SCORE = "SHARED_PREF_USER_LAST_SCORE";
@@ -133,8 +134,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 mUser.setFirstName(mNameEditText.getText().toString());
 
-                Intent gameActivityIntent = new Intent(MainActivity.this, CreateQuestionActivity.class);
-                startActivityForResult(gameActivityIntent, CREATE_QUESTION_ACTIVITY_REQUEST_CODE);
+                Intent gameActivityIntent = new Intent(MainActivity.this, CreateQuizzActivity.class);
+                startActivityForResult(gameActivityIntent, CREATE_QUIZZ_ACTIVITY_REQUEST_CODE);
             }
         });
         mPlayBindingButton.setOnClickListener(new View.OnClickListener() {
@@ -198,8 +199,6 @@ public class MainActivity extends AppCompatActivity {
 
         if (GAME_ACTIVITY_REQUEST_CODE == requestCode && RESULT_OK == resultCode) {
             String firstName = mUser.getFirstName();
-            int score = data.getIntExtra(GameActivity.BUNDLE_EXTRA_USER, 0);
-
             StepContainer sc = (StepContainer)data.getParcelableExtra(GameActivity.INTENT_EXTRA_STEP_CONTAINER);
             if(sc != null){
                 sc1 = sc;
@@ -221,6 +220,9 @@ public class MainActivity extends AppCompatActivity {
             boolean increase = data.getBooleanExtra(GameQuestionActivity.BUNDLE_EXTRA_VALIDATE, false);
             Log.i("QS","Increse "+increase);
 
+        }else if(CREATE_QUIZZ_ACTIVITY_REQUEST_CODE == requestCode && RESULT_OK == resultCode){
+            StepContainer qs = (StepContainer)data.getParcelableExtra(CreateQuizzActivity.INTENT_CREATE_STEP_CONTAINER);
+            Log.i("QS", qs.toString());
         }
 
         super.onActivityResult(requestCode, resultCode, data);

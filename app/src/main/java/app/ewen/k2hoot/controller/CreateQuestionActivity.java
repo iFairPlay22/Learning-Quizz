@@ -87,6 +87,7 @@ public class CreateQuestionActivity extends AppCompatActivity  {
                         mAnswer2CheckBox.setChecked(false);
                         mAnswer3CheckBox.setChecked(false);
                         mAnswer4CheckBox.setChecked(false);
+                        setEnabledCreate();
                     }
                 }
         });
@@ -98,6 +99,7 @@ public class CreateQuestionActivity extends AppCompatActivity  {
                     mAnswer1CheckBox.setChecked(false);
                     mAnswer3CheckBox.setChecked(false);
                     mAnswer4CheckBox.setChecked(false);
+                    setEnabledCreate();
                 }
             }
         });
@@ -109,6 +111,7 @@ public class CreateQuestionActivity extends AppCompatActivity  {
                     mAnswer1CheckBox.setChecked(false);
                     mAnswer2CheckBox.setChecked(false);
                     mAnswer4CheckBox.setChecked(false);
+                    setEnabledCreate();
                 }
             }
         });
@@ -120,6 +123,7 @@ public class CreateQuestionActivity extends AppCompatActivity  {
                     mAnswer1CheckBox.setChecked(false);
                     mAnswer2CheckBox.setChecked(false);
                     mAnswer3CheckBox.setChecked(false);
+                    setEnabledCreate();
                 }
             }
         });
@@ -131,6 +135,15 @@ public class CreateQuestionActivity extends AppCompatActivity  {
         return mAnswer1CheckBox.isChecked() || mAnswer2CheckBox.isChecked() || mAnswer3CheckBox.isChecked() || mAnswer4CheckBox.isChecked();
     }
 
+    private void setEnabledCreate(){
+        boolean enabled = mQuestionEditText.getText().toString().isEmpty();
+        enabled |= mAnswer1EditText.getText().toString().isEmpty();
+        enabled |= mAnswer2EditText.getText().toString().isEmpty();
+        enabled |= mAnswer3EditText.getText().toString().isEmpty();
+        enabled |= mAnswer4EditText.getText().toString().isEmpty();
+        enabled |= !hasGoodAnswer();
+        mCreateButton.setEnabled(!enabled);
+    }
     private int getGoodAnswerIndex(){
         if(mAnswer1CheckBox.isChecked()){
             return 1;
@@ -154,13 +167,7 @@ public class CreateQuestionActivity extends AppCompatActivity  {
 
         @Override
         public void afterTextChanged(Editable s) {
-            boolean enabled = s.toString().isEmpty();
-            enabled |= mAnswer1EditText.getText().toString().isEmpty();
-            enabled |= mAnswer2EditText.getText().toString().isEmpty();
-            enabled |= mAnswer3EditText.getText().toString().isEmpty();
-            enabled |= mAnswer4EditText.getText().toString().isEmpty();
-            enabled |= !hasGoodAnswer();
-            mCreateButton.setEnabled(!enabled);
+            setEnabledCreate();
         }
     };
 

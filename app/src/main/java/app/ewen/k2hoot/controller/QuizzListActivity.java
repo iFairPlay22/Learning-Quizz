@@ -110,8 +110,7 @@ public class QuizzListActivity extends AppCompatActivity {
                     Log.d("sc",sc.toString());
 
                     Intent gameActivityIntent = new Intent(QuizzListActivity.this, GameActivity.class);
-                    gameActivityIntent.putExtra(GameActivity.BUNDLE_EXTRA_STEP_CONTAINER, sc);
-                    gameActivityIntent.putExtra(GameActivity.BUNDLE_EXTRA_USER,new User("prenom test"));
+                    gameActivityIntent.putExtra(GameActivity.INTENT_EXTRA_STEP_CONTAINER, sc);
                     startActivity(gameActivityIntent);
                 }
             });

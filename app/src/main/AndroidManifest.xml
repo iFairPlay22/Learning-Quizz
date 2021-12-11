@@ -32,6 +32,8 @@
         <activity android:name=".controller.CreateGapSentenceActivity"></activity>
         <activity android:name=".controller.GameBindingActivity"></activity>
         <activity android:name=".controller.GameQuestionActivity"></activity>
+        <activity android:name=".controller.CreateQuizzActivity"></activity>
+
         <activity
             android:name=".controller.QuizzListActivity"
             android:exported="false" />

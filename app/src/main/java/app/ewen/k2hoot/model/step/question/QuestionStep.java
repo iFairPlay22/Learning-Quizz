@@ -1,9 +1,13 @@
 package app.ewen.k2hoot.model.step.question;
 
+import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.annotation.RequiresApi;
+
 import java.util.List;
+import java.util.Objects;
 
 import app.ewen.k2hoot.model.step.Step;
 import app.ewen.k2hoot.model.step.binding.BindingStep;
@@ -84,4 +88,19 @@ public final class QuestionStep extends Step<QuestionData, QuestionInput> {
         return mChoiceList;
     }
 
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        QuestionStep that = (QuestionStep) o;
+        return mAnswerIndex == that.mAnswerIndex && Objects.equals(mQuestion, that.mQuestion) && Objects.equals(mChoiceList, that.mChoiceList);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    @Override
+    public int hashCode() {
+        return Objects.hash(mQuestion, mChoiceList, mAnswerIndex);
+    }
 }
