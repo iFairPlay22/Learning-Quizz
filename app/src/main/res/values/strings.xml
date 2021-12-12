@@ -9,6 +9,7 @@
     <string name="MainActivity_ButtonCreate_Text">Créer</string>
     <string name="CreateBindingActivity_EditTextSubject_Label">Sujet de la question</string>
     <string name="CreateBindingActivity_CreateButton_Text">Créer</string>
+    <string name="CreateBindingListViewAdapter_EnterText_Toast">Entrez du text svp</string>
     <string name="CreateGapSentenceActivity_EditText_Label">Votre texte complet?</string>
     <string name="CreateGapSentenceActivity_TextView_Label">Sélectionner les mots à compléter :</string>
     <string name="CreateGapSentenceActivity_OkBtn_Label">Ok</string>
@@ -32,5 +33,11 @@
     <string name="QuizListActivity_MainTextView_Label">Mes Quizzz</string>
     <string name="QuizListActivity_CreateBtn_Label">Créer un quizzz</string>
     <string name="QuizListActivity_ScrollViewContentDescription_Label">Liste des quizzz</string>
-
+    <string name="GreateGapSentanceActivity_Preview_Label">Aperçu : </string>
+    <string name="GameActivity_Welcome_Toast">Bienvenue dans le quizzz :</string>
+    <string name="GameActivity_AlertDialog_WellPlayed_Label">Bien joué !</string>
+    <string name="GameActivity_AlertDialog_Score_Label">Ton score est</string>
+    <string name="GameActivity_AlertDialog_OkBtn_Label">Ok</string>
+    <string name="GameQuestionActivity_Success_Toast">Correct !</string>
+    <string name="GameQuestionActivity_Error_Toast">Incorrect !</string>
 </resources>

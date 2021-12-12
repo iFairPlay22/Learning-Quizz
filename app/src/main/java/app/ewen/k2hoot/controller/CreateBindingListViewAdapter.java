@@ -72,7 +72,7 @@ public class CreateBindingListViewAdapter extends BaseAdapter implements View.On
                 if (Caption.getText().toString().length() > 0) {
                     list.set(position2, Caption.getText().toString());
                 } else {
-                    Toast.makeText(context, "Please enter some value", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, R.string.CreateBindingListViewAdapter_EnterText_Toast, Toast.LENGTH_SHORT).show();
                 }
             }
 

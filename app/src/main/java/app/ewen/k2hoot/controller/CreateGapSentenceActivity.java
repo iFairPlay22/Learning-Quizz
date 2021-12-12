@@ -112,6 +112,6 @@ public class CreateGapSentenceActivity extends AppCompatActivity {
         for (Integer i: gapIndexes) {
             motsPreview[i] = "...";
         }
-        mPreview.setText("Aperçu : " + String.join(" ", motsPreview));
+        mPreview.setText(getString(R.string.GreateGapSentanceActivity_Preview_Label) + String.join(" ", motsPreview));
     }
 }

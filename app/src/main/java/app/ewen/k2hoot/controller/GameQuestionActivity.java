@@ -91,10 +91,10 @@ public class GameQuestionActivity extends AppCompatActivity implements View.OnCl
                 QuestionInput userInput = new QuestionInput(i);
                 if (mQuestionStep.isGoodAnswer(userInput)) {
                     isGoodAnswer = true;
-                    Toast.makeText(this, "Correct!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, R.string.GameQuestionActivity_Success_Toast, Toast.LENGTH_SHORT).show();
                 } else {
                     isGoodAnswer = false;
-                    Toast.makeText(this, "Incorrect!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, R.string.GameQuestionActivity_Error_Toast, Toast.LENGTH_SHORT).show();
                 }
                 break;
             }
