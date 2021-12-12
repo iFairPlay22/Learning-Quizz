@@ -14,7 +14,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import app.ewen.k2hoot.R;
-import app.ewen.k2hoot.model.User;
 import app.ewen.k2hoot.model.step.Step;
 import app.ewen.k2hoot.model.step.question.QuestionStep;
 import app.ewen.k2hoot.model.StepContainer;
@@ -137,7 +136,7 @@ public class GameActivity extends AppCompatActivity {
 
         builder
                 .setTitle("Well done!")
-                .setMessage("Your score is " + mScore + " / " + mStepContainer.size())
+                .setMessage("Your score is " + mScore + " / " + mStepContainer.stepNb())
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

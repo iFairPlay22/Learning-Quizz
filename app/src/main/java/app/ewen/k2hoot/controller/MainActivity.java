@@ -4,8 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -16,32 +14,28 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
 import app.ewen.k2hoot.R;
 import app.ewen.k2hoot.model.StepContainer;
 import app.ewen.k2hoot.model.User;
-import app.ewen.k2hoot.model.http.HttpManager;
 import app.ewen.k2hoot.model.step.Step;
 import app.ewen.k2hoot.model.step.question.QuestionStep;
 import app.ewen.k2hoot.model.step.binding.BindingStep;
 
 public class MainActivity extends AppCompatActivity {
 
+    // Request codes
     private static final int GAME_ACTIVITY_REQUEST_CODE = 2;
     private static final int GAME_QUESTION_ACTIVITY_REQUEST_CODE = 3;
     private static final int CREATE_QUESTION_ACTIVITY_REQUEST_CODE = 13;
-    private static final int CREATE_QUIZZ_ACTIVITY_REQUEST_CODE = 14;
-    private static final String SHARED_PREF_USER_INFO = "SHARED_PREF_USER_INFO";
-    private static final String SHARED_PREF_USER_FIRST_NAME = "SHARED_PREF_USER_FIRST_NAME";
-    private static final String SHARED_PREF_USER_LAST_SCORE = "SHARED_PREF_USER_LAST_SCORE";
-    private static final String SHARED_PREF_GAME = "SHARED_PREF_GAME_";
-    private static final String SHARED_PREF_GAME_NB = "SHARED_PREF_GAME_NB";
+    private static final int CREATE_QUIZ_ACTIVITY_REQUEST_CODE = 14;
 
-    public static final String BUNDLE_STATE_USER = "BUNDLE_STATE_USER";
+    // Preferences
+    private static final String PREFERENCES_KEY = "PREFERENCES_K";
 
+    // UI Elements
     private TextView mGreetingTextView;
     private EditText mNameEditText;
     private Button mPlayButton;
@@ -49,30 +43,27 @@ public class MainActivity extends AppCompatActivity {
     private Button mCreateBindingButton;
     private Button mPlayBindingButton;
     private Button mCreateGapSentenceButton;
-    private Button mQuizzListButton;
-    private StepContainer sc1;
+    private Button mQuizListButton;
+
+    // Model
     private User mUser;
-    private QuestionStep mQuestionStep;
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        mUser.saveUserInBundle(outState);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        HttpManager.testFileUpload(this);
+        // Model
+        mUser = User.getUserFromBundle(savedInstanceState);
 
-        if (savedInstanceState == null) {
-            mUser = new User();
-        } else {
-            mUser = savedInstanceState.getParcelable(BUNDLE_STATE_USER);
-        }
-        Uri data = this.getIntent().getData();
-        if (data != null && data.isHierarchical()) {
-            String uri = this.getIntent().getDataString();
-
-            Log.i("MyApp", "Deep 2 link clicked " + data.getQueryParameter("token"));
-        }
-        // Initialisation
+        // UI Elements
         mGreetingTextView = findViewById(R.id.main_text_view_greeting);
         mNameEditText = findViewById(R.id.main_edit_text_name);
         mPlayButton = findViewById(R.id.main_button_play);
@@ -80,31 +71,10 @@ public class MainActivity extends AppCompatActivity {
         mCreateBindingButton = findViewById(R.id.main_button_create_binding);
         mPlayBindingButton = findViewById(R.id.main_button_play_binding);
         mCreateGapSentenceButton = findViewById(R.id.main_button_create_gap_sentence);
-        mQuizzListButton = findViewById(R.id.main_button_quizz_list);
-        List<Step> steps = new ArrayList<>();
-        String question = "Question 1 : Comment ça va ?";
-        ArrayList<String> answers = new ArrayList<>();
-        answers.add("bien");
-        answers.add("mal");
-        answers.add("moyen");
-        answers.add("TG");
-        QuestionStep qs = new QuestionStep(question,answers,1);
-        steps.add(qs);
-        question = "Question 2 : Qui prefère tu ?";
-        answers = new ArrayList<>();
-        answers.add("Ewen");
-        answers.add("Lucas");
-        answers.add("Loic");
-        answers.add("Fabien");
-        qs = new QuestionStep(question,answers,2);
-        steps.add(qs);
+        mQuizListButton = findViewById(R.id.main_button_quizz_list);
 
-        sc1 = new StepContainer(steps,"Zizi");
+        // UI Actions
 
-        Log.i("TestJson", sc1.toJson());
-        Log.i("TestJson", StepContainer.fromJson(sc1.toJson()).toString());
-        // Activation / Désactivation du bouton
-        mPlayButton.setEnabled(false);
         mNameEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -114,162 +84,156 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                mPlayButton.setEnabled(!s.toString().isEmpty());
+                if (s.toString().isEmpty()) {
+                    mPlayButton.setEnabled(false);
+                } else {
+                    mUser.setFirstName(mNameEditText.getText().toString());
+                    mUser.storeInPreferences(getSharedPreferences(PREFERENCES_KEY, MODE_PRIVATE));
+                    mPlayButton.setEnabled(true);
+                }
             }
         });
 
-        // Click sur le bouton
-        mPlayButton.setOnClickListener(new View.OnClickListener() {
+        mQuizListButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent gameActivityIntent = new Intent(MainActivity.this, GameActivity.class);
-                gameActivityIntent.putExtra(GameActivity.INTENT_EXTRA_STEP_CONTAINER, sc1);
-                startActivityForResult(gameActivityIntent, GAME_ACTIVITY_REQUEST_CODE);
 
-
+                // Launch quiz list view
+                Intent quizListIntent = new Intent(MainActivity.this, QuizzListActivity.class);
+                startActivity(quizListIntent);
             }
         });
+
         mCreateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mUser.setFirstName(mNameEditText.getText().toString());
 
+                // Launch create view
                 Intent gameActivityIntent = new Intent(MainActivity.this, CreateQuizzActivity.class);
-                startActivityForResult(gameActivityIntent, CREATE_QUIZZ_ACTIVITY_REQUEST_CODE);
+                startActivityForResult(gameActivityIntent, CREATE_QUIZ_ACTIVITY_REQUEST_CODE);
             }
         });
+
+        mPlayButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                // Create test QCM
+                List<Step> steps = new ArrayList<>();
+
+                String question = "Question 1 : Comment ça va ?";
+                ArrayList<String> answers = new ArrayList<>();
+                answers.add("bien");
+                answers.add("moyen");
+                answers.add("mal");
+                answers.add("très mal");
+                QuestionStep qs = new QuestionStep(question,answers,1);
+                steps.add(qs);
+
+                question = "Question 2 : Qui prefère tu ?";
+                answers = new ArrayList<>();
+                answers.add("Ewen");
+                answers.add("Lucas");
+                answers.add("Loic");
+                answers.add("Fabien");
+                qs = new QuestionStep(question,answers,2);
+                steps.add(qs);
+
+                StepContainer sc = new StepContainer(steps,"QCM");
+
+                // Launch game view
+                Intent gameActivityIntent = new Intent(MainActivity.this, GameActivity.class);
+                gameActivityIntent.putExtra(GameActivity.INTENT_EXTRA_STEP_CONTAINER, sc);
+                startActivityForResult(gameActivityIntent, GAME_ACTIVITY_REQUEST_CODE);
+            }
+        });
+
+        mCreateBindingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                // Launch create binding view
+                Intent gameActivityIntent = new Intent(MainActivity.this, CreateBindingActivity.class);
+                startActivityForResult(gameActivityIntent, GAME_ACTIVITY_REQUEST_CODE);
+            }
+        });
+
         mPlayBindingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mUser.setFirstName(mNameEditText.getText().toString());
+
+                // Create test binding question
                 HashMap<String,String> s = new HashMap<>();
-                s.put("B", "Voitrue");
+                s.put("B", "Voiture");
                 s.put("C", "Bateau");
                 s.put("A2", "Moto");
                 s.put("D", "Camion");
-                BindingStep st = new BindingStep("permis",s );
+                BindingStep st = new BindingStep("Permis", s);
+
+                // Launch game binding view
                 Intent gameActivityIntent = new Intent(MainActivity.this, GameBindingActivity.class);
                 gameActivityIntent.putExtra(GameBindingActivity.INTENT_INPUT_BINDING_STEP, st);
                 startActivityForResult(gameActivityIntent, GAME_ACTIVITY_REQUEST_CODE);
             }
         });
-        mCreateBindingButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mUser.setFirstName(mNameEditText.getText().toString());
 
-                Intent gameActivityIntent = new Intent(MainActivity.this, CreateBindingActivity.class);
-                startActivityForResult(gameActivityIntent, GAME_ACTIVITY_REQUEST_CODE);
-            }
-        });
         mCreateGapSentenceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mUser.setFirstName(mNameEditText.getText().toString());
 
+                // Create gap sentence view
                 Intent gameActivityIntent = new Intent(MainActivity.this, CreateGapSentenceActivity.class);
                 startActivityForResult(gameActivityIntent, GAME_ACTIVITY_REQUEST_CODE);
             }
         });
 
-        mQuizzListButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mUser.setFirstName(mNameEditText.getText().toString());
-
-                Intent quizzListIntent = new Intent(MainActivity.this, QuizzListActivity.class);
-                startActivity(quizzListIntent);
-            }
-        });
-
-
-        // Modification des textes
         updateLabels();
-    }
 
-    @Override
-    protected void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-
-        outState.putParcelable(BUNDLE_STATE_USER, mUser);
+        mPlayButton.setEnabled(false);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         if (GAME_ACTIVITY_REQUEST_CODE == requestCode && RESULT_OK == resultCode) {
-            String firstName = mUser.getFirstName();
+
             StepContainer sc = (StepContainer)data.getParcelableExtra(GameActivity.INTENT_EXTRA_STEP_CONTAINER);
-            if(sc != null){
-                sc1 = sc;
-            }
-            /*User us = (User)data.getParcelableExtra(GameActivity.BUNDLE_EXTRA_USER);
+            if (sc != null) Log.i("GAME_A",sc.toString());
 
-            getSharedPreferences(SHARED_PREF_USER_INFO, MODE_PRIVATE)
-                .edit()
-                .putString(SHARED_PREF_USER_FIRST_NAME, us.getFirstName())
-                .putInt(SHARED_PREF_USER_LAST_SCORE, us.getScore())
-                .apply();*/
+        } else if (CREATE_QUESTION_ACTIVITY_REQUEST_CODE == requestCode && RESULT_OK == resultCode) {
 
-            updateLabels();
-        }else if(CREATE_QUESTION_ACTIVITY_REQUEST_CODE == requestCode && RESULT_OK == resultCode){
             QuestionStep qs = (QuestionStep)data.getParcelableExtra(CreateQuestionActivity.INTENT_CREATE_QUESTION_STEP);
-            Log.i("QS", qs.toString());
-            mQuestionStep=qs;
-        }else if(GAME_QUESTION_ACTIVITY_REQUEST_CODE == requestCode && RESULT_OK == resultCode){
-            boolean increase = data.getBooleanExtra(GameQuestionActivity.BUNDLE_EXTRA_VALIDATE, false);
-            Log.i("QS","Increse "+increase);
+            if (qs != null) Log.i("CREATE_QUESTION_A", qs.toString());
 
-        }else if(CREATE_QUIZZ_ACTIVITY_REQUEST_CODE == requestCode && RESULT_OK == resultCode){
+        } else if (GAME_QUESTION_ACTIVITY_REQUEST_CODE == requestCode && RESULT_OK == resultCode) {
+
+            boolean increase = data.getBooleanExtra(GameQuestionActivity.BUNDLE_EXTRA_VALIDATE, false);
+            Log.i("GAME_QUESTION_A","" + increase);
+
+
+        } else if (CREATE_QUIZ_ACTIVITY_REQUEST_CODE == requestCode && RESULT_OK == resultCode) {
+
             StepContainer qs = (StepContainer)data.getParcelableExtra(CreateQuizzActivity.INTENT_CREATE_STEP_CONTAINER);
-            Log.i("QS", qs.toString());
+            Log.i("CREATE_QUIZ_A", qs.toString());
+
         }
 
+        updateLabels();
         super.onActivityResult(requestCode, resultCode, data);
     }
 
     private void updateLabels() {
-        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREF_USER_INFO, MODE_PRIVATE);
-        String lastFirstName = sharedPreferences.getString(SHARED_PREF_USER_FIRST_NAME, null);
-        int lastScore = sharedPreferences.getInt(SHARED_PREF_USER_LAST_SCORE, -1);
-        if (lastFirstName != null && lastScore != -1) {
+        mUser.loadFromPreferences(getSharedPreferences(PREFERENCES_KEY, MODE_PRIVATE));
 
-            String fp = getString(R.string.MainActivity_GreetingTextView_FirstPart);
-            String mp = getString(R.string.MainActivity_GreetingTextView_MiddlePart);
-            String lp = getString(R.string.MainActivity_GreetingTextView_LastPart);
-            String txt = String.format("%s %s.\n%s %d %s", fp, lastFirstName, mp, lastScore, lp);
+        String fp = getString(R.string.MainActivity_GreetingTextView_FirstPart);
+        String mp = getString(R.string.MainActivity_GreetingTextView_MiddlePart);
+        String lp = getString(R.string.MainActivity_GreetingTextView_LastPart);
+        String txt = String.format("%s %s.\n%s %d %s", fp, mUser.getFirstName(), mp, mUser.getScore(), lp);
 
-            mGreetingTextView.setText(txt);
-            mNameEditText.setText(lastFirstName);
-            mNameEditText.setSelection(lastFirstName.length());
-            mPlayButton.setEnabled(true);
-        }
-    }
+        mGreetingTextView.setText(txt);
+        mNameEditText.setText(mUser.getFirstName());
+        mNameEditText.setSelection(mUser.getFirstName().length());
+        mPlayButton.setEnabled(true);
 
-    private void shareGame() {
-        QuestionStep q1 = new QuestionStep("Question 1?", Arrays.asList("Answer 1.1", "Answer 1.2", "Answer 1.3", "Answer 1.4"), 0);
-        QuestionStep q2 = new QuestionStep("Question 2?", Arrays.asList("Answer 2.1", "Answer 2.2", "Answer 2.3", "Answer 2.4"), 1);
-        StepContainer sc = new StepContainer(Arrays.asList(q1, q2),"");
-
-        int nSteps = 1;
-
-        // Shared Preferences
-        SharedPreferences sp = getSharedPreferences(SHARED_PREF_USER_INFO + "_" + sc.getId(), MODE_PRIVATE);
-
-        // Write
-        sp
-            .edit()
-            .putInt(SHARED_PREF_GAME_NB, nSteps)
-            .putString(SHARED_PREF_GAME, sc.toJson())
-            .apply();
-
-        // Read
-        int gameNb = sp.getInt(SHARED_PREF_GAME_NB, 0);
-
-        for (int i = 0; i < gameNb; i++) {
-            String jsonTxt = sp.getString(SHARED_PREF_GAME + "_" + i, "");
-            StepContainer sc2 = StepContainer.loadFromJson(jsonTxt);
-            if (sc2 != null) Log.i("file_debug", sc2.toString());
-        }
     }
 }

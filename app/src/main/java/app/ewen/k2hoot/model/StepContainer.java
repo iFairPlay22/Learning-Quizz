@@ -27,25 +27,26 @@ import app.ewen.k2hoot.model.step.Step;
 
 public class StepContainer extends IJson implements Parcelable {
 
-    private static int sOccurences = 0;
+    // Static field
+    private static final String FILE_NAME_SEPARATOR = "__fn__";
 
-    private int mId;
-    private String mName;
-    private List<Step> mStepList;
-    private int mCurrentIndex;
-    private int mBestScore = 0;
-
-    public static final String SHARED_PREF_STEP_CONTAINER = "SHARED_PREF_STEP_CONTAINER";
-    public static final String SHARED_PREF_STEP_CONTAINER_LIST = "SHARED_PREF_STEP_CONTAINER_LIST";
-    public static final String SHARED_PREF_STEP_CONTAINER_NB = "SHARED_PREF_STEP_CONTAINER_NB";
-
-    public StepContainer(List<Step> stepList,String name) {
+    public StepContainer(List<Step> stepList, String name) {
         this.mId = sOccurences++;
         this.mCurrentIndex = 0;
         this.mStepList = new ArrayList<>(stepList);
-        this.mName=name;
         // Collections.shuffle(this.mStepList);
+        this.mName = name;
     }
+
+    // Name
+    private String mName;
+
+    public String getName() {
+        return mName;
+    }
+
+    // Best score
+    private int mBestScore = 0;
 
     public int getBestScore(){
         return mBestScore;
@@ -54,6 +55,12 @@ public class StepContainer extends IJson implements Parcelable {
     public void setBestScore(int score){
         mBestScore = score;
     }
+
+    // Steps
+
+    private List<Step> mStepList;
+    private int mCurrentIndex;
+
     public void nextStep() {
         this.mCurrentIndex++;
     }
@@ -64,9 +71,16 @@ public class StepContainer extends IJson implements Parcelable {
 
         return null;
     }
-    public int size(){
+
+    public int stepNb(){
         return mStepList.size();
     }
+
+    // Id
+
+    private static int sOccurences = 0;
+    private int mId;
+
     public int getId() {
         return mId;
     }
@@ -76,7 +90,8 @@ public class StepContainer extends IJson implements Parcelable {
         // Create temp file
         File file;
         try {
-            file = File.createTempFile("fileName", ".json", context.getCacheDir());
+
+            file = File.createTempFile(FILE_NAME_SEPARATOR + mName + FILE_NAME_SEPARATOR, ".json", context.getCacheDir());
             Writer writer = new FileWriter(file);
             sGson.toJson(mStepList, writer);
             writer.flush();
@@ -95,16 +110,17 @@ public class StepContainer extends IJson implements Parcelable {
         return httpFile;
     }
 
-
     public static StepContainer loadFromServer(String token) {
-        String jsonTxt = HttpManager.INSTANCE.loadFile(token);
-        return loadFromJson(jsonTxt);
+        HttpFile obj = HttpManager.INSTANCE.loadFile(token);
+
+        return loadFromJson(obj.getName().split(FILE_NAME_SEPARATOR)[1], obj.getKey());
     }
 
-    public static StepContainer loadFromJson(String jsonTxt) {
+    public static StepContainer loadFromJson(String name, String jsonTxt) {
+
         try {
             List<Step>  l = generateStepsFromJson(jsonTxt);
-            return new StepContainer(l,"");
+            return new StepContainer(l, name);
         } catch (Exception e) {
             Log.e("file_debug", "Impossible to parse JSON!");
             return null;
@@ -116,26 +132,29 @@ public class StepContainer extends IJson implements Parcelable {
         return fromJson(jsonString, StepContainer.class);
     }
 
-    private static List<Step> generateStepsFromJson(String jsonString) {
-        Type stepListType = new TypeToken<ArrayList<Step>>() {}.getType();
-        List<Step> l = sGson.fromJson(jsonString, stepListType);
-        return l;
-    }
-
     private String writeStepsToJson(){
         return sGson.toJson(mStepList);
     }
+
+    private static List<Step> generateStepsFromJson(String jsonString) {
+        Type stepListType = new TypeToken<ArrayList<Step>>() {}.getType();
+        return sGson.fromJson(jsonString, stepListType);
+    }
+
+    private static final String SHARED_PREF_STEP_CONTAINER = "SHARED_PREF_STEP_CONTAINER";
+    private static final String SHARED_PREF_STEP_CONTAINER_LIST = "SHARED_PREF_STEP_CONTAINER_LIST";
+    private static final String SHARED_PREF_STEP_CONTAINER_NB = "SHARED_PREF_STEP_CONTAINER_NB";
 
     public void addToSharedPreferences(SharedPreferences sp){
 
         // Write
         int gameNb = sp.getInt(SHARED_PREF_STEP_CONTAINER_NB, 0);
-        sp.edit().
-                putInt(SHARED_PREF_STEP_CONTAINER_NB, gameNb+1).
-                putString(SHARED_PREF_STEP_CONTAINER+ "_" + gameNb, toJson()).
-                putString(SHARED_PREF_STEP_CONTAINER_LIST+ "_" + gameNb, writeStepsToJson()).apply();
-        //Log.i("StepCo", SHARED_PREF_STEP_CONTAINER+ "_" + 0);
-        Log.i("StepCo", sp.getString(SHARED_PREF_STEP_CONTAINER_LIST+ "_" + 0, ""));
+
+        sp.edit()
+            .putInt(SHARED_PREF_STEP_CONTAINER_NB, gameNb + 1)
+            .putString(SHARED_PREF_STEP_CONTAINER + "_" + gameNb, toJson())
+            .putString(SHARED_PREF_STEP_CONTAINER_LIST + "_" + gameNb, writeStepsToJson())
+            .apply();
 
     }
 
@@ -143,21 +162,22 @@ public class StepContainer extends IJson implements Parcelable {
 
         List<StepContainer> stepContainers = new ArrayList<>();
         int gameNb = sp.getInt(SHARED_PREF_STEP_CONTAINER_NB, 0);
-        for (int i = 0; i < gameNb; i++) {
-            Log.i("StepCo", SHARED_PREF_STEP_CONTAINER+ "_" + i);
-            String jsonTxt = sp.getString(SHARED_PREF_STEP_CONTAINER + "_" + i, "");
-            StepContainer sc2 = StepContainer.fromJson(jsonTxt, StepContainer.class);
-            String jsonList = sp.getString(SHARED_PREF_STEP_CONTAINER_LIST + "_" + i, "");;
-            sc2.mStepList = StepContainer.generateStepsFromJson(jsonList);
-            //Log.i("StepCo", jsonTxt);
-            Log.i("StepCo", sc2.toString());
 
-            if (sc2 != null) stepContainers.add(sc2);
+        for (int i = 0; i < gameNb; i++) {
+            String jsonObj = sp.getString(SHARED_PREF_STEP_CONTAINER + "_" + i, "");
+            StepContainer sc = StepContainer.fromJson(jsonObj, StepContainer.class);
+
+            String jsonList = sp.getString(SHARED_PREF_STEP_CONTAINER_LIST + "_" + i, "");
+            sc.mStepList = StepContainer.generateStepsFromJson(jsonList);
+
+            stepContainers.add(sc);
         }
 
         return stepContainers;
     }
+
     // Parcelable
+
     @RequiresApi(api = Build.VERSION_CODES.Q)
     protected StepContainer(Parcel in) {
         mId = in.readInt();
@@ -196,6 +216,8 @@ public class StepContainer extends IJson implements Parcelable {
         dest.writeInt(mBestScore);
     }
 
+    // Debug
+
     @Override
     public String toString() {
         String res = "\n[\n";
@@ -206,7 +228,5 @@ public class StepContainer extends IJson implements Parcelable {
         return res;
     }
 
-    public String getName() {
-        return mName;
-    }
+
 }

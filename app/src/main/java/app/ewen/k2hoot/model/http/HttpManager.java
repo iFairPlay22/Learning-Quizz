@@ -7,6 +7,7 @@ import android.util.Log;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 
 import app.ewen.k2hoot.model.StepContainer;
@@ -29,7 +30,7 @@ public class HttpManager {
 
     // Data
     private final String apiUrl = "https://file.io/";
-    private final String apiKey = "VP4XQVV.DJHKKAE-M9HMPG5-GH0YYZV-FJF014Y";
+    private final String apiKey = "KX3REVJ.P6CPCCF-KZD4WS0-N89B668-YVSGRQF"; // "VP4XQVV.DJHKKAE-M9HMPG5-GH0YYZV-FJF014Y";
 
     // Functions
     public HttpFile uploadFile(File file) {
@@ -51,7 +52,7 @@ public class HttpManager {
                 .addHeader("Authorization", "Bearer " + apiKey)
                 .build();
 
-        String r = callRequest(request);
+        HashMap<String, String> r = callRequest(request);
 
         if (r == null) {
             Log.e("file_debug", "Error when uploading file to API!");
@@ -60,13 +61,13 @@ public class HttpManager {
 
         Log.i("file_debug", "File " + file.getName() + " has been uploaded!");
 
-        HttpFile httpFile = HttpFile.fromJson(r);
+        HttpFile httpFile = HttpFile.fromJson(r.get("json"));
         Log.i("file_debug", "Upload information : " + httpFile);
 
         return httpFile;
     }
 
-    public String loadFile(String fileId) {
+    public HttpFile loadFile(String fileId) {
 
         Request request = new Request.Builder()
                 .url(apiUrl + fileId)
@@ -74,15 +75,17 @@ public class HttpManager {
                 .addHeader("Authorization", "Bearer " + apiKey)
                 .build();
 
-        String r = callRequest(request);
+        HashMap<String, String> r = callRequest(request);
 
         if (r == null) {
             Log.e("file_debug", "Error when loading file from API!");
             return null;
         }
 
-        Log.i("file_debug", "File "+  fileId + " has been loaded!\n" + r);
-        return r;
+        String jsonTxt = r.get("json");
+        Log.i("file_debug", "File "+  fileId + " has been loaded!\n" + jsonTxt);
+
+        return new HttpFile(jsonTxt, r.get("content"));
     }
 
     public boolean deleteFile(String fileId) {
@@ -97,7 +100,7 @@ public class HttpManager {
                 .addHeader("Authorization", "Bearer " + apiKey)
                 .build();
 
-        String r = callRequest(request);
+        HashMap<String, String> r = callRequest(request);
 
         if (r == null) {
             Log.e("file_debug", "Error when deleting file from API!");
@@ -116,27 +119,35 @@ public class HttpManager {
                 .addHeader("Authorization", "Bearer " + apiKey)
                 .build();
 
-        String r = callRequest(request);
+        HashMap<String, String> r = callRequest(request);
 
         if (r == null) {
             Log.e("file_debug", "Error when loading file names from API!");
             return null;
         }
 
-        HttpFileList httpFileList = HttpFileList.fromJson(r);
+        HttpFileList httpFileList = HttpFileList.fromJson(r.get("json"));
         Log.i("file_debug", "File list loaded from API : " + httpFileList);
 
         return httpFileList;
     }
 
-    private static class HttpAction extends AsyncTask<Request, Void, String> {
+    private static class HttpAction extends AsyncTask<Request, Void, HashMap<String, String>> {
 
         @Override
-        protected String doInBackground(Request... req) {
+        protected HashMap<String, String> doInBackground(Request... req) {
             OkHttpClient client = new OkHttpClient().newBuilder().build();
             try {
                 Response response = client.newCall(req[0]).execute();
-                return response.body().string();
+
+                HashMap<String, String> map = new HashMap<>();
+
+                map.put("json", response.body().string());
+
+                if (response.header("Content-Disposition", null) != null)
+                    map.put("content", response.header("Content-Disposition"));
+
+                return map;
             } catch (IOException e) {
                 e.printStackTrace();
                 return null;
@@ -144,7 +155,7 @@ public class HttpManager {
         }
     }
 
-    private String callRequest(Request request)  {
+    private HashMap<String, String> callRequest(Request request)  {
         HttpAction httpAction = new HttpAction();
         httpAction.execute(request);
 
@@ -164,10 +175,21 @@ public class HttpManager {
 
         QuestionStep q1 = new QuestionStep("Question 1?", Arrays.asList("Answer 1.1", "Answer 1.2", "Answer 1.3", "Answer 1.4"), 0);
         QuestionStep q2 = new QuestionStep("Question 2?", Arrays.asList("Answer 2.1", "Answer 2.2", "Answer 2.3", "Answer 2.4"), 1);
-        StepContainer sc = new StepContainer(Arrays.asList(q1, q2),"");
+        StepContainer sc = new StepContainer(Arrays.asList(q1, q2),"Coucou!");
 
         if (false) {
             sc.storeInServer(context);
+            /*
+            *
+            *
+            *
+            *
+            * 52Fwo2kScYqd
+            * ozoTuDkAizDn
+            * BFA50pDr7PkT
+            * PoL4Fx6g0Yju
+            * QXOxHodp5UcV
+            * */
         }
 
         if (false) {
@@ -175,11 +197,11 @@ public class HttpManager {
         }
 
         if (false) {
-            httpManager.deleteFile("Flyc8miSSUk1");
+            httpManager.deleteFile("BuhNPVDHWmbh");
         }
 
-        if (false) {
-            StepContainer sc2 = StepContainer.loadFromServer("Flyc8miSSUk1");
+        if (true) {
+            StepContainer sc2 = StepContainer.loadFromServer("I5FFKSMgRn1l");
             if (sc2 != null) Log.i("file_debug", sc2.toString());
         }
     }
