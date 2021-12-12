@@ -21,7 +21,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/MainActivity_MainEditTextName_Hint"
-        />
+        />    <Button
+    android:id="@+id/main_button_quizz_list"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
+    android:layout_margin="16dp"
+    android:text="Get quizz list" />
 
     <Button
         android:id="@+id/main_button_play"
@@ -63,12 +69,6 @@
         android:layout_margin="16dp"
         android:text="Create gap sentence" />
 
-    <Button
-        android:id="@+id/main_button_quizz_list"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_margin="16dp"
-        android:text="Get quizz list" />
+
 
 </LinearLayout>

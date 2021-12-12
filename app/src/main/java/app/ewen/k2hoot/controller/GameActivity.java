@@ -46,6 +46,7 @@ public class GameActivity extends AppCompatActivity {
 
             String uri = this.getIntent().getDataString();
             mStepContainer = StepContainer.loadFromServer(data.getQueryParameter("key"));
+            mStepContainer.addToSharedPreferences(getSharedPreferences(QuizzListActivity.SHARED_PREF_QUIZZ_LIST, MODE_PRIVATE));
 
         }else{
 

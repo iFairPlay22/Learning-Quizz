@@ -19,7 +19,7 @@
             <action android:name="android.intent.action.VIEW" />
             <category android:name="android.intent.category.DEFAULT" />
             <category android:name="android.intent.category.BROWSABLE" />
-            <!-- Accepts URIs that begin with "http://www.k2hoot.com/gizmos” -->
+            <!-- Accepts URIs that begin with "http://www.k2hoot.com/load” -->
             <data android:scheme="http"
                 android:host="www.k2hoot.com"
                 android:pathPrefix="/load" />

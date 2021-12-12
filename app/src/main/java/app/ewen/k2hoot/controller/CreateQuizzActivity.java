@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -17,6 +18,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -41,7 +43,7 @@ public class CreateQuizzActivity extends AppCompatActivity  {
 
     private static final int CREATE_QUESTION_ACTIVITY_REQUEST_CODE = 13;
     private Button mCreateButton;
-
+    public static String BUNDLE_QUESTION_STEP_LIST = "BUNDLE_QUESTION_STEP_LIST";
     public static String INTENT_CREATE_STEP_CONTAINER = "INTENT_CREATE_STEP_CONTAINER";
 
     @Override
@@ -54,7 +56,6 @@ public class CreateQuizzActivity extends AppCompatActivity  {
         mLinearLayout = findViewById(R.id.activity_create_quizz_linear_layout_buttons);
         mCreateButton = findViewById(R.id.activity_create_quizz_button_create);
 
-        mQuestionList = new ArrayList<>();
         mAddImageButton.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
@@ -78,20 +79,15 @@ public class CreateQuizzActivity extends AppCompatActivity  {
                 setEnabledCreate();
             }
         });
-        ArrayList<String> answers = new ArrayList<>();
-        String question = "Question 2 : numéro de la question + 1";
-        answers = new ArrayList<>();
-        answers.add("1");
-        answers.add("2");
-        answers.add("3");
-        answers.add("4");
 
-        QuestionStep qs  = new QuestionStep(question,answers,2);
-        add(qs);
 
-        mQuestionList.add(qs);
-        UpdateView();
+        if (savedInstanceState == null) {
 
+            mQuestionList = new ArrayList<>();
+        }else{
+            mQuestionList = savedInstanceState.getParcelableArrayList(BUNDLE_QUESTION_STEP_LIST);
+        }
+        mCreateButton.setEnabled(false);
         mCreateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -146,7 +142,12 @@ public class CreateQuizzActivity extends AppCompatActivity  {
         }
         setEnabledCreate();
     }
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
 
+        outState.putParcelableArrayList(BUNDLE_QUESTION_STEP_LIST, (ArrayList<? extends Parcelable>) mQuestionList);
+    }
     private void add(Step sc){
 //Ajout des boutons
 
