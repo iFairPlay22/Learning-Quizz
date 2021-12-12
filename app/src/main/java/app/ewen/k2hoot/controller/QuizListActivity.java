@@ -40,15 +40,15 @@ public class QuizListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_quizz_list);
+        setContentView(R.layout.activity_quiz_list);
 
         // Model
         mQuizList = StepContainer.getStepContainerListFromBundle(savedInstanceState);
         mQuizList.addAll(StepContainer.readAllFromSharedPreferences(getSharedPreferences(MainActivity.SHARED_PREFERENCES_KEY, MODE_PRIVATE)));
 
         // UI Elements
-        mLinearLayout = findViewById(R.id.quizz_list_linear_layout_buttons);
-        mCreateButton = findViewById(R.id.quizz_list_activity_create_button);
+        mLinearLayout = findViewById(R.id.quiz_list_linear_layout_buttons);
+        mCreateButton = findViewById(R.id.quiz_list_activity_create_button);
 
         // UI Actions
         for (int i = 0; i < mQuizList.size(); i++) {

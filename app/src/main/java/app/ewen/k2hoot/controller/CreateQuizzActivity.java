@@ -46,7 +46,7 @@ public class CreateQuizzActivity extends AppCompatActivity  {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_quizz);
+        setContentView(R.layout.activity_create_quiz);
 
         // Model
         if (savedInstanceState == null) {
@@ -56,10 +56,10 @@ public class CreateQuizzActivity extends AppCompatActivity  {
         }
 
         // UI Elements
-        mNameEditText = findViewById(R.id.activity_create_quizz_name_editText);
-        mAddStepButton = findViewById(R.id.activity_create_quizz_add_button);
-        mLinearLayout = findViewById(R.id.activity_create_quizz_linear_layout_buttons);
-        mCreateButton = findViewById(R.id.activity_create_quizz_button_create);
+        mNameEditText = findViewById(R.id.create_quiz_activity_name_editText);
+        mAddStepButton = findViewById(R.id.create_quiz_activity_add_button);
+        mLinearLayout = findViewById(R.id.create_quiz_activity_linear_layout_buttons);
+        mCreateButton = findViewById(R.id.create_quiz_activity_button_create);
 
         // UI Actions
         mNameEditText.addTextChangedListener(new TextWatcher() {

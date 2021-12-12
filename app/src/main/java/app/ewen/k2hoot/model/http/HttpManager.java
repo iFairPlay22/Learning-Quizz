@@ -179,17 +179,6 @@ public class HttpManager {
 
         if (false) {
             sc.storeInServer(context);
-            /*
-            *
-            *
-            *
-            *
-            * 52Fwo2kScYqd
-            * ozoTuDkAizDn
-            * BFA50pDr7PkT
-            * PoL4Fx6g0Yju
-            * QXOxHodp5UcV
-            * */
         }
 
         if (false) {
@@ -200,7 +189,7 @@ public class HttpManager {
             httpManager.deleteFile("BuhNPVDHWmbh");
         }
 
-        if (true) {
+        if (false) {
             StepContainer sc2 = StepContainer.loadFromServer("I5FFKSMgRn1l");
             if (sc2 != null) Log.i("file_debug", sc2.toString());
         }

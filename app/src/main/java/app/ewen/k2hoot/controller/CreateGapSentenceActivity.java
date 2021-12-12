@@ -1,13 +1,10 @@
 package app.ewen.k2hoot.controller;
 
-import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,7 +15,6 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import app.ewen.k2hoot.R;
@@ -41,10 +37,10 @@ public class CreateGapSentenceActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_gap_sentence);
 
-        mEditText = findViewById(R.id.gap_sentence_edit_text);
-        mLinearLayout = findViewById(R.id.gap_sentence_linear_layout_buttons);
-        mPreview = findViewById(R.id.gap_sentence_preview);
-        mOkButton = findViewById(R.id.gap_sentence_ok_button);
+        mEditText = findViewById(R.id.gap_sentence_activity_sentance_edit_text);
+        mLinearLayout = findViewById(R.id.binding_create_activity_linear_layout_buttons);
+        mPreview = findViewById(R.id.binding_create_activity_gap_sentence_preview);
+        mOkButton = findViewById(R.id.binding_create_activity_ok_button);
 
         mOkButton.setEnabled(false);
 

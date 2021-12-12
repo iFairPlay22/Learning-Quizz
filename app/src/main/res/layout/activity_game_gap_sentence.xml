@@ -7,12 +7,12 @@
     android:orientation="vertical"
     android:padding="8dp">
 
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fillViewport="true">
         <LinearLayout
-            android:id="@+id/game_gap_sentence_linear_layout_answer"
+            android:id="@+id/game_gap_sentence_activity_linear_layout_answer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
@@ -20,10 +20,10 @@
     </ScrollView>
 
     <Button
-        android:id="@+id/game_gap_sentence_button"
+        android:id="@+id/game_gap_sentence_activity_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_margin="16dp"
-        android:text="OK" />
+        android:text="@string/GapSentenceGameActivity_OkBtn_Label" />
 </LinearLayout>

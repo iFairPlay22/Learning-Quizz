@@ -6,7 +6,7 @@
     android:padding="5dp">
 
     <TextView
-        android:id="@+id/text_view_ans"
+        android:id="@+id/game_binding_item_view_text_view_ans"
         android:layout_width="125dp"
         android:layout_height="match_parent" />
 

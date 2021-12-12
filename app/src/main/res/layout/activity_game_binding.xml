@@ -9,7 +9,7 @@
     android:padding="8dp">
 
     <TextView
-        android:id="@+id/text_view_dubject"
+        android:id="@+id/text_view_du_bject"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
@@ -30,26 +30,23 @@
 
             >
             <ListView
-                android:id="@+id/linearLayout_horizontal_left"
+                android:id="@+id/binding_create_activity_linear_layout_horizontal_left"
                 android:layout_width="150dp"
                 android:layout_height="match_parent"
                 android:layout_alignParentLeft="true"
-
                 android:layout_marginLeft="15dp"
-
                 android:paddingBottom="50dp"
                 android:orientation="vertical">
             </ListView >
             <ListView
-                android:id="@+id/linearLayout_horizontal_right"
+                android:id="@+id/binding_create_activity_linear_layout_horizontal_right"
                 android:layout_width="150dp"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-
                 android:layout_alignParentRight="true"
                 android:paddingBottom="50dp"
                 android:layout_marginRight="15dp"
-                >
+            >
 
             </ListView >
         </RelativeLayout>

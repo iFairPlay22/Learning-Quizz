@@ -9,21 +9,21 @@
     tools:context=".controller.QuizListActivity">
 
     <TextView
-        android:id="@+id/quizz_list_activity_main_textview"
+        android:id="@+id/quiz_list_activity_main_text_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="3"
         android:gravity="center"
-        android:text="Mes Quizzz"
+        android:text="@string/QuizListActivity_MainTextView_Label"
         android:textSize="64sp" />
 
     <Button
-        android:id="@+id/quizz_list_activity_create_button"
+        android:id="@+id/quiz_list_activity_create_button"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:layout_gravity="center"
-        android:text="Créer un quizz" />
+        android:text="@string/QuizListActivity_CreateBtn_Label" />
 
 
     <ScrollView
@@ -31,10 +31,10 @@
         android:layout_height="0dp"
         android:layout_weight="5"
         android:layout_marginTop="64dp"
-        android:contentDescription="QuizzList">
+        android:contentDescription="@string/QuizListActivity_ScrollViewContentDescription_Label">
 
         <LinearLayout
-            android:id="@+id/quizz_list_linear_layout_buttons"
+            android:id="@+id/quiz_list_linear_layout_buttons"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical" />

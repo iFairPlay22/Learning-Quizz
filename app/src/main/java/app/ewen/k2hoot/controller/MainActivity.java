@@ -64,14 +64,14 @@ public class MainActivity extends AppCompatActivity {
         mUser = User.getUserFromBundle(savedInstanceState);
 
         // UI Elements
-        mGreetingTextView = findViewById(R.id.main_text_view_greeting);
-        mNameEditText = findViewById(R.id.main_edit_text_name);
-        mPlayButton = findViewById(R.id.main_button_play);
-        mCreateButton = findViewById(R.id.main_button_create);
-        mCreateBindingButton = findViewById(R.id.main_button_create_binding);
-        mPlayBindingButton = findViewById(R.id.main_button_play_binding);
-        mCreateGapSentenceButton = findViewById(R.id.main_button_create_gap_sentence);
-        mQuizListButton = findViewById(R.id.main_button_quizz_list);
+        mGreetingTextView = findViewById(R.id.main_activity_text_view_greeting);
+        mNameEditText = findViewById(R.id.main_edit_activity_text_name);
+        mPlayButton = findViewById(R.id.main_activity_button_play);
+        mCreateButton = findViewById(R.id.main_activity_button_create);
+        mCreateBindingButton = findViewById(R.id.main_activity_button_create_binding);
+        mPlayBindingButton = findViewById(R.id.main_activity_button_play_binding);
+        mCreateGapSentenceButton = findViewById(R.id.main_activity_button_create_gap_sentence);
+        mQuizListButton = findViewById(R.id.main_activity_button_quiz_list);
 
         // UI Actions
 

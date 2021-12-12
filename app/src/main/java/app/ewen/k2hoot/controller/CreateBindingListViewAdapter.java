@@ -51,7 +51,7 @@ public class CreateBindingListViewAdapter extends BaseAdapter implements View.On
             mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = mInflater.inflate(R.layout.create_binding_item_view, null);
             holder.caption = (EditText) convertView
-                    .findViewById(R.id.edit_text_question);
+                    .findViewById(R.id.create_binding_item_view_edit_text_question);
             holder.caption.setTag(position);
             holder.caption.setText("" + position);
             holder.caption.setOnTouchListener(this);

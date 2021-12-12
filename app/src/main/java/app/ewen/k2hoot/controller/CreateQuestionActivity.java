@@ -36,13 +36,13 @@ public class CreateQuestionActivity extends AppCompatActivity  {
         setContentView(R.layout.activity_create_question);
 
         // UI Elements
-        mQuestionEditText = findViewById(R.id.create_question_activity_edittext_question);
+        mQuestionEditText = findViewById(R.id.create_question_activity_edit_text_question);
 
         answersEt = new ArrayList<>();
-        answersEt.add(findViewById(R.id.create_question_activity_edittext_answer_1));
-        answersEt.add(findViewById(R.id.create_question_activity_edittext_answer_2));
-        answersEt.add(findViewById(R.id.create_question_activity_edittext_answer_3));
-        answersEt.add(findViewById(R.id.create_question_activity_edittext_answer_4));
+        answersEt.add(findViewById(R.id.create_question_activity_edit_text_answer_1));
+        answersEt.add(findViewById(R.id.create_question_activity_edit_text_answer_2));
+        answersEt.add(findViewById(R.id.create_question_activity_edit_text_answer_3));
+        answersEt.add(findViewById(R.id.create_question_activity_edit_text_answer_4));
 
         answersCb = new ArrayList<>();
         answersCb.add(findViewById(R.id.create_question_activity_checkbox_answer_1));
@@ -123,7 +123,7 @@ public class CreateQuestionActivity extends AppCompatActivity  {
     private int getSelectedGoodAnswerIndex(){
         for (int i = 0; i < answersCb.size(); i++)
             if (answersCb.get(i).isChecked())
-                return i + 1;
+                return i;
         return -1;
     }
 

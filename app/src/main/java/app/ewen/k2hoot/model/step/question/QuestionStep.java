@@ -2,7 +2,6 @@ package app.ewen.k2hoot.model.step.question;
 
 import android.os.Build;
 import android.os.Parcel;
-import android.os.Parcelable;
 
 import androidx.annotation.RequiresApi;
 
@@ -10,7 +9,6 @@ import java.util.List;
 import java.util.Objects;
 
 import app.ewen.k2hoot.model.step.Step;
-import app.ewen.k2hoot.model.step.binding.BindingStep;
 
 public final class QuestionStep extends Step<QuestionData, QuestionInput> {
 
@@ -18,12 +16,6 @@ public final class QuestionStep extends Step<QuestionData, QuestionInput> {
     private final String mQuestion;
     private final List<String> mChoiceList;
     private final int mAnswerIndex;
-
-    public final static String DATA_QUESTION = "question";
-    public final static String DATA_CHOICES_NUMBER = "choices_number";
-    public final static String DATA_CHOICES_LIST = "choices_";
-
-    public final static String INPUT_PROPOSITION_INDEX = "answer_index";
 
     public QuestionStep(String mQuestion, List<String> mChoiceList, int mAnswerIndex) {
         super();

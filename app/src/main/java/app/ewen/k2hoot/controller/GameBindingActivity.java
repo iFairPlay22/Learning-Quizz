@@ -3,10 +3,8 @@ package app.ewen.k2hoot.controller;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -50,9 +48,9 @@ public class GameBindingActivity extends AppCompatActivity  {
 
         // Model
         hash = new HashMap<Integer,Integer>();
-        mSubjectTextView = findViewById(R.id.text_view_dubject);
-        mLeftListView =findViewById(R.id.linearLayout_horizontal_left);
-        mRightListView =findViewById(R.id.linearLayout_horizontal_right);
+        mSubjectTextView = findViewById(R.id.text_view_du_bject);
+        mLeftListView =findViewById(R.id.binding_create_activity_linear_layout_horizontal_left);
+        mRightListView =findViewById(R.id.binding_create_activity_linear_layout_horizontal_right);
 
         Intent intent = getIntent();
         bindingStep = (BindingStep)intent.getParcelableExtra(INTENT_INPUT_BINDING_STEP);

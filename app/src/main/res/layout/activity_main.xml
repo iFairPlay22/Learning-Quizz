@@ -9,7 +9,7 @@
     android:layout_marginHorizontal="16dp">
 
     <TextView
-        android:id="@+id/main_text_view_greeting"
+        android:id="@+id/main_activity_text_view_greeting"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingVertical="8dp"
@@ -17,7 +17,7 @@
         />
 
     <EditText
-        android:id="@+id/main_edit_text_name"
+        android:id="@+id/main_edit_activity_text_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/MainActivity_MainEditTextName_Hint"
@@ -26,15 +26,15 @@
 
 
     <Button
-        android:id="@+id/main_button_quizz_list"
+        android:id="@+id/main_activity_button_quiz_list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_margin="16dp"
-        android:text="Get quizz list" />
+        android:text="@string/MainActivity_QuizListBtn_Label" />
 
     <Button
-        android:id="@+id/main_button_create"
+        android:id="@+id/main_activity_button_create"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
@@ -42,7 +42,7 @@
         android:text="@string/MainActivity_ButtonCreate_Text" />
 
     <Button
-        android:id="@+id/main_button_play"
+        android:id="@+id/main_activity_button_play"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
@@ -50,28 +50,28 @@
         android:text="@string/MainActivity_MainButtonPlay_Text" />
 
     <Button
-        android:id="@+id/main_button_create_binding"
+        android:id="@+id/main_activity_button_create_binding"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_margin="16dp"
-        android:text="Create binding" />
+        android:text="@string/MainActivity_CreateBindingBtn_Label" />
 
     <Button
-        android:id="@+id/main_button_play_binding"
+        android:id="@+id/main_activity_button_play_binding"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_margin="16dp"
-        android:text="Play binding" />
+        android:text="@string/MainActivity_BindingPlayBtn_Label" />
 
     <Button
-        android:id="@+id/main_button_create_gap_sentence"
+        android:id="@+id/main_activity_button_create_gap_sentence"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_margin="16dp"
-        android:text="Create gap sentence" />
+        android:text="@string/MainActivity_GapSentenceCreateBtn_Label" />
 
 
 

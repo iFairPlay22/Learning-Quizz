@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="8dp">
 
     <EditText
-        android:id="@+id/create_question_activity_edittext_question"
+        android:id="@+id/create_question_activity_edit_text_question"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_margin="8dp"
@@ -18,7 +17,7 @@
         android:textColor="@color/white"
         android:textSize="18sp"
         android:textStyle="bold"
-        android:hint="Votre question ?" />
+        android:hint="@string/CreateQuestionActivity_QuestionEditText_Label" />
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -31,20 +30,20 @@
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:id="@+id/create_question_activity_edittext_answer_1"
+            android:id="@+id/create_question_activity_edit_text_answer_1"
 
             android:layout_margin="8dp"
             android:padding="16dp"
             android:textSize="20sp"
-            android:hint="Answer1" />
+            android:hint="@string/CreateQuestionActivity_Answer1_Label" />
+
         <CheckBox
             android:id="@+id/create_question_activity_checkbox_answer_1"
 
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:checked="true"
-            android:text="Réponse correcte"
-            ></CheckBox>
+            android:text="@string/CreateQuestionActivity_CorrectValue_Label" />
     </LinearLayout>
     <LinearLayout
         android:layout_width="wrap_content"
@@ -57,19 +56,19 @@
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:id="@+id/create_question_activity_edittext_answer_2"
+            android:id="@+id/create_question_activity_edit_text_answer_2"
 
             android:layout_margin="8dp"
             android:padding="16dp"
             android:textSize="20sp"
-            android:hint="Answer2" />
+            android:hint="@string/CreateQuestionActivity_Answer2_Label" />
+
         <CheckBox
             android:id="@+id/create_question_activity_checkbox_answer_2"
 
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:checked="false"
-            ></CheckBox>
+            android:checked="false" />
     </LinearLayout>
 
     <LinearLayout
@@ -83,19 +82,19 @@
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:id="@+id/create_question_activity_edittext_answer_3"
+            android:id="@+id/create_question_activity_edit_text_answer_3"
 
             android:layout_margin="8dp"
             android:padding="16dp"
             android:textSize="20sp"
-            android:hint="Answer3" />
+            android:hint="@string/CreateQuestionActivity_Answer3_Label" />
+
         <CheckBox
             android:id="@+id/create_question_activity_checkbox_answer_3"
 
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:checked="false"
-            ></CheckBox>
+            android:checked="false" />
     </LinearLayout>
     <LinearLayout
         android:layout_width="wrap_content"
@@ -108,19 +107,19 @@
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:id="@+id/create_question_activity_edittext_answer_4"
+            android:id="@+id/create_question_activity_edit_text_answer_4"
 
             android:layout_margin="8dp"
             android:padding="16dp"
             android:textSize="20sp"
-            android:hint="Answer4" />
+            android:hint="@string/CreateQuestionActivity_Answer4_Label" />
+
         <CheckBox
             android:id="@+id/create_question_activity_checkbox_answer_4"
 
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:checked="false"
-            ></CheckBox>
+            android:checked="false" />
     </LinearLayout>
 
 

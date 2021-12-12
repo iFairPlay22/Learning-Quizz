@@ -1,20 +1,14 @@
 package app.ewen.k2hoot.controller;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Debug;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.NumberPicker;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
@@ -55,11 +49,11 @@ public class CreateBindingActivity extends AppCompatActivity  {
         setContentView(R.layout.activity_create_binding);
 
         // UI Elements
-        createButton = findViewById(R.id.create_binding_activity_button_create);
+        createButton = findViewById(R.id.binding_create_activity_button_create);
         hash = new HashMap<Integer,Integer>();
-        mSubjectEditText = findViewById(R.id.edit_text_subject);
-        mLeftListView =findViewById(R.id.linearLayout_horizontal_left);
-        mRightListView =findViewById(R.id.linearLayout_horizontal_right);
+        mSubjectEditText = findViewById(R.id.binding_create_activity_edit_text_subject);
+        mLeftListView =findViewById(R.id.binding_create_activity_linear_layout_horizontal_left);
+        mRightListView =findViewById(R.id.binding_create_activity_linear_layout_horizontal_right);
 
         setListViewAdapter();
         lastLeft=lastRight=-1;

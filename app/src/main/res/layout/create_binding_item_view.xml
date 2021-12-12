@@ -6,7 +6,7 @@
     android:padding="5dp">
 
     <EditText
-        android:id="@+id/edit_text_question"
+        android:id="@+id/create_binding_item_view_edit_text_question"
         android:layout_width="125dp"
         android:layout_height="match_parent" />
 

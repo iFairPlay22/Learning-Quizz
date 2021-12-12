@@ -7,25 +7,30 @@
     <string name="MainActivity_MainButtonPlay_Text">Jouons</string>
     <string name="MainActivity_MainEditTextName_Hint">Entrez votre nom</string>
     <string name="MainActivity_ButtonCreate_Text">Créer</string>
-
-    <string-array name="GameActivity_Questions">
-        <item>Qui est le créateur d\'android?</item>
-        <item>Andy Rubin</item>
-        <item>Steve Wozniak</item>
-        <item>Jake Wharton</item>
-        <item>Paul Smith</item>
-
-        <item>A quelle date l\'homme posa-t-il son premier pas sur la lune ?</item>
-        <item>1958</item>
-        <item>1962</item>
-        <item>1967</item>
-        <item>1969</item>
-
-        <item>Quel est le numéro de maison des Simpsons?</item>
-        <item>42</item>
-        <item>101</item>
-        <item>666</item>
-        <item>742</item>
-    </string-array>
+    <string name="CreateBindingActivity_EditTextSubject_Label">Sujet de la question</string>
+    <string name="CreateBindingActivity_CreateButton_Text">Créer</string>
+    <string name="CreateGapSentenceActivity_EditText_Label">Votre texte complet?</string>
+    <string name="CreateGapSentenceActivity_TextView_Label">Sélectionner les mots à compléter :</string>
+    <string name="CreateGapSentenceActivity_OkBtn_Label">Ok</string>
+    <string name="CreateQuestionActivity_QuestionEditText_Label">Votre question ?</string>
+    <string name="CreateQuestionActivity_CorrectValue_Label">Réponse correcte</string>
+    <string name="CreateQuestionActivity_Answer1_Label">Réponse 1</string>
+    <string name="CreateQuestionActivity_Answer2_Label">Réponse 2</string>
+    <string name="CreateQuestionActivity_Answer3_Label">Réponse 3</string>
+    <string name="CreateQuestionActivity_Answer4_Label">Réponse 4</string>
+    <string name="CreateQuizListActivity_ManageTextView_Label">Gestion des quizzz</string>
+    <string name="CreateQuizListActivity_Name_Label">Quizzz</string>
+    <string name="CreateQuizListActivity_QuestionTextView_Label">Questions :</string>
+    <string name="QuizListActivity_AddBtn_Label">Créer un quizzz</string>
+    <string name="CreateQuizListActivity_CreateBtn_Label">Créer</string>
+    <string name="GameActivity_PlayBtn_Label">C\'est parti</string>
+    <string name="GapSentenceGameActivity_OkBtn_Label">Ok</string>
+    <string name="MainActivity_QuizListBtn_Label">Liste des quizzz</string>
+    <string name="MainActivity_CreateBindingBtn_Label">Créer binding</string>
+    <string name="MainActivity_BindingPlayBtn_Label">Jouer binding</string>
+    <string name="MainActivity_GapSentenceCreateBtn_Label">Créer gap sentence</string>
+    <string name="QuizListActivity_MainTextView_Label">Mes Quizzz</string>
+    <string name="QuizListActivity_CreateBtn_Label">Créer un quizzz</string>
+    <string name="QuizListActivity_ScrollViewContentDescription_Label">Liste des quizzz</string>
 
 </resources>

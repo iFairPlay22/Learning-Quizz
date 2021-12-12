@@ -9,7 +9,7 @@
     tools:context=".controller.QuizListActivity">
 
     <TextView
-        android:id="@+id/activity_create_quizz_manage_textview"
+        android:id="@+id/create_quiz_activity_manage_text_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
@@ -17,11 +17,11 @@
         android:textColor="@color/teal_700"
         android:textSize="32sp"
         android:textStyle="bold"
-        android:text="Gestion des quizz" />
+        android:text="@string/CreateQuizListActivity_ManageTextView_Label" />
 
 
     <EditText
-        android:id="@+id/activity_create_quizz_name_editText"
+        android:id="@+id/create_quiz_activity_name_editText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
@@ -29,7 +29,7 @@
         android:textColor="@color/teal_700"
         android:textSize="32sp"
         android:textStyle="bold"
-        android:hint="Quizz" />
+        android:hint="@string/CreateQuizListActivity_Name_Label" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -38,22 +38,22 @@
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/activity_create_quizz_questions_textView"
+            android:id="@+id/create_quiz_activity_questions_textView"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="3"
             android:gravity="bottom"
             android:textSize="32sp"
             android:textStyle="bold"
-            android:text="Questions :"/>
+            android:text="@string/CreateQuizListActivity_QuestionTextView_Label"/>
 
         <ImageButton
-            android:id="@+id/activity_create_quizz_add_button"
+            android:id="@+id/create_quiz_activity_add_button"
             style="@style/Widget.AppCompat.ImageButton"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:contentDescription="Créer un quizz"
+            android:contentDescription="@string/QuizListActivity_AddBtn_Label"
             android:scaleType="fitXY"
             app:srcCompat="@android:drawable/ic_menu_add" />
     </LinearLayout>
@@ -64,18 +64,18 @@
         android:layout_marginTop="8dp">
 
         <LinearLayout
-            android:id="@+id/activity_create_quizz_linear_layout_buttons"
+            android:id="@+id/create_quiz_activity_linear_layout_buttons"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"/>
 
     </ScrollView>
     <Button
-        android:id="@+id/activity_create_quizz_button_create"
+        android:id="@+id/create_quiz_activity_button_create"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_margin="16dp"
-        android:text="Create" />
+        android:text="@string/CreateQuizListActivity_CreateBtn_Label" />
 
 </LinearLayout>

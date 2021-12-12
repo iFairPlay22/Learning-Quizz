@@ -8,7 +8,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -72,8 +71,8 @@ public class GameActivity extends AppCompatActivity {
         }
 
         // UI Elements
-        mWelcomeTextView = findViewById(R.id.game_activity_textview_welcome);
-        mScoreTextView = findViewById(R.id.game_activity_textview_score);
+        mWelcomeTextView = findViewById(R.id.game_activity_text_view_welcome);
+        mScoreTextView = findViewById(R.id.game_activity_text_view_score);
         mPlayButton  = findViewById(R.id.game_activity_button_play);
 
         // UI Actions

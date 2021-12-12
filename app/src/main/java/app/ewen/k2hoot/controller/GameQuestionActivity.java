@@ -1,10 +1,8 @@
 package app.ewen.k2hoot.controller;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -12,17 +10,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import app.ewen.k2hoot.R;
-import app.ewen.k2hoot.model.StepContainer;
-import app.ewen.k2hoot.model.step.Step;
-import app.ewen.k2hoot.model.step.question.QuestionData;
 import app.ewen.k2hoot.model.step.question.QuestionInput;
 import app.ewen.k2hoot.model.step.question.QuestionStep;
 
@@ -67,7 +60,7 @@ public class GameQuestionActivity extends AppCompatActivity implements View.OnCl
         }
 
         // UI Elements
-        mQuestionTextView = findViewById(R.id.game_activity_textview_question);
+        mQuestionTextView = findViewById(R.id.game_activity_text_view_question);
 
         mButtons = new ArrayList<>();
         mButtons.add(findViewById(R.id.game_activity_button_1));

@@ -8,7 +8,7 @@
     android:padding="8dp">
 
     <TextView
-        android:id="@+id/game_activity_textview_welcome"
+        android:id="@+id/game_activity_text_view_welcome"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_margin="8dp"
@@ -19,7 +19,7 @@
         android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/game_activity_textview_score"
+        android:id="@+id/game_activity_text_view_score"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_margin="8dp"
@@ -33,5 +33,5 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_margin="8dp"
-        android:text="Let's go" />
+        android:text="@string/GameActivity_PlayBtn_Label" />
 </LinearLayout>
