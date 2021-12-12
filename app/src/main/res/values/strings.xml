@@ -34,7 +34,7 @@
     <string name="QuizListActivity_CreateBtn_Label">Créer un quizzz</string>
     <string name="QuizListActivity_ScrollViewContentDescription_Label">Liste des quizzz</string>
     <string name="GreateGapSentanceActivity_Preview_Label">Aperçu : </string>
-    <string name="GameActivity_Welcome_Toast">Bienvenue dans le quizzz :</string>
+    <string name="GameActivity_Welcome_Toast">Bienvenue dans le quizzz</string>
     <string name="GameActivity_AlertDialog_WellPlayed_Label">Bien joué !</string>
     <string name="GameActivity_AlertDialog_Score_Label">Ton score est</string>
     <string name="GameActivity_AlertDialog_OkBtn_Label">Ok</string>

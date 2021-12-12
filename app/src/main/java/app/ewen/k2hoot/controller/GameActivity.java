@@ -78,7 +78,7 @@ public class GameActivity extends AppCompatActivity {
         // UI Actions
         mScoreTextView.setText(mStepContainer.getBestScore() > 0 ? "Meilleur score : " + mStepContainer.getBestScore() : "Vous n'avez encore jamais fait ce quiz.");
 
-        mWelcomeTextView.setText(R.string.GameActivity_Welcome_Toast + " :\n \n" + mStepContainer.getName());
+        mWelcomeTextView.setText(getString(R.string.GameActivity_Welcome_Toast) + " :\n \n" + mStepContainer.getName());
 
         mPlayButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -137,9 +137,9 @@ public class GameActivity extends AppCompatActivity {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder
-                .setTitle(R.string.GameActivity_AlertDialog_WellPlayed_Label)
-                .setMessage(R.string.GameActivity_AlertDialog_Score_Label + " " + mScore + " / " + mStepContainer.stepNb())
-                .setPositiveButton(R.string.GameActivity_AlertDialog_OkBtn_Label, new DialogInterface.OnClickListener() {
+                .setTitle(getString(R.string.GameActivity_AlertDialog_WellPlayed_Label))
+                .setMessage(getString(R.string.GameActivity_AlertDialog_Score_Label) + " " + mScore + " / " + mStepContainer.stepNb())
+                .setPositiveButton(getString(R.string.GameActivity_AlertDialog_OkBtn_Label), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Intent intent = new Intent();
