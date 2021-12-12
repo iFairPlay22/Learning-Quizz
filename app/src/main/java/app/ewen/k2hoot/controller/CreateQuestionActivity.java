@@ -13,66 +13,80 @@ import android.widget.EditText;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import app.ewen.k2hoot.R;
 import app.ewen.k2hoot.model.step.question.QuestionStep;
 
 public class CreateQuestionActivity extends AppCompatActivity  {
 
+    // UI Elements
     private EditText mQuestionEditText;
-    private EditText mAnswer1EditText;
-    private EditText mAnswer2EditText;
-    private EditText mAnswer3EditText;
-    private EditText mAnswer4EditText;
-
-    private CheckBox mAnswer1CheckBox;
-    private CheckBox mAnswer2CheckBox;
-    private CheckBox mAnswer3CheckBox;
-    private CheckBox mAnswer4CheckBox;
-
-
+    private List<EditText> answersEt;
+    private List<CheckBox> answersCb;
     private Button mCreateButton;
 
-    public static String INTENT_CREATE_QUESTION_STEP = "INTENT_CREATE_QUESTION_STEP";
+    // Activity communication
+    public static final String INTENT_CREATE_QUESTION_STEP = "INTENT_CREATE_QUESTION_STEP";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_question);
 
+        // UI Elements
         mQuestionEditText = findViewById(R.id.create_question_activity_edittext_question);
-        mAnswer1EditText = findViewById(R.id.create_question_activity_edittext_answer_1);
-        mAnswer2EditText = findViewById(R.id.create_question_activity_edittext_answer_2);
-        mAnswer3EditText = findViewById(R.id.create_question_activity_edittext_answer_3);
-        mAnswer4EditText = findViewById(R.id.create_question_activity_edittext_answer_4);
 
-        mAnswer1CheckBox = findViewById(R.id.create_question_activity_checkbox_answer_1);
-        mAnswer2CheckBox = findViewById(R.id.create_question_activity_checkbox_answer_2);
-        mAnswer3CheckBox = findViewById(R.id.create_question_activity_checkbox_answer_3);
-        mAnswer4CheckBox = findViewById(R.id.create_question_activity_checkbox_answer_4);
+        answersEt = new ArrayList<>();
+        answersEt.add(findViewById(R.id.create_question_activity_edittext_answer_1));
+        answersEt.add(findViewById(R.id.create_question_activity_edittext_answer_2));
+        answersEt.add(findViewById(R.id.create_question_activity_edittext_answer_3));
+        answersEt.add(findViewById(R.id.create_question_activity_edittext_answer_4));
 
+        answersCb = new ArrayList<>();
+        answersCb.add(findViewById(R.id.create_question_activity_checkbox_answer_1));
+        answersCb.add(findViewById(R.id.create_question_activity_checkbox_answer_2));
+        answersCb.add(findViewById(R.id.create_question_activity_checkbox_answer_3));
+        answersCb.add(findViewById(R.id.create_question_activity_checkbox_answer_4));
 
         mCreateButton = findViewById(R.id.create_question_activity_button_create);
+
+        // UI Actions
+
         mCreateButton.setEnabled(false);
-        mQuestionEditText.addTextChangedListener(editTexWatcher);
-        mAnswer1EditText.addTextChangedListener(editTexWatcher);
-        mAnswer2EditText.addTextChangedListener(editTexWatcher);
-        mAnswer3EditText.addTextChangedListener(editTexWatcher);
-        mAnswer4EditText.addTextChangedListener(editTexWatcher);
+
+        TextWatcher editTextWatcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                updateCreateBtnState();
+            }
+        };
+
+        mQuestionEditText.addTextChangedListener(editTextWatcher);
+
+        for (int i = 0; i < answersEt.size(); i++)
+            answersEt.get(i).addTextChangedListener(editTextWatcher);
 
         mCreateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Create the question step
                 String question = mQuestionEditText.getText().toString();
-
                 ArrayList<String> answers = new ArrayList<>();
-                answers.add(mAnswer1EditText.getText().toString());
-                answers.add(mAnswer2EditText.getText().toString());
-                answers.add(mAnswer3EditText.getText().toString());
-                answers.add(mAnswer4EditText.getText().toString());
+                for (int i = 0; i < answersEt.size(); i++)
+                    answers.add(answersEt.get(i).getText().toString());
+                QuestionStep qs = new QuestionStep(question, answers, getSelectedGoodAnswerIndex());
 
-
-                QuestionStep qs = new QuestionStep(question,answers,getGoodAnswerIndex());
+                // And return it
                 Intent intent = new Intent();
                 intent.putExtra(INTENT_CREATE_QUESTION_STEP, qs);
                 setResult(RESULT_OK, intent);
@@ -80,96 +94,48 @@ public class CreateQuestionActivity extends AppCompatActivity  {
             }
         });
 
-        mAnswer1CheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        for (int i = 0; i < answersCb.size(); i++) {
+            int finalI = i;
+            answersCb.get(i).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
-                    if(isChecked){
-                        mAnswer2CheckBox.setChecked(false);
-                        mAnswer3CheckBox.setChecked(false);
-                        mAnswer4CheckBox.setChecked(false);
-                        setEnabledCreate();
+                    if (isChecked){
+                        for (int j = 0; j < answersCb.size(); j++)
+                            if (finalI != j)
+                                answersCb.get(j).setChecked(false);
                     }
+                    updateCreateBtnState();
                 }
-        });
-
-        mAnswer2CheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
-                if(isChecked){
-                    mAnswer1CheckBox.setChecked(false);
-                    mAnswer3CheckBox.setChecked(false);
-                    mAnswer4CheckBox.setChecked(false);
-                    setEnabledCreate();
-                }
-            }
-        });
-
-        mAnswer3CheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
-                if(isChecked){
-                    mAnswer1CheckBox.setChecked(false);
-                    mAnswer2CheckBox.setChecked(false);
-                    mAnswer4CheckBox.setChecked(false);
-                    setEnabledCreate();
-                }
-            }
-        });
-
-        mAnswer4CheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
-                if(isChecked){
-                    mAnswer1CheckBox.setChecked(false);
-                    mAnswer2CheckBox.setChecked(false);
-                    mAnswer3CheckBox.setChecked(false);
-                    setEnabledCreate();
-                }
-            }
-        });
+            });
+        }
 
     }
 
-    private boolean hasGoodAnswer(){
-
-        return mAnswer1CheckBox.isChecked() || mAnswer2CheckBox.isChecked() || mAnswer3CheckBox.isChecked() || mAnswer4CheckBox.isChecked();
+    // Return true if all the answers are not empty
+    private boolean getAllAnswerWrote(){
+        for (int i = 0; i < answersEt.size(); i++)
+            if (answersEt.get(i).getText().toString().isEmpty())
+                return false;
+        return true;
     }
 
-    private void setEnabledCreate(){
-        boolean enabled = mQuestionEditText.getText().toString().isEmpty();
-        enabled |= mAnswer1EditText.getText().toString().isEmpty();
-        enabled |= mAnswer2EditText.getText().toString().isEmpty();
-        enabled |= mAnswer3EditText.getText().toString().isEmpty();
-        enabled |= mAnswer4EditText.getText().toString().isEmpty();
-        enabled |= !hasGoodAnswer();
-        mCreateButton.setEnabled(!enabled);
-    }
-    private int getGoodAnswerIndex(){
-        if(mAnswer1CheckBox.isChecked()){
-            return 1;
-        }else if(mAnswer2CheckBox.isChecked()){
-            return 2;
-        }else if(mAnswer3CheckBox.isChecked()){
-            return 3;
-        }else{
-            return 4;
-        }
+    // Return the index of the selected good answer
+    private int getSelectedGoodAnswerIndex(){
+        for (int i = 0; i < answersCb.size(); i++)
+            if (answersCb.get(i).isChecked())
+                return i + 1;
+        return -1;
     }
 
-    private TextWatcher editTexWatcher = new TextWatcher() {
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-        }
+    // Return true if a checkbox is ok
+    private boolean getIsChecked(){
+        return getSelectedGoodAnswerIndex() != -1;
+    }
 
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-        }
-
-        @Override
-        public void afterTextChanged(Editable s) {
-            setEnabledCreate();
-        }
-    };
+    // Allow the user to click if the conditions are ok
+    private void updateCreateBtnState() {
+        mCreateButton.setEnabled(!mQuestionEditText.getText().toString().isEmpty() &&  getAllAnswerWrote() && getIsChecked());
+    }
 
 
 }

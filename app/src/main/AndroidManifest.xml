@@ -35,7 +35,7 @@
         <activity android:name=".controller.CreateQuizzActivity"  android:screenOrientation="portrait"></activity>
 
         <activity
-            android:name=".controller.QuizzListActivity"
+            android:name=".controller.QuizListActivity"
             android:exported="false"
             android:screenOrientation="portrait"/>
         <activity android:name=".controller.MainActivity"  android:screenOrientation="portrait">

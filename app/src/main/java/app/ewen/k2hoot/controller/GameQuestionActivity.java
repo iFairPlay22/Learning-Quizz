@@ -28,21 +28,45 @@ import app.ewen.k2hoot.model.step.question.QuestionStep;
 
 public class GameQuestionActivity extends AppCompatActivity implements View.OnClickListener {
 
+    // UI Elements
     private TextView mQuestionTextView;
     private List<Button> mButtons;
 
-    private StepContainer mStepContainer;
-    private boolean mScore;
+    // UI Actions
+    private boolean mEnableTouchEvents = true;
+
+    // Model
+    private boolean isGoodAnswer;
+    private QuestionStep mQuestionStep;
+
+    // Activity communication
     public static final String BUNDLE_EXTRA_VALIDATE = "BUNDLE_EXTRA_VALIDATE";
     public static final String INTENT_QUESTION_STEP = "INTENT_QUESTION_STEP";
-    private QuestionStep mQuestionStep;
-    private boolean mEnableTouchEvents = true;
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(INTENT_QUESTION_STEP, mQuestionStep);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_question);
 
+        // Model
+        if (savedInstanceState == null) {
+
+            // Load From intent
+            Intent intent = getIntent();
+            mQuestionStep = (QuestionStep)intent.getParcelableExtra(INTENT_QUESTION_STEP) ;
+        } else {
+
+            // Load from bundle
+            mQuestionStep = (QuestionStep)savedInstanceState.getParcelable(INTENT_QUESTION_STEP);
+        }
+
+        // UI Elements
         mQuestionTextView = findViewById(R.id.game_activity_textview_question);
 
         mButtons = new ArrayList<>();
@@ -51,34 +75,26 @@ public class GameQuestionActivity extends AppCompatActivity implements View.OnCl
         mButtons.add(findViewById(R.id.game_activity_button_3));
         mButtons.add(findViewById(R.id.game_activity_button_4));
 
-        for (int i = 0; i < mButtons.size(); i++)
-            mButtons.get(i).setOnClickListener(this);
+        // UI Actions
 
-        if (savedInstanceState == null) {
-            Intent intent = getIntent();
-            mQuestionStep = (QuestionStep)intent.getParcelableExtra(INTENT_QUESTION_STEP) ;
-        } else {
-            mQuestionStep = (QuestionStep)savedInstanceState.getParcelable(INTENT_QUESTION_STEP);
-        }
-
+        // Display question
         mQuestionTextView.setText(mQuestionStep.getQuestion());
+
+        // Display propositions
         List<String> propositions = mQuestionStep.getChoiceList();
-        for (int i = 0; i < propositions.size(); i++)
-            mButtons.get(i).setText(propositions.get(i));
+        for (int i = 0; i < mButtons.size(); i++) {
+            Button btn = mButtons.get(i);
+            btn.setOnClickListener(this);
+            btn.setText(propositions.get(i));
+        }
     }
 
-    @Override
-    protected void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putParcelable(INTENT_QUESTION_STEP, mQuestionStep);
-    }
-    private  boolean isGoodAnswer = false;
     @Override
     public void onClick(View v) {
-
-
+        // Get the clicked btn
         for (int i = 0; i < mButtons.size(); i++) {
             if (mButtons.get(i) == v) {
+                // Good or bad answer ?
                 QuestionInput userInput = new QuestionInput(i);
                 if (mQuestionStep.isGoodAnswer(userInput)) {
                     isGoodAnswer = true;
@@ -87,15 +103,16 @@ public class GameQuestionActivity extends AppCompatActivity implements View.OnCl
                     isGoodAnswer = false;
                     Toast.makeText(this, "Incorrect!", Toast.LENGTH_SHORT).show();
                 }
+                break;
             }
         }
 
+        // Terminate the activity
         mEnableTouchEvents = false;
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 Intent intent = new Intent();
-                Log.i("QS", "Result "+isGoodAnswer);
                 intent.putExtra(BUNDLE_EXTRA_VALIDATE, isGoodAnswer);
                 setResult(RESULT_OK, intent);
                 finish();
@@ -106,10 +123,5 @@ public class GameQuestionActivity extends AppCompatActivity implements View.OnCl
 
     public boolean dispatchTouchEvent(MotionEvent ev) {
         return mEnableTouchEvents && super.dispatchTouchEvent(ev);
-    }
-
-
-    private void terminateStep() {
-
     }
 }

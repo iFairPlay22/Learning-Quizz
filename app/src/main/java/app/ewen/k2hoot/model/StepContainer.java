@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
@@ -31,7 +32,6 @@ public class StepContainer extends IJson implements Parcelable {
     private static final String FILE_NAME_SEPARATOR = "__fn__";
 
     public StepContainer(List<Step> stepList, String name) {
-        this.mId = sOccurences++;
         this.mCurrentIndex = 0;
         this.mStepList = new ArrayList<>(stepList);
         // Collections.shuffle(this.mStepList);
@@ -74,15 +74,6 @@ public class StepContainer extends IJson implements Parcelable {
 
     public int stepNb(){
         return mStepList.size();
-    }
-
-    // Id
-
-    private static int sOccurences = 0;
-    private int mId;
-
-    public int getId() {
-        return mId;
     }
 
     // HTTP
@@ -145,6 +136,8 @@ public class StepContainer extends IJson implements Parcelable {
     private static final String SHARED_PREF_STEP_CONTAINER_LIST = "SHARED_PREF_STEP_CONTAINER_LIST";
     private static final String SHARED_PREF_STEP_CONTAINER_NB = "SHARED_PREF_STEP_CONTAINER_NB";
 
+    // Shared preferences
+
     public void addToSharedPreferences(SharedPreferences sp){
 
         // Write
@@ -176,11 +169,25 @@ public class StepContainer extends IJson implements Parcelable {
         return stepContainers;
     }
 
+    // Bundle
+    public static final String BUNDLE_STATE_STEP_CONTAINER_LIST = "BUNDLE_STATE_STEP_CONTAINER_LIST";
+
+    public static List<StepContainer> getStepContainerListFromBundle(Bundle inBundle) {
+        if (inBundle == null) {
+            return new ArrayList<StepContainer>();
+        } else {
+            return inBundle.getParcelableArrayList(BUNDLE_STATE_STEP_CONTAINER_LIST);
+        }
+    }
+
+    public static void saveStepContainerListInBundle(Bundle outBundle, List<StepContainer> stepContainerList) {
+        outBundle.putParcelableArrayList(BUNDLE_STATE_STEP_CONTAINER_LIST, (ArrayList<? extends Parcelable>) stepContainerList);
+    }
+
     // Parcelable
 
     @RequiresApi(api = Build.VERSION_CODES.Q)
     protected StepContainer(Parcel in) {
-        mId = in.readInt();
         this.mStepList = new ArrayList<>();
         in.readParcelableList(this.mStepList, Step.class.getClassLoader());
         mCurrentIndex = in.readInt();
@@ -209,7 +216,6 @@ public class StepContainer extends IJson implements Parcelable {
     @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(mId);
         dest.writeParcelableList(mStepList, flags);
         dest.writeInt(mCurrentIndex);
         dest.writeString(mName);

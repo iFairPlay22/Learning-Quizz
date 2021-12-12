@@ -21,49 +21,45 @@ import java.util.Random;
 import app.ewen.k2hoot.R;
 import app.ewen.k2hoot.model.step.binding.BindingStep;
 
+// WARNING : Ebauche de code (non finalisé)
 public class GameBindingActivity extends AppCompatActivity  {
 
+    // UI Elements
     private TextView mSubjectTextView;
     private ListView mLeftListView;
     private ListView mRightListView;
+    private GameBindingListViewAdapter adpterLeft;
+    private GameBindingListViewAdapter adapterRight;
+
+    // Model
+    private BindingStep bindingStep;
     private HashMap<Integer, Integer> hash;
     int lastRight, lastLeft;
     private List listLeft;
     private List listRight;
     private List listColor;
     private HashMap<Integer,Integer> bindingMap;
-    private GameBindingListViewAdapter adpterLeft;
-    private GameBindingListViewAdapter adapterRight;
 
-    private BindingStep bindingStep;
-
+    // Activity communication
     public static String INTENT_INPUT_BINDING_STEP = "INTENT_INPUT_BINDING_STEP";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_binding);
 
+        // Model
         hash = new HashMap<Integer,Integer>();
         mSubjectTextView = findViewById(R.id.text_view_dubject);
         mLeftListView =findViewById(R.id.linearLayout_horizontal_left);
         mRightListView =findViewById(R.id.linearLayout_horizontal_right);
 
-
         Intent intent = getIntent();
-        if(savedInstanceState == null){
-
-        }
-
-        Log.i("Binding3", "k");
         bindingStep = (BindingStep)intent.getParcelableExtra(INTENT_INPUT_BINDING_STEP);
+
         setListViewAdapter();
         lastLeft=lastRight=-1;
         setListener();
-        Log.i("Binding3", bindingStep.getBindingMap().toString());
-        Log.i("Binding3", "c");
-
-
-
     }
 
     public int getRandomColor(){
@@ -72,15 +68,12 @@ public class GameBindingActivity extends AppCompatActivity  {
     }
 
     public void addElementList(String left, String Right){
-
         listLeft.add(left);
         listRight.add(Right);
         listColor.add(getRandomColor());
     }
 
     private void setListViewAdapter(){
-
-
         listLeft = new ArrayList<String>();
         listRight = new ArrayList<String>();
         listColor = new ArrayList<Integer>();
@@ -88,8 +81,7 @@ public class GameBindingActivity extends AppCompatActivity  {
         for (Map.Entry<String, String> entry : bindingStep.getBindingMap().entrySet()) {
             addElementList(entry.getKey(),entry.getValue());
         }
-        Log.i("Binding2",listRight.toString());
-        Log.i("Binding2",listLeft.toString());
+
         adapterRight=new GameBindingListViewAdapter(this,listRight);
         adpterLeft=new GameBindingListViewAdapter(this,listLeft);
 
@@ -106,46 +98,32 @@ public class GameBindingActivity extends AppCompatActivity  {
             mRightListView.getChildAt(entry.getValue()).setBackgroundColor((int)listColor.get(entry.getKey()));
         }
     }
+
     private void setListener(){
-
-
         mLeftListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
             @Override
-            public void onItemClick(AdapterView<?> adpterView, View view, int position,
-                                    long id) {
-
-                    //mLeftListView.getChildAt(position).setBackgroundColor((int)listColor.get(position));
-                    if(lastRight != -1){
-                        hash.put(position,lastRight);
-                        lastRight = -1;
-                        updateColors();
-                    }else{
-
+            public void onItemClick(AdapterView<?> adpterView, View view, int position, long id) {
+                if (lastRight != -1) {
+                    hash.put(position,lastRight);
+                    lastRight = -1;
+                    updateColors();
+                } else {
                     lastLeft = position;
-                    }
+                }
             }
-
-
         });
 
         mRightListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
             @Override
-            public void onItemClick(AdapterView<?> adpterView, View view, int position,
-                                    long id) {
-
-                        if(lastLeft != -1){
-                            hash.put(lastLeft,position);
-                            lastLeft = -1;
-                            updateColors();
-                        }else{
-
-                        lastRight = position;
-                        }
+            public void onItemClick(AdapterView<?> adpterView, View view, int position, long id) {
+                if (lastLeft != -1){
+                    hash.put(lastLeft,position);
+                    lastLeft = -1;
+                    updateColors();
+                } else {
+                    lastRight = position;
+                }
             }
         });
     }
-
-
 }

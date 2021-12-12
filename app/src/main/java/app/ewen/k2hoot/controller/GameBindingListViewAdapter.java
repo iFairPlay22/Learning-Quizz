@@ -16,19 +16,19 @@ import java.util.List;
 
 import app.ewen.k2hoot.R;
 
+// WARNING : Ebauche de code (non finalisé)
 public class GameBindingListViewAdapter extends BaseAdapter {
     private Context context;
-    private List<String> list;
+    private List < String > list;
 
     LayoutInflater mInflater;
-    public GameBindingListViewAdapter(Context context,List<String> list){
+    public GameBindingListViewAdapter(Context context, List < String > list) {
         this.context = context;
-        this.list  =list;
+        this.list = list;
     }
 
     @Override
     public int getCount() {
-
         return list.size();
     }
 
@@ -45,7 +45,7 @@ public class GameBindingListViewAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup arg2) {
         final BindingViewHolder holder;
-        convertView=null;
+        convertView = null;
         if (convertView == null) {
             holder = new BindingViewHolder();
             mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -54,10 +54,10 @@ public class GameBindingListViewAdapter extends BaseAdapter {
             holder.caption.setTag(position);
             holder.caption.setText(list.get(position));
             convertView.setTag(holder);
-        }else {
+        } else {
             holder = (BindingViewHolder) convertView.getTag();
         }
-        int tag_position=(Integer) holder.caption.getTag();
+        int tag_position = (Integer) holder.caption.getTag();
         holder.caption.setId(tag_position);
 
         return convertView;

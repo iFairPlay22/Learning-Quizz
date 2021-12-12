@@ -20,61 +20,18 @@ import app.ewen.k2hoot.model.StepContainer;
 
 public class GameActivity extends AppCompatActivity {
 
-    private int mScore;
-    private StepContainer mStepContainer;
-    public static final String BUNDLE_EXTRA_SCORE = "BUNDLE_EXTRA_SCORE";
-    public static final String INTENT_EXTRA_STEP_CONTAINER = "INTENT_EXTRA_STEP_CONTAINER";
-    private static final int GAME_QUESTION_ACTIVITY_REQUEST_CODE = 3;
-
-
+    // UI Elements
     private TextView mWelcomeTextView;
     private TextView mScoreTextView;
     private Button mPlayButton;
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_game);
 
-        mWelcomeTextView = findViewById(R.id.game_activity_textview_welcome);
+    // Model
+    private int mScore;
+    private StepContainer mStepContainer;
 
-        mPlayButton  = findViewById(R.id.game_activity_button_play);
-        mScoreTextView = findViewById(R.id.game_activity_textview_score);
-
-        Uri data = this.getIntent().getData();
-        if (data != null && data.isHierarchical()) {
-
-            String uri = this.getIntent().getDataString();
-            mStepContainer = StepContainer.loadFromServer(data.getQueryParameter("key"));
-            mStepContainer.addToSharedPreferences(getSharedPreferences(QuizzListActivity.SHARED_PREF_QUIZZ_LIST, MODE_PRIVATE));
-
-        }else{
-
-            if (savedInstanceState == null) {
-                Intent intent = getIntent();
-                mStepContainer = (StepContainer) intent.getParcelableExtra(INTENT_EXTRA_STEP_CONTAINER);
-                mScore = intent.getIntExtra(BUNDLE_EXTRA_SCORE,0);
-            } else {
-                mScore = savedInstanceState.getInt(BUNDLE_EXTRA_SCORE);
-                mStepContainer = savedInstanceState.getParcelable(INTENT_EXTRA_STEP_CONTAINER);
-            }
-
-        }
-        String score = mStepContainer.getBestScore() > 0 ? "Meilleur score : "+mStepContainer.getBestScore() : "Vous n'avez encore jamais fait ce quiz.";
-        mWelcomeTextView.setText("Welcome to the quizz :\n \n" + mStepContainer.getName());
-        mScoreTextView.setText(score);
-        mPlayButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                displayCurrentQuestion();
-            }
-        });
-
-    }
-
-    public AppCompatActivity getActivity() {
-        return this;
-    }
+    // Activity communication
+    public static final String BUNDLE_EXTRA_SCORE = "BUNDLE_EXTRA_SCORE";
+    public static final String INTENT_EXTRA_STEP_CONTAINER = "INTENT_EXTRA_STEP_CONTAINER";
 
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
@@ -84,42 +41,88 @@ public class GameActivity extends AppCompatActivity {
         outState.putParcelable(INTENT_EXTRA_STEP_CONTAINER, mStepContainer);
     }
 
-    private void nextQuestion() {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
 
-        mStepContainer.nextStep();
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_game);
 
-        if (mStepContainer.currentStep() == null) {
-            displayCurrentScore();
+        // Model
+        Uri data = this.getIntent().getData();
+        if (data != null && data.isHierarchical()) {
+
+            // Import a quiz
+            mStepContainer = StepContainer.loadFromServer(data.getQueryParameter("key"));
+            mStepContainer.addToSharedPreferences(getSharedPreferences(MainActivity.SHARED_PREFERENCES_KEY, MODE_PRIVATE));
         } else {
-            displayCurrentQuestion();
+
+            // Play a created quiz
+            if (savedInstanceState == null) {
+
+                // Load quiz from intent
+                Intent intent = getIntent();
+                mStepContainer = (StepContainer) intent.getParcelableExtra(INTENT_EXTRA_STEP_CONTAINER);
+                mScore = intent.getIntExtra(BUNDLE_EXTRA_SCORE,0);
+            } else {
+
+                // Load quiz from bundle
+                mScore = savedInstanceState.getInt(BUNDLE_EXTRA_SCORE);
+                mStepContainer = savedInstanceState.getParcelable(INTENT_EXTRA_STEP_CONTAINER);
+            }
         }
+
+        // UI Elements
+        mWelcomeTextView = findViewById(R.id.game_activity_textview_welcome);
+        mScoreTextView = findViewById(R.id.game_activity_textview_score);
+        mPlayButton  = findViewById(R.id.game_activity_button_play);
+
+        // UI Actions
+        mScoreTextView.setText(mStepContainer.getBestScore() > 0 ? "Meilleur score : " + mStepContainer.getBestScore() : "Vous n'avez encore jamais fait ce quiz.");
+
+        mWelcomeTextView.setText("Welcome to the quizzz :\n \n" + mStepContainer.getName());
+
+        mPlayButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                displayCurrentStep();
+            }
+        });
+
     }
 
+    // Go to the next step and display it
+    private void nextStep() {
+        mStepContainer.nextStep();
+        displayCurrentStep();
+    }
 
-    private void displayCurrentQuestion() {
+    // Update the screen to print the current step
+    private void displayCurrentStep() {
         Step currentStep = (Step) mStepContainer.currentStep();
-        if (currentStep == null) return ;
-        if(currentStep  instanceof  QuestionStep){
+
+        // End of quiz
+        if (currentStep == null) {
+            displayCurrentScore();
+            return ;
+        }
+
+        // Launch a QuestionStep view
+        if(currentStep instanceof QuestionStep){
             QuestionStep qs = (QuestionStep) currentStep;
 
             Intent gameActivityIntent = new Intent(GameActivity.this, GameQuestionActivity.class);
             gameActivityIntent.putExtra(GameQuestionActivity.INTENT_QUESTION_STEP, qs);
-            startActivityForResult(gameActivityIntent, GAME_QUESTION_ACTIVITY_REQUEST_CODE);
-
+            startActivityForResult(gameActivityIntent, MainActivity.GAME_QUESTION_ACTIVITY_REQUEST_CODE);
         }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-
-        if(GAME_QUESTION_ACTIVITY_REQUEST_CODE == requestCode && RESULT_OK == resultCode){
+        if (MainActivity.GAME_QUESTION_ACTIVITY_REQUEST_CODE == requestCode && RESULT_OK == resultCode) {
             boolean increase = data.getBooleanExtra(GameQuestionActivity.BUNDLE_EXTRA_VALIDATE, false);
-            Log.i("QS","Increse "+increase);
-            if(increase){
-                mScore++;
-            }
-            nextQuestion();
+            if (increase) mScore++;
+            nextStep();
         }
 
         super.onActivityResult(requestCode, resultCode, data);
@@ -128,22 +131,21 @@ public class GameActivity extends AppCompatActivity {
 
     private void displayCurrentScore() {
 
-        boolean newBest =mScore > mStepContainer.getBestScore();
-        if(newBest){
-            mStepContainer.setBestScore(mScore);
-        }
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        boolean newBest = mScore > mStepContainer.getBestScore();
 
+        if(newBest)
+            mStepContainer.setBestScore(mScore);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder
                 .setTitle("Well done!")
                 .setMessage("Your score is " + mScore + " / " + mStepContainer.stepNb())
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Intent intent = new Intent();
-                        if(newBest){
+                        if(newBest)
                             intent.putExtra(INTENT_EXTRA_STEP_CONTAINER, mStepContainer);
-                        }
                         setResult(RESULT_OK, intent);
                         finish();
                     }

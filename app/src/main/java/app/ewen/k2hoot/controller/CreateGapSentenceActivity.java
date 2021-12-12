@@ -23,7 +23,8 @@ import java.util.List;
 
 import app.ewen.k2hoot.R;
 
-public class CreateGapSentenceActivity extends AppCompatActivity  {
+// WARNING : Ebauche de code (non finalisé)
+public class CreateGapSentenceActivity extends AppCompatActivity {
     //Elements graphiques
     private EditText mEditText;
     private LinearLayout mLinearLayout;
@@ -33,7 +34,7 @@ public class CreateGapSentenceActivity extends AppCompatActivity  {
     //Phrase sous forme de liste de mots
     private String[] mots;
     //Index dans la phrase des mots à compléter
-    private List<Integer> gapIndexes;
+    private List < Integer > gapIndexes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,11 +60,11 @@ public class CreateGapSentenceActivity extends AppCompatActivity  {
             public void afterTextChanged(Editable s) {
                 //Reset
                 mLinearLayout.removeAllViews();
-                gapIndexes = new ArrayList<>();
+                gapIndexes = new ArrayList < > ();
 
                 //Traitement de la chaine de caractères
                 String str = s.toString();
-                if(str.length()==0){
+                if (str.length() == 0) {
                     mPreview.setText("");
                     return;
                 }
@@ -74,10 +75,10 @@ public class CreateGapSentenceActivity extends AppCompatActivity  {
                 LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                 for (int i = 0; i < mots.length; i++) {
                     String mot = mots[i].trim();
-                    if(mot.length()==0)continue;
+                    if (mot.length() == 0) continue;
 
                     Button btn = new Button(getApplicationContext());
-                    mLinearLayout.addView(btn,lp);
+                    mLinearLayout.addView(btn, lp);
                     btn.setText(mot);
 
                     // Click sur le bouton
@@ -86,12 +87,11 @@ public class CreateGapSentenceActivity extends AppCompatActivity  {
                         @RequiresApi(api = Build.VERSION_CODES.O)
                         @Override
                         public void onClick(View v) {
-                            if(gapIndexes.contains(finalI)){
+                            if (gapIndexes.contains(finalI)) {
                                 gapIndexes.remove((Integer) finalI);
                                 btn.setTextColor(Color.WHITE);
                                 updatePreview();
-                            }
-                            else{
+                            } else {
                                 gapIndexes.add(finalI);
                                 btn.setTextColor(Color.RED);
                                 updatePreview();
@@ -105,18 +105,17 @@ public class CreateGapSentenceActivity extends AppCompatActivity  {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private void updatePreview(){
-        if(mots==null)return;
-        if(gapIndexes.size()!=0){
+    private void updatePreview() {
+        if (mots == null) return;
+        if (gapIndexes.size() != 0) {
             mOkButton.setEnabled(true);
-        }
-        else{
+        } else {
             mOkButton.setEnabled(false);
         }
         String[] motsPreview = mots.clone();
-        for (Integer i:gapIndexes) {
+        for (Integer i: gapIndexes) {
             motsPreview[i] = "...";
         }
-        mPreview.setText("Aperçu : "+String.join(" ",motsPreview));
+        mPreview.setText("Aperçu : " + String.join(" ", motsPreview));
     }
 }

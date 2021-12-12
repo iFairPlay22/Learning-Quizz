@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:layout_marginHorizontal="16dp"
     android:orientation="vertical"
-    tools:context=".controller.QuizzListActivity">
+    tools:context=".controller.QuizListActivity">
 
     <TextView
         android:id="@+id/activity_create_quizz_manage_textview"
@@ -18,18 +18,6 @@
         android:textSize="32sp"
         android:textStyle="bold"
         android:text="Gestion des quizz" />
-
-
-    <TextView
-        android:id="@+id/activity_create_quizz_name_textview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:gravity="bottom|center"
-        android:textColor="@color/teal_700"
-        android:textSize="32sp"
-        android:textStyle="bold"
-        android:text="Nom du quizzz" />
 
 
     <EditText

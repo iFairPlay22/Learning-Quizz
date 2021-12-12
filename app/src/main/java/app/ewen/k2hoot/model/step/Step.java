@@ -37,6 +37,18 @@ public class Step<Data extends IStepData, Input extends IStepInput> extends IJso
         mTypeName = in.readString();
     }
 
+    public static final Creator<Step> CREATOR = new Creator<Step>() {
+        @Override
+        public Step createFromParcel(Parcel in) {
+            return new Step(in);
+        }
+
+        @Override
+        public Step[] newArray(int size) {
+            return new Step[size];
+        }
+    };
+
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(mTypeName);

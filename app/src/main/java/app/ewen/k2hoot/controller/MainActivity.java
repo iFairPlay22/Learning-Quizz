@@ -27,13 +27,13 @@ import app.ewen.k2hoot.model.step.binding.BindingStep;
 public class MainActivity extends AppCompatActivity {
 
     // Request codes
-    private static final int GAME_ACTIVITY_REQUEST_CODE = 2;
-    private static final int GAME_QUESTION_ACTIVITY_REQUEST_CODE = 3;
-    private static final int CREATE_QUESTION_ACTIVITY_REQUEST_CODE = 13;
-    private static final int CREATE_QUIZ_ACTIVITY_REQUEST_CODE = 14;
+    public static final int GAME_ACTIVITY_REQUEST_CODE = 2;
+    public static final int GAME_QUESTION_ACTIVITY_REQUEST_CODE = 3;
+    public static final int CREATE_QUESTION_ACTIVITY_REQUEST_CODE = 13;
+    public static final int CREATE_QUIZ_ACTIVITY_REQUEST_CODE = 14;
 
     // Preferences
-    private static final String PREFERENCES_KEY = "PREFERENCES_K";
+    public static final String SHARED_PREFERENCES_KEY = "PREFERENCES_K";
 
     // UI Elements
     private TextView mGreetingTextView;
@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
                     mPlayButton.setEnabled(false);
                 } else {
                     mUser.setFirstName(mNameEditText.getText().toString());
-                    mUser.storeInPreferences(getSharedPreferences(PREFERENCES_KEY, MODE_PRIVATE));
+                    mUser.storeInPreferences(getSharedPreferences(SHARED_PREFERENCES_KEY, MODE_PRIVATE));
                     mPlayButton.setEnabled(true);
                 }
             }
@@ -99,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 // Launch quiz list view
-                Intent quizListIntent = new Intent(MainActivity.this, QuizzListActivity.class);
+                Intent quizListIntent = new Intent(MainActivity.this, QuizListActivity.class);
                 startActivity(quizListIntent);
             }
         });
@@ -223,7 +223,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateLabels() {
-        mUser.loadFromPreferences(getSharedPreferences(PREFERENCES_KEY, MODE_PRIVATE));
+        mUser.loadFromPreferences(getSharedPreferences(SHARED_PREFERENCES_KEY, MODE_PRIVATE));
 
         String fp = getString(R.string.MainActivity_GreetingTextView_FirstPart);
         String mp = getString(R.string.MainActivity_GreetingTextView_MiddlePart);
