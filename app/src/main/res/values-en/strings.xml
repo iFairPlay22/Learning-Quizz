@@ -15,6 +15,7 @@
     <string name="CreateGapSentenceActivity_OkBtn_Label">Ok</string>
     <string name="CreateQuestionActivity_QuestionEditText_Label">Your question ?</string>
     <string name="CreateQuestionActivity_CorrectValue_Label">Good answer</string>
+    <string name="CreateQuestionActivity_WrongValue_Label">Wrong answer</string>
     <string name="CreateQuestionActivity_Answer1_Label">Answer 1</string>
     <string name="CreateQuestionActivity_Answer2_Label">Answer 2</string>
     <string name="CreateQuestionActivity_Answer3_Label">Answer 3</string>

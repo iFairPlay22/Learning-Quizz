@@ -20,6 +20,7 @@ import java.io.Writer;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import app.ewen.k2hoot.model.http.HttpManager;
 import app.ewen.k2hoot.model.http.response.HttpFile;
@@ -30,8 +31,11 @@ public class StepContainer extends IJson implements Parcelable {
 
     // Static field
     private static final String FILE_NAME_SEPARATOR = "__fn__";
+    private static int sOccurences = 0;
+    private String mSharedPrefenrecesKey;
 
-    public StepContainer(List<Step> stepList, String name) {
+    public StepContainer(List<Step> stepList,String name) {
+        this.mId = sOccurences++;
         this.mCurrentIndex = 0;
         this.mStepList = new ArrayList<>(stepList);
         // Collections.shuffle(this.mStepList);
@@ -142,13 +146,17 @@ public class StepContainer extends IJson implements Parcelable {
 
         // Write
         int gameNb = sp.getInt(SHARED_PREF_STEP_CONTAINER_NB, 0);
-
+        mSharedPrefenrecesKey = SHARED_PREF_STEP_CONTAINER + "_" + gameNb;
         sp.edit()
             .putInt(SHARED_PREF_STEP_CONTAINER_NB, gameNb + 1)
             .putString(SHARED_PREF_STEP_CONTAINER + "_" + gameNb, toJson())
             .putString(SHARED_PREF_STEP_CONTAINER_LIST + "_" + gameNb, writeStepsToJson())
             .apply();
 
+    }
+
+    public void updateSharedPreferences(SharedPreferences sp){
+        sp.edit().putString(mSharedPrefenrecesKey, toJson()).apply();
     }
 
     public static List<StepContainer> readAllFromSharedPreferences(SharedPreferences sp){
@@ -164,6 +172,7 @@ public class StepContainer extends IJson implements Parcelable {
             sc.mStepList = StepContainer.generateStepsFromJson(jsonList);
 
             stepContainers.add(sc);
+
         }
 
         return stepContainers;
@@ -180,10 +189,6 @@ public class StepContainer extends IJson implements Parcelable {
         }
     }
 
-    public static void saveStepContainerListInBundle(Bundle outBundle, List<StepContainer> stepContainerList) {
-        outBundle.putParcelableArrayList(BUNDLE_STATE_STEP_CONTAINER_LIST, (ArrayList<? extends Parcelable>) stepContainerList);
-    }
-
     // Parcelable
 
     @RequiresApi(api = Build.VERSION_CODES.Q)
@@ -192,6 +197,7 @@ public class StepContainer extends IJson implements Parcelable {
         in.readParcelableList(this.mStepList, Step.class.getClassLoader());
         mCurrentIndex = in.readInt();
         mName = in.readString();
+        mSharedPrefenrecesKey = in.readString();
         mBestScore = in.readInt();
     }
 
@@ -208,6 +214,7 @@ public class StepContainer extends IJson implements Parcelable {
         }
     };
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public int describeContents() {
         return this.hashCode();
@@ -219,6 +226,7 @@ public class StepContainer extends IJson implements Parcelable {
         dest.writeParcelableList(mStepList, flags);
         dest.writeInt(mCurrentIndex);
         dest.writeString(mName);
+        dest.writeString(mSharedPrefenrecesKey);
         dest.writeInt(mBestScore);
     }
 
@@ -230,9 +238,20 @@ public class StepContainer extends IJson implements Parcelable {
         for (Step step : mStepList)
             res += step.toString() + "\n";
         res += "]";
-        res+= mName;
+        res+= "\n Name : "+mName;
+        res+= "\n id : " +mId;
+        res+= "\n score : " + mBestScore;
+        res+= "\n bidule : " + mSharedPrefenrecesKey;
         return res;
     }
 
+    public void resetIndex(){
+        mCurrentIndex =0;
+    }
 
+    public String getSharedPrefenrecesKey(){
+        return mSharedPrefenrecesKey;
+    }
+
+    private int mId;
 }

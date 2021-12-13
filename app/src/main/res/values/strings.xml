@@ -15,6 +15,7 @@
     <string name="CreateGapSentenceActivity_OkBtn_Label">Ok</string>
     <string name="CreateQuestionActivity_QuestionEditText_Label">Votre question ?</string>
     <string name="CreateQuestionActivity_CorrectValue_Label">Réponse correcte</string>
+    <string name="CreateQuestionActivity_WrongValue_Label">Réponse incorrecte</string>
     <string name="CreateQuestionActivity_Answer1_Label">Réponse 1</string>
     <string name="CreateQuestionActivity_Answer2_Label">Réponse 2</string>
     <string name="CreateQuestionActivity_Answer3_Label">Réponse 3</string>
@@ -22,8 +23,8 @@
     <string name="CreateQuizListActivity_ManageTextView_Label">Gestion des quizzz</string>
     <string name="CreateQuizListActivity_Name_Label">Quizzz</string>
     <string name="CreateQuizListActivity_QuestionTextView_Label">Questions :</string>
-    <string name="QuizListActivity_AddBtn_Label">Créer un quizzz</string>
-    <string name="CreateQuizListActivity_CreateBtn_Label">Créer</string>
+    <string name="QuizListActivity_AddBtn_Label">Créer un quizzz </string>
+    <string name="CreateQuizListActivity_CreateBtn_Label">Créer </string>
     <string name="GameActivity_PlayBtn_Label">C\'est parti</string>
     <string name="GapSentenceGameActivity_OkBtn_Label">Ok</string>
     <string name="MainActivity_QuizListBtn_Label">Liste des quizzz</string>
@@ -31,7 +32,7 @@
     <string name="MainActivity_BindingPlayBtn_Label">Jouer binding</string>
     <string name="MainActivity_GapSentenceCreateBtn_Label">Créer gap sentence</string>
     <string name="QuizListActivity_MainTextView_Label">Mes Quizzz</string>
-    <string name="QuizListActivity_CreateBtn_Label">Créer un quizzz</string>
+    <string name="QuizListActivity_CreateBtn_Label">Créer un quizzz </string>
     <string name="QuizListActivity_ScrollViewContentDescription_Label">Liste des quizzz</string>
     <string name="GreateGapSentanceActivity_Preview_Label">Aperçu : </string>
     <string name="GameActivity_Welcome_Toast">Bienvenue dans le quizzz</string>
@@ -40,4 +41,5 @@
     <string name="GameActivity_AlertDialog_OkBtn_Label">Ok</string>
     <string name="GameQuestionActivity_Success_Toast">Correct !</string>
     <string name="GameQuestionActivity_Error_Toast">Incorrect !</string>
+
 </resources>

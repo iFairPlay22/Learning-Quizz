@@ -24,6 +24,9 @@ public class GameActivity extends AppCompatActivity {
     private TextView mScoreTextView;
     private Button mPlayButton;
 
+    //Request codes
+    public static final int GAME_QUESTION_ACTIVITY_REQUEST_CODE = 3;
+
     // Model
     private int mScore;
     private StepContainer mStepContainer;
@@ -45,14 +48,17 @@ public class GameActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
-
         // Model
+        mWelcomeTextView = findViewById(R.id.game_activity_text_view_welcome);
+
+        mPlayButton  = findViewById(R.id.game_activity_button_play);
+        mScoreTextView = findViewById(R.id.game_activity_text_view_score);
         Uri data = this.getIntent().getData();
         if (data != null && data.isHierarchical()) {
 
             // Import a quiz
             mStepContainer = StepContainer.loadFromServer(data.getQueryParameter("key"));
-            mStepContainer.addToSharedPreferences(getSharedPreferences(MainActivity.SHARED_PREFERENCES_KEY, MODE_PRIVATE));
+            mStepContainer.addToSharedPreferences(getSharedPreferences(QuizListActivity.SHARED_PREFERENCES_KEY, MODE_PRIVATE));
         } else {
 
             // Play a created quiz
@@ -79,6 +85,7 @@ public class GameActivity extends AppCompatActivity {
         mScoreTextView.setText(mStepContainer.getBestScore() > 0 ? "Meilleur score : " + mStepContainer.getBestScore() : "Vous n'avez encore jamais fait ce quiz.");
 
         mWelcomeTextView.setText(getString(R.string.GameActivity_Welcome_Toast) + " :\n \n" + mStepContainer.getName());
+
 
         mPlayButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,14 +118,14 @@ public class GameActivity extends AppCompatActivity {
 
             Intent gameActivityIntent = new Intent(GameActivity.this, GameQuestionActivity.class);
             gameActivityIntent.putExtra(GameQuestionActivity.INTENT_QUESTION_STEP, qs);
-            startActivityForResult(gameActivityIntent, MainActivity.GAME_QUESTION_ACTIVITY_REQUEST_CODE);
+            startActivityForResult(gameActivityIntent, GameActivity.GAME_QUESTION_ACTIVITY_REQUEST_CODE);
         }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        if (MainActivity.GAME_QUESTION_ACTIVITY_REQUEST_CODE == requestCode && RESULT_OK == resultCode) {
+        if (GameActivity.GAME_QUESTION_ACTIVITY_REQUEST_CODE == requestCode && RESULT_OK == resultCode) {
             boolean increase = data.getBooleanExtra(GameQuestionActivity.BUNDLE_EXTRA_VALIDATE, false);
             if (increase) mScore++;
             nextStep();
@@ -143,8 +150,10 @@ public class GameActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Intent intent = new Intent();
-                        if(newBest)
+                        if(newBest){
                             intent.putExtra(INTENT_EXTRA_STEP_CONTAINER, mStepContainer);
+                            mStepContainer.updateSharedPreferences(getSharedPreferences(QuizListActivity.SHARED_PREFERENCES_KEY, MODE_PRIVATE));
+                        }
                         setResult(RESULT_OK, intent);
                         finish();
                     }

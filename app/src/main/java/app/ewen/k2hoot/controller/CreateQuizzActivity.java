@@ -36,6 +36,10 @@ public class CreateQuizzActivity extends AppCompatActivity  {
     private ImageButton mAddStepButton;
     private Button mCreateButton;
 
+
+    //Request codes
+    public static final int CREATE_QUESTION_ACTIVITY_REQUEST_CODE = 13;
+
     // Model
     private List<Step> mQuestionList;
 
@@ -84,7 +88,7 @@ public class CreateQuizzActivity extends AppCompatActivity  {
 
                 // Launch create question view
                 Intent gameActivityIntent = new Intent(CreateQuizzActivity.this, CreateQuestionActivity.class);
-                startActivityForResult(gameActivityIntent, MainActivity.CREATE_QUESTION_ACTIVITY_REQUEST_CODE);
+                startActivityForResult(gameActivityIntent, CreateQuizzActivity.CREATE_QUESTION_ACTIVITY_REQUEST_CODE);
             }
         });
 
@@ -131,8 +135,7 @@ public class CreateQuizzActivity extends AppCompatActivity  {
                     if(v2 instanceof TextView){
 
                         TextView t = (TextView) v2;
-                        t.setText("Question " + (index++));
-                        t.setTextColor(Color.WHITE);
+                        t.setText("Question " + (++index));
 
                     }
                 }
@@ -198,7 +201,7 @@ public class CreateQuizzActivity extends AppCompatActivity  {
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        if (MainActivity.CREATE_QUESTION_ACTIVITY_REQUEST_CODE == requestCode && RESULT_OK == resultCode) {
+        if (CreateQuizzActivity.CREATE_QUESTION_ACTIVITY_REQUEST_CODE == requestCode && RESULT_OK == resultCode) {
             // Get the created question and add it
             QuestionStep qs = (QuestionStep)data.getParcelableExtra(CreateQuestionActivity.INTENT_CREATE_QUESTION_STEP);
             mQuestionList.add(qs);

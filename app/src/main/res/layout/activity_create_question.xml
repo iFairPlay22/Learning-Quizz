@@ -68,7 +68,8 @@
 
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:checked="false" />
+            android:checked="false"
+            android:text="@string/CreateQuestionActivity_WrongValue_Label"/>
     </LinearLayout>
 
     <LinearLayout
@@ -94,7 +95,8 @@
 
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:checked="false" />
+            android:checked="false"
+            android:text="@string/CreateQuestionActivity_WrongValue_Label"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="wrap_content"
@@ -119,7 +121,8 @@
 
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:checked="false" />
+            android:checked="false"
+            android:text="@string/CreateQuestionActivity_WrongValue_Label"/>
     </LinearLayout>
 
 
@@ -129,5 +132,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_margin="16dp"
-        android:text="@string/MainActivity_ButtonCreate_Text" />
+        android:text="@string/MainActivity_ButtonCreate_Text"
+        />
 </LinearLayout>

@@ -67,7 +67,9 @@ public class CreateQuestionActivity extends AppCompatActivity  {
 
             @Override
             public void afterTextChanged(Editable s) {
+
                 updateCreateBtnState();
+
             }
         };
 
@@ -101,8 +103,13 @@ public class CreateQuestionActivity extends AppCompatActivity  {
                 public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
                     if (isChecked){
                         for (int j = 0; j < answersCb.size(); j++)
-                            if (finalI != j)
+                            if (finalI != j){
                                 answersCb.get(j).setChecked(false);
+                                answersCb.get(j).setText(R.string.CreateQuestionActivity_WrongValue_Label);
+                            }else{
+                                answersCb.get(j).setText(R.string.CreateQuestionActivity_CorrectValue_Label);
+                            }
+
                     }
                     updateCreateBtnState();
                 }
@@ -118,6 +125,7 @@ public class CreateQuestionActivity extends AppCompatActivity  {
                 return false;
         return true;
     }
+
 
     // Return the index of the selected good answer
     private int getSelectedGoodAnswerIndex(){

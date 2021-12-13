@@ -26,14 +26,6 @@ import app.ewen.k2hoot.model.step.binding.BindingStep;
 
 public class MainActivity extends AppCompatActivity {
 
-    // Request codes
-    public static final int GAME_ACTIVITY_REQUEST_CODE = 2;
-    public static final int GAME_QUESTION_ACTIVITY_REQUEST_CODE = 3;
-    public static final int CREATE_QUESTION_ACTIVITY_REQUEST_CODE = 13;
-    public static final int CREATE_QUIZ_ACTIVITY_REQUEST_CODE = 14;
-
-    // Preferences
-    public static final String SHARED_PREFERENCES_KEY = "PREFERENCES_K";
 
     // UI Elements
     private TextView mGreetingTextView;
@@ -88,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
                     mPlayButton.setEnabled(false);
                 } else {
                     mUser.setFirstName(mNameEditText.getText().toString());
-                    mUser.storeInPreferences(getSharedPreferences(SHARED_PREFERENCES_KEY, MODE_PRIVATE));
+                    mUser.storeInPreferences(getSharedPreferences(QuizListActivity.SHARED_PREFERENCES_KEY, MODE_PRIVATE));
                     mPlayButton.setEnabled(true);
                 }
             }
@@ -110,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
 
                 // Launch create view
                 Intent gameActivityIntent = new Intent(MainActivity.this, CreateQuizzActivity.class);
-                startActivityForResult(gameActivityIntent, CREATE_QUIZ_ACTIVITY_REQUEST_CODE);
+                startActivityForResult(gameActivityIntent, QuizListActivity.CREATE_QUIZ_ACTIVITY_REQUEST_CODE);
             }
         });
 
@@ -144,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
                 // Launch game view
                 Intent gameActivityIntent = new Intent(MainActivity.this, GameActivity.class);
                 gameActivityIntent.putExtra(GameActivity.INTENT_EXTRA_STEP_CONTAINER, sc);
-                startActivityForResult(gameActivityIntent, GAME_ACTIVITY_REQUEST_CODE);
+                startActivityForResult(gameActivityIntent, QuizListActivity.GAME_ACTIVITY_REQUEST_CODE);
             }
         });
 
@@ -154,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
 
                 // Launch create binding view
                 Intent gameActivityIntent = new Intent(MainActivity.this, CreateBindingActivity.class);
-                startActivityForResult(gameActivityIntent, GAME_ACTIVITY_REQUEST_CODE);
+                startActivityForResult(gameActivityIntent, QuizListActivity.GAME_ACTIVITY_REQUEST_CODE);
             }
         });
 
@@ -173,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
                 // Launch game binding view
                 Intent gameActivityIntent = new Intent(MainActivity.this, GameBindingActivity.class);
                 gameActivityIntent.putExtra(GameBindingActivity.INTENT_INPUT_BINDING_STEP, st);
-                startActivityForResult(gameActivityIntent, GAME_ACTIVITY_REQUEST_CODE);
+                startActivityForResult(gameActivityIntent, QuizListActivity.GAME_ACTIVITY_REQUEST_CODE);
             }
         });
 
@@ -183,7 +175,7 @@ public class MainActivity extends AppCompatActivity {
 
                 // Create gap sentence view
                 Intent gameActivityIntent = new Intent(MainActivity.this, CreateGapSentenceActivity.class);
-                startActivityForResult(gameActivityIntent, GAME_ACTIVITY_REQUEST_CODE);
+                startActivityForResult(gameActivityIntent, QuizListActivity.GAME_ACTIVITY_REQUEST_CODE);
             }
         });
 
@@ -195,23 +187,23 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        if (GAME_ACTIVITY_REQUEST_CODE == requestCode && RESULT_OK == resultCode) {
+        if (QuizListActivity.GAME_ACTIVITY_REQUEST_CODE == requestCode && RESULT_OK == resultCode) {
 
             StepContainer sc = (StepContainer)data.getParcelableExtra(GameActivity.INTENT_EXTRA_STEP_CONTAINER);
             if (sc != null) Log.i("GAME_A",sc.toString());
 
-        } else if (CREATE_QUESTION_ACTIVITY_REQUEST_CODE == requestCode && RESULT_OK == resultCode) {
+        } else if (CreateQuizzActivity.CREATE_QUESTION_ACTIVITY_REQUEST_CODE == requestCode && RESULT_OK == resultCode) {
 
             QuestionStep qs = (QuestionStep)data.getParcelableExtra(CreateQuestionActivity.INTENT_CREATE_QUESTION_STEP);
             if (qs != null) Log.i("CREATE_QUESTION_A", qs.toString());
 
-        } else if (GAME_QUESTION_ACTIVITY_REQUEST_CODE == requestCode && RESULT_OK == resultCode) {
+        } else if (GameActivity.GAME_QUESTION_ACTIVITY_REQUEST_CODE == requestCode && RESULT_OK == resultCode) {
 
             boolean increase = data.getBooleanExtra(GameQuestionActivity.BUNDLE_EXTRA_VALIDATE, false);
             Log.i("GAME_QUESTION_A","" + increase);
 
 
-        } else if (CREATE_QUIZ_ACTIVITY_REQUEST_CODE == requestCode && RESULT_OK == resultCode) {
+        } else if (QuizListActivity.CREATE_QUIZ_ACTIVITY_REQUEST_CODE == requestCode && RESULT_OK == resultCode) {
 
             StepContainer qs = (StepContainer)data.getParcelableExtra(CreateQuizzActivity.INTENT_CREATE_STEP_CONTAINER);
             Log.i("CREATE_QUIZ_A", qs.toString());
@@ -223,7 +215,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateLabels() {
-        mUser.loadFromPreferences(getSharedPreferences(SHARED_PREFERENCES_KEY, MODE_PRIVATE));
+        mUser.loadFromPreferences(getSharedPreferences(QuizListActivity.SHARED_PREFERENCES_KEY, MODE_PRIVATE));
 
         String fp = getString(R.string.MainActivity_GreetingTextView_FirstPart);
         String mp = getString(R.string.MainActivity_GreetingTextView_MiddlePart);

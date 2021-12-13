@@ -14,17 +14,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.K2hoot">
+
         <activity android:name=".controller.GameActivity"  android:screenOrientation="portrait">
-            <intent-filter android:label="test">
-            <action android:name="android.intent.action.VIEW" />
-            <category android:name="android.intent.category.DEFAULT" />
-            <category android:name="android.intent.category.BROWSABLE" />
-            <!-- Accepts URIs that begin with "http://www.k2hoot.com/load” -->
-            <data android:scheme="http"
-                android:host="www.k2hoot.com"
-                android:pathPrefix="/load" />
-            <!-- note that the leading "/" is required for pathPrefix-->
-        </intent-filter>
+            <intent-filter android:label="K2hoot">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <!-- Accepts URIs that begin with "http://www.k2hoot.com/load” -->
+                <data android:scheme="http"
+                    android:host="www.k2hoot.com"
+                    android:pathPrefix="/load" />
+                <!-- note that the leading "/" is required for pathPrefix-->
+            </intent-filter>
         </activity>
 
         <activity android:name=".controller.CreateQuestionActivity"  android:screenOrientation="portrait"></activity>
@@ -36,14 +37,15 @@
 
         <activity
             android:name=".controller.QuizListActivity"
-            android:exported="false"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".controller.MainActivity"  android:screenOrientation="portrait">
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".controller.MainActivity"  android:screenOrientation="portrait">
+
         </activity>
     </application>
 

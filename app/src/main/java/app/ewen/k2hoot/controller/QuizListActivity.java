@@ -8,12 +8,15 @@ import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcelable;
+import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import app.ewen.k2hoot.R;
@@ -26,13 +29,23 @@ public class QuizListActivity extends AppCompatActivity {
     private LinearLayout mLinearLayout;
     private Button mCreateButton;
 
+    // Preferences
+    public static final String SHARED_PREFERENCES_KEY = "PREFERENCES_K";
+
+    // Request codes
+    public static final int GAME_ACTIVITY_REQUEST_CODE = 2;
+    public static final int CREATE_QUIZ_ACTIVITY_REQUEST_CODE = 14;
+
+    //BUNDLE
+    private static final String BUNDLE_STATE_STEP_CONTAINER_LIST = "BUNDLE_STATE_STEP_CONTAINER_LIST";
+
     // Model
     private List<StepContainer> mQuizList;
 
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        StepContainer.saveStepContainerListInBundle(outState, mQuizList);
+        outState.putParcelableArrayList(BUNDLE_STATE_STEP_CONTAINER_LIST, (ArrayList<? extends Parcelable>)  mQuizList);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -43,8 +56,12 @@ public class QuizListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_quiz_list);
 
         // Model
-        mQuizList = StepContainer.getStepContainerListFromBundle(savedInstanceState);
-        mQuizList.addAll(StepContainer.readAllFromSharedPreferences(getSharedPreferences(MainActivity.SHARED_PREFERENCES_KEY, MODE_PRIVATE)));
+        if (savedInstanceState != null) {
+            mQuizList = StepContainer.getStepContainerListFromBundle(savedInstanceState);
+        }else{
+            mQuizList = new ArrayList<>();
+            mQuizList.addAll(StepContainer.readAllFromSharedPreferences(getSharedPreferences(QuizListActivity.SHARED_PREFERENCES_KEY, MODE_PRIVATE)));
+        }
 
         // UI Elements
         mLinearLayout = findViewById(R.id.quiz_list_linear_layout_buttons);
@@ -62,7 +79,7 @@ public class QuizListActivity extends AppCompatActivity {
 
                 // Launch the create quiz view
                 Intent gameActivityIntent = new Intent(QuizListActivity.this, CreateQuizzActivity.class);
-                startActivityForResult(gameActivityIntent, MainActivity.CREATE_QUIZ_ACTIVITY_REQUEST_CODE);
+                startActivityForResult(gameActivityIntent, QuizListActivity.CREATE_QUIZ_ACTIVITY_REQUEST_CODE);
             }
         });
     }
@@ -71,13 +88,26 @@ public class QuizListActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        if (MainActivity.CREATE_QUIZ_ACTIVITY_REQUEST_CODE == requestCode && RESULT_OK == resultCode) {
+        if (QuizListActivity.CREATE_QUIZ_ACTIVITY_REQUEST_CODE == requestCode && RESULT_OK == resultCode) {
 
             // A new quiz has been created, add it to the list
-            StepContainer qs = (StepContainer)data.getParcelableExtra(CreateQuizzActivity.INTENT_CREATE_STEP_CONTAINER);
-            if(qs != null) {
-                addQuizToLinearLayout(qs);
-                qs.addToSharedPreferences(getSharedPreferences(MainActivity.SHARED_PREFERENCES_KEY, MODE_PRIVATE));
+            StepContainer sc = (StepContainer)data.getParcelableExtra(CreateQuizzActivity.INTENT_CREATE_STEP_CONTAINER);
+            if(sc != null) {
+                addQuizToLinearLayout(sc);
+                sc.addToSharedPreferences(getSharedPreferences(QuizListActivity.SHARED_PREFERENCES_KEY, MODE_PRIVATE));
+                mQuizList.add(sc);
+            }
+        }else if(QuizListActivity.GAME_ACTIVITY_REQUEST_CODE == requestCode && RESULT_OK == resultCode){
+            StepContainer sc = (StepContainer)data.getParcelableExtra(GameActivity.INTENT_EXTRA_STEP_CONTAINER);
+            if(sc != null) {
+                for (int i = 0; i < mQuizList.size(); i++) {
+                    if(mQuizList.get(i).getSharedPrefenrecesKey() != null){
+                        if(mQuizList.get(i).getSharedPrefenrecesKey().equals(sc.getSharedPrefenrecesKey()))
+                        {
+                            mQuizList.get(i).setBestScore(sc.getBestScore());
+                        }
+                    }
+                }
             }
         }
 
@@ -111,7 +141,7 @@ public class QuizListActivity extends AppCompatActivity {
                 StepContainer sc = (StepContainer) quizBtn.getTag();
                 Intent gameActivityIntent = new Intent(QuizListActivity.this, GameActivity.class);
                 gameActivityIntent.putExtra(GameActivity.INTENT_EXTRA_STEP_CONTAINER, sc);
-                startActivity(gameActivityIntent);
+                startActivityForResult(gameActivityIntent, GAME_ACTIVITY_REQUEST_CODE);
             }
         });
 
